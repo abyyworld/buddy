@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Buddy">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f6f3ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14181e" media="(prefers-color-scheme: dark)">
+<title>Buddy</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<link rel="icon" href="/icons/icon-192.png">
+<style>
+  :root { --bg:#f6f3ee; --bar:rgba(246,243,238,.84); --ink:#1f2834; --mist:#6b7480; --line:rgba(31,40,52,.1);
+    --line2:rgba(31,40,52,.18); --them:#ebe6de; --me:#e3a34b; --me-ink:#1d232b; --accent:#a6651d; --accent-ink:#fff;
+    --tint:rgba(217,151,60,.14); --sheet:#fffdf9; --field:#f2eee7; --rec:#c8566a; --on:#34c759; --danger:#b8443a;
+    --scrim:rgba(18,22,28,.34); --shadow:0 18px 50px rgba(31,40,52,.22); }
+  @media (prefers-color-scheme: dark) { :root { --bg:#14181e; --bar:rgba(20,24,30,.84); --ink:#ede6da; --mist:#98a2ad;
+    --line:rgba(237,230,218,.1); --line2:rgba(237,230,218,.18); --them:#252c35; --me:#d9973c; --me-ink:#14181e;
+    --accent:#e8b86b; --accent-ink:#14181e; --tint:rgba(232,184,107,.13); --sheet:#1b2129; --field:#232a33;
+    --danger:#ec8a80; --scrim:rgba(0,0,0,.5); --shadow:0 18px 50px rgba(0,0,0,.5); } }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { margin:0; height:100%; background:var(--bg); color:var(--ink);
+    font:16px/1.38 -apple-system,"SF Pro Text",system-ui,"Segoe UI",sans-serif; }
+  body { display:flex; flex-direction:column; height:100dvh; overflow:hidden; }
+  button { font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer; }
+  button:disabled { cursor:default; }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  [hidden] { display:none !important; }
+  svg { display:block; }
+  .col { width:100%; max-width:760px; margin:0 auto; }
+
+  /* ---------- header ---------- */
+  header { flex:none; padding:calc(env(safe-area-inset-top) + 6px) 10px 8px; background:var(--bar);
+    -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px); border-bottom:1px solid var(--line); z-index:2; }
+  header .col { display:grid; grid-template-columns:88px 1fr 88px; align-items:center; }
+  header .side { display:flex; } header .side.r { justify-content:flex-end; }
+  .icon { width:44px; height:44px; display:grid; place-items:center; border-radius:50%; color:var(--accent); position:relative; }
+  .icon .udot { position:absolute; top:9px; right:8px; box-shadow:0 0 0 2px var(--bg); }
+  .who { justify-self:center; display:flex; flex-direction:column; align-items:center; gap:2px; padding:2px 14px;
+    border-radius:14px; min-width:0; max-width:100%; }
+  .who .av { width:38px; height:38px; font-size:17px; }
+  .who .nm { display:flex; align-items:center; gap:2px; font-size:13.5px; font-weight:600; max-width:100%; }
+  .who .nm b { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .who .nm svg { color:var(--mist); flex:none; }
+  .who small { font-size:11.5px; color:var(--mist); min-height:14px; max-width:260px; overflow:hidden;
+    text-overflow:ellipsis; white-space:nowrap; }
+  .av { width:42px; height:42px; flex:none; border-radius:50%; display:grid; place-items:center; font-weight:600;
+    font-size:18px; background:#d9973c; color:#1d232b; user-select:none; -webkit-user-select:none;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.06); }
+  .av.pic { background-size:cover !important; background-position:center !important; color:transparent !important; }
+  .udot { display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--rec); flex:none; }
+
+  /* ---------- conversation ---------- */
+  #list { flex:1; overflow-y:auto; overscroll-behavior:contain; padding:6px 12px 8px; -webkit-overflow-scrolling:touch; }
+  #msgs { display:flex; flex-direction:column; gap:3px; }
+  .intro { align-self:center; display:flex; flex-direction:column; align-items:center; text-align:center; gap:3px;
+    padding:26px 16px 14px; max-width:420px; }
+  .intro .av { width:76px; height:76px; font-size:32px; margin-bottom:8px; box-shadow:0 6px 20px rgba(0,0,0,.12); }
+  .intro b { font-size:19px; font-weight:650; }
+  .intro small { font-size:14px; color:var(--mist); }
+  .intro .knows { margin:10px 0 0; font-size:12.5px; color:var(--mist); padding:4px 11px; border-radius:999px; background:var(--field); }
+  .intro .hint { margin:16px 0 0; font-size:13.5px; color:var(--mist); }
+  .more { align-self:center; margin:8px 0 4px; font-size:13px; color:var(--accent); padding:6px 12px; border-radius:12px; }
+  .day { align-self:center; font-size:11.5px; color:var(--mist); margin:14px 0 6px; }
+  .b { max-width:78%; padding:8px 13px; border-radius:19px; white-space:pre-wrap; overflow-wrap:anywhere;
+    -webkit-user-select:text; user-select:text; animation:pop .18s ease-out; }
+  .b.them { align-self:flex-start; background:var(--them); border-bottom-left-radius:6px; }
+  .b.me { align-self:flex-end; background:var(--me); color:var(--me-ink); border-bottom-right-radius:6px; }
+  .b.priv { font-style:italic; opacity:.78; }
+  .b.them + .b.me, .b.me + .b.them { margin-top:8px; }
+  .still .b { animation:none; }
+  .typing { display:inline-flex; gap:4px; padding:12px 14px; }
+  .typing i { width:7px; height:7px; border-radius:50%; background:var(--mist); animation:blink 1.2s infinite; }
+  .typing i:nth-child(2) { animation-delay:.2s } .typing i:nth-child(3) { animation-delay:.4s }
+  @keyframes blink { 0%,60%,100% { opacity:.25 } 30% { opacity:1 } }
+  @keyframes pop { from { transform:scale(.96); opacity:.4 } to { transform:none; opacity:1 } }
+  .b.pic { padding:4px; background:var(--them); max-width:min(72%, 280px); }
+  .b.pic img { display:block; width:100%; height:auto; aspect-ratio:1; object-fit:cover; border-radius:15px; cursor:zoom-in; background:var(--field); }
+  .b.pic.wait { padding:10px 14px; color:var(--mist); font-size:14px; display:flex; align-items:center; gap:4px; }
+  #viewer { position:fixed; inset:0; z-index:30; background:rgba(0,0,0,.92); display:grid; place-items:center; cursor:zoom-out; }
+  #viewer img { max-width:100vw; max-height:100dvh; object-fit:contain; }
+  .note { align-self:center; font-size:12px; color:var(--mist); text-align:center; margin:10px 20px; }
+  .note.warn { color:var(--danger); }
+
+  /* ---------- composer ---------- */
+  footer { flex:none; padding:8px 10px calc(env(safe-area-inset-bottom) + 8px); background:var(--bar);
+    -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px); border-top:1px solid var(--line); }
+  footer .col { display:flex; flex-direction:column; gap:6px; }
+  #chips { display:flex; gap:6px; font-size:12.5px; }
+  .chip { padding:4px 11px; border-radius:12px; border:1px solid var(--line2); color:var(--mist); }
+  .chip.on { background:var(--accent); border-color:transparent; color:var(--accent-ink); }
+  .chip#private { margin-left:auto; }
+  .chip#private.on { background:var(--ink); color:var(--bg); }
+  #warn { font-size:12px; color:var(--accent); padding:0 4px; }
+  .inrow { display:flex; align-items:flex-end; gap:8px; }
+  #text { flex:1; min-height:38px; max-height:140px; resize:none; border:1px solid var(--line2); border-radius:19px;
+    padding:8px 14px; background:var(--bg); color:var(--ink); font:inherit; font-size:16px; outline:none; }
+  #text:focus { border-color:var(--accent); }
+  #send, #mic { width:38px; height:38px; flex:none; border-radius:50%; display:grid; place-items:center; }
+  #send { background:var(--me); color:var(--me-ink); transition:opacity .15s; }
+  #send:disabled { opacity:.35; }
+  #mic { color:var(--accent); }
+  #mic.rec { background:var(--rec); color:#fff; animation:pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { box-shadow:0 0 0 0 rgba(200,86,106,.45) } 50% { box-shadow:0 0 0 7px rgba(200,86,106,0) } }
+
+  /* ---------- sheets ---------- */
+  .sheet { position:fixed; inset:0; background:var(--scrim); display:none; align-items:flex-end; justify-content:center; z-index:10; }
+  .sheet.open { display:flex; animation:fade .18s ease-out; }
+  .sheet.top { z-index:11; }
+  .panel { width:100%; max-width:540px; max-height:88dvh; background:var(--sheet); border-radius:20px 20px 0 0;
+    display:flex; flex-direction:column; box-shadow:var(--shadow); animation:up .26s cubic-bezier(.2,.8,.2,1); }
+  .panel.tall { height:88dvh; }
+  .grab { width:36px; height:5px; border-radius:3px; background:var(--line2); margin:7px auto 0; flex:none; }
+  .ph { flex:none; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; padding:6px 10px 8px;
+    border-bottom:1px solid var(--line); }
+  .ph h2 { margin:0; font-size:16.5px; font-weight:650; text-align:center; max-width:60vw; overflow:hidden;
+    text-overflow:ellipsis; white-space:nowrap; }
+  .tbtn { padding:7px 10px; border-radius:10px; color:var(--accent); font-size:15.5px; }
+  .tbtn.strong { font-weight:650; }
+  .ph > :first-child { justify-self:start; } .ph > :last-child { justify-self:end; }
+  .pb { flex:1; overflow-y:auto; overscroll-behavior:contain; padding:8px 18px calc(env(safe-area-inset-bottom) + 20px); }
+  @keyframes fade { from { background:transparent } }
+  @keyframes up { from { transform:translateY(40px); opacity:.3 } }
+  @keyframes zoom { from { transform:scale(.97); opacity:0 } }
+  @media (min-width:640px) {
+    .sheet { align-items:center; padding:24px; }
+    .panel { border-radius:18px; max-height:min(86dvh, 860px); animation-name:zoom; }
+    .panel.tall { height:min(86dvh, 860px); }
+    .grab { display:none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .b, .typing i, .sheet.open, .panel, #mic.rec, .crow.fresh { animation:none !important; } }
+
+  .sect { font-size:12.5px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--mist); margin:20px 4px 8px; }
+  .row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0; border-bottom:1px solid var(--line); }
+  .row > span { min-width:0; }
+  .row small { display:block; color:var(--mist); font-size:12.5px; margin-top:1px; }
+  .sw { width:51px; height:31px; flex:none; border-radius:16px; background:var(--line2); position:relative; transition:background .2s; }
+  .sw::after { content:""; position:absolute; top:2px; left:2px; width:27px; height:27px; border-radius:50%; background:#fff;
+    box-shadow:0 1px 3px rgba(0,0,0,.3); transition:transform .2s; }
+  .sw[aria-checked=true] { background:var(--on); }
+  .sw[aria-checked=true]::after { transform:translateX(20px); }
+  .btn { padding:8px 14px; border-radius:10px; background:var(--field); font-size:14px; flex:none; }
+  .btn.primary { background:var(--accent); color:var(--accent-ink); font-weight:600; }
+  .btn:disabled { opacity:.55; }
+  #hint { font-size:12.5px; color:var(--mist); margin-top:14px; line-height:1.45; }
+
+  /* characters */
+  #clist { display:flex; flex-direction:column; gap:2px; margin-top:6px; }
+  .crow { display:flex; align-items:center; gap:2px; border-radius:14px; }
+  .crow.cur { background:var(--tint); }
+  .crow.fresh { animation:glow 2.4s ease-out; }
+  @keyframes glow { 0%,30% { box-shadow:0 0 0 2px var(--accent) inset } 100% { box-shadow:0 0 0 2px transparent inset } }
+  .cpick { flex:1; min-width:0; display:flex; align-items:center; gap:12px; padding:10px 8px 10px 10px; text-align:left; border-radius:14px; }
+  .ctext { flex:1; min-width:0; }
+  .ctext b { display:block; font-size:15.5px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ctext small { display:block; font-size:13px; color:var(--mist); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ctext .meta { font-size:11.5px; opacity:.85; }
+  .cedit { width:40px; height:40px; flex:none; display:grid; place-items:center; border-radius:50%; color:var(--mist); margin-right:4px; }
+  .skel .av { background:var(--field) !important; animation:breathe 1.2s ease-in-out infinite; }
+  .skel .ctext b, .skel .ctext small { height:11px; border-radius:6px; background:var(--field); margin:5px 0; animation:breathe 1.2s ease-in-out infinite; }
+  .skel .ctext b { width:40%; height:13px; } .skel .ctext small { width:70%; }
+  @keyframes breathe { 50% { opacity:.45 } }
+  .newc { margin-top:14px; padding:14px; border-radius:16px; background:var(--field); }
+  .newc h3 { margin:0 0 8px; font-size:15px; font-weight:650; display:flex; align-items:center; gap:6px; }
+  .newc textarea { width:100%; min-height:64px; resize:vertical; border:1px solid var(--line2); border-radius:12px;
+    padding:10px 12px; background:var(--sheet); color:var(--ink); font:inherit; font-size:16px; outline:none; }
+  .newc textarea:focus { border-color:var(--accent); }
+  .ex { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 2px; }
+  .ex button { font-size:12.5px; padding:4px 10px; border-radius:11px; border:1px solid var(--line2); color:var(--mist); }
+  .acts { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:10px; }
+  .link { color:var(--accent); font-size:14px; padding:6px 2px; }
+  #cstate { font-size:13px; color:var(--mist); margin-top:8px; min-height:1px; }
+  #cstate.warn { color:var(--danger); }
+  .spin { display:inline-block; width:14px; height:14px; border-radius:50%; border:2px solid currentColor;
+    border-right-color:transparent; animation:rot .8s linear infinite; vertical-align:-2px; margin-right:6px; }
+  @keyframes rot { to { transform:rotate(1turn) } }
+
+  /* editor */
+  .ehead { display:flex; flex-direction:column; align-items:center; gap:12px; padding:12px 0 6px; }
+  .ehead .av { width:72px; height:72px; font-size:30px; }
+  .swatches { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; }
+  .swatches button { width:26px; height:26px; border-radius:50%; box-shadow:inset 0 0 0 1px rgba(0,0,0,.1); }
+  .swatches button[aria-checked=true] { box-shadow:0 0 0 2px var(--sheet), 0 0 0 4px var(--ink); }
+  .field { display:block; margin-top:16px; }
+  .field > span, .flabel { display:block; font-size:13px; font-weight:600; color:var(--mist); margin:0 4px 6px; }
+  .field input[type=text], .field select, .field textarea { width:100%; border:1px solid var(--line2); border-radius:12px;
+    padding:10px 12px; background:var(--field); color:var(--ink); font:inherit; font-size:16px; outline:none; }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color:var(--accent); }
+  .field textarea { min-height:150px; resize:vertical; line-height:1.45; }
+  .field select { appearance:none; -webkit-appearance:none; padding-right:34px; background-repeat:no-repeat;
+    background-position:right 12px center; background-size:12px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23889' stroke-width='1.8'/%3E%3C/svg%3E"); }
+  .field .help { display:block; font-size:12.5px; color:var(--mist); margin:6px 4px 0; }
+  .inline { display:flex; gap:8px; align-items:center; }
+  #estyle { width:auto; flex:none; } #escene { flex:1; min-width:0; }
+  .picacts { justify-content:flex-end; } .picacts .btn { flex:1 1 0; max-width:220px; }
+  .round { width:42px; height:42px; flex:none; border-radius:50%; display:grid; place-items:center; background:var(--accent); color:var(--accent-ink); }
+  .round.playing { animation:pulse 1.4s ease-in-out infinite; }
+  .seg { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .seg button { text-align:left; padding:10px 12px; border-radius:12px; border:1px solid var(--line2); background:var(--field); }
+  .seg button b { display:block; font-size:15px; font-weight:600; }
+  .seg button small { display:block; font-size:12.5px; color:var(--mist); }
+  .seg button[aria-checked=true] { border-color:var(--accent); background:var(--tint); box-shadow:inset 0 0 0 1px var(--accent); }
+  .opts { display:flex; flex-direction:column; gap:4px; }
+  .opt { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:var(--field); cursor:pointer; }
+  .opt input, .fold input { accent-color:var(--accent); width:18px; height:18px; margin:0; flex:none; }
+  .folds { display:flex; flex-wrap:wrap; gap:6px; padding:6px 4px 8px 36px; }
+  .fold { display:inline-flex; align-items:center; gap:7px; padding:6px 11px 6px 9px; border-radius:11px;
+    border:1px solid var(--line2); font-size:14px; cursor:pointer; }
+  .fold:has(input:checked) { border-color:var(--accent); background:var(--tint); }
+  .folds .empty { font-size:13px; color:var(--mist); }
+  .warnbox { margin-top:12px; padding:10px 12px; border-radius:12px; font-size:13.5px; line-height:1.4;
+    background:var(--tint); color:var(--ink); box-shadow:inset 0 0 0 1px var(--accent); }
+  .err { color:var(--danger); font-size:13.5px; margin-top:12px; min-height:1px; }
+  .danger { margin-top:26px; padding-top:14px; border-top:1px solid var(--line); text-align:center; }
+  .danger > button { color:var(--danger); font-size:15px; padding:8px 12px; border-radius:10px; }
+  .confirm { display:flex; flex-direction:column; align-items:center; gap:10px; font-size:14.5px; }
+  .confirm div { display:flex; gap:10px; }
+  .btn.bad { background:var(--danger); color:#fff; font-weight:600; }
+
+  @media (hover: hover) {
+    .icon:hover { background:var(--tint); }
+    .who:hover { background:var(--tint); }
+    .more:hover { background:var(--tint); }
+    .chip:not(.on):hover { color:var(--ink); }
+    #mic:not(.rec):hover { background:var(--tint); }
+    .tbtn:hover { background:var(--tint); }
+    .btn:hover { filter:brightness(.97); }
+    .crow:not(.cur):hover { background:var(--field); }
+    .cedit:hover { background:var(--field); color:var(--ink); }
+    .ex button:hover { color:var(--ink); border-color:var(--accent); }
+    .link:hover { text-decoration:underline; }
+    .danger > button:hover { background:var(--field); }
+  }
+  /* ---------- calls ---------- */
+  .callv { position:fixed; inset:0; z-index:20; display:flex; flex-direction:column; align-items:center; justify-content:space-between;
+    padding:calc(env(safe-area-inset-top) + 28px) 24px calc(env(safe-area-inset-bottom) + 34px); color:#fff;
+    background:radial-gradient(120% 80% at 50% 30%, var(--cc, #2a3340) 0%, #0d1015 70%); }
+  .callv .top { font-size:13px; opacity:.75; letter-spacing:.02em; text-align:center; }
+  .callv .mid { display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; }
+  .cv-ring { width:168px; height:168px; border-radius:50%; display:grid; place-items:center; position:relative; }
+  .cv-ring::before { content:""; position:absolute; inset:0; border-radius:50%; background:rgba(255,255,255,.14);
+    transform:scale(calc(1 + var(--lvl, 0) * .45)); transition:transform .08s linear; }
+  .cv-ring .av { width:140px; height:140px; font-size:58px; position:relative; box-shadow:0 10px 40px rgba(0,0,0,.45); }
+  .callv b { font-size:26px; font-weight:650; margin-top:14px; }
+  .callv .st { font-size:15px; opacity:.8; min-height:20px; }
+  .callv .cap { font-size:14px; opacity:.6; max-width:420px; min-height:40px; line-height:1.4; }
+  .callv .btns { display:flex; gap:44px; }
+  .cvb { display:flex; flex-direction:column; align-items:center; gap:8px; font-size:13px; color:#fff; }
+  .cvb i { width:68px; height:68px; border-radius:50%; display:grid; place-items:center; background:rgba(255,255,255,.16); }
+  .cvb.on i { background:#fff; color:#111; }
+  .cvb.end i { background:#e5484d; }
+  @media (max-height:520px) {                          /* landscape phones: everything still fits */
+    .callv { padding-top:calc(env(safe-area-inset-top) + 10px); padding-bottom:calc(env(safe-area-inset-bottom) + 12px); }
+    .cv-ring { width:96px; height:96px; } .cv-ring .av { width:80px; height:80px; font-size:34px; }
+    .callv b { font-size:20px; margin-top:4px; } .callv .cap { min-height:0; }
+    .cvb i { width:54px; height:54px; } .cvb { gap:4px; }
+  }
+  /* ---------- the Mac app's window ---------- */
+  html.mac header { padding-top:8px; }
+  html.mac footer { padding-bottom:10px; }
+  html.mac .pb { padding-bottom:20px; }
+  html.mac .sheet { align-items:center; padding:14px; }
+  html.mac .panel { border-radius:16px; max-height:calc(100dvh - 28px); animation-name:zoom; }
+  html.mac .panel.tall { height:calc(100dvh - 28px); }
+  html.mac .grab { display:none; }
+  html.mac .b { -webkit-user-select:text; cursor:text; }
+  html.mac .phoneonly, html:not(.mac) .maconly { display:none !important; }
+  /* pairing */
+  .pairv { position:fixed; inset:0; z-index:30; background:var(--bg); display:flex; align-items:center; justify-content:center;
+    padding:calc(env(safe-area-inset-top) + 20px) 22px calc(env(safe-area-inset-bottom) + 20px); overflow:auto; }
+  .pbox { width:100%; max-width:380px; display:flex; flex-direction:column; gap:12px; text-align:center; }
+  .pbox h2 { margin:6px 0 0; font-size:22px; } .pbox p { margin:0; color:var(--mist); font-size:14.5px; line-height:1.45; }
+  .pbox input { width:100%; border:1px solid var(--line2); border-radius:12px; padding:12px; background:var(--field);
+    color:var(--ink); font:inherit; font-size:17px; text-align:center; outline:none; }
+  #pv-code { font-size:28px; letter-spacing:.18em; font-variant-numeric:tabular-nums; }
+  .pbox input:focus { border-color:var(--accent); } .pbox small { color:var(--mist); font-size:12.5px; }
+  .pbox .btn { padding:12px; font-size:16px; } .pbox .lock { font-size:40px; }
+  .keybox { margin:8px 0; padding:12px; border-radius:14px; background:var(--field); }
+  .keybox input { width:100%; border:1px solid var(--line2); border-radius:10px; padding:10px; background:var(--bg); color:var(--ink); font:inherit; }
+  .pairpanel { margin:10px 0 4px; padding:14px; border-radius:14px; background:var(--field); text-align:center; }
+  .pcode { font-size:34px; font-weight:650; letter-spacing:.12em; font-variant-numeric:tabular-nums; }
+  #pqr { width:168px; height:168px; image-rendering:pixelated; margin:10px auto 2px; display:block; border-radius:8px; background:#fff; padding:6px; }
+  .drow { display:flex; align-items:center; gap:10px; padding:8px 2px; border-bottom:1px solid var(--line); }
+  #tnmore { font-size:12.5px; color:var(--mist); margin:8px 0 4px; } #tnmore .link { font-size:13px; padding:4px 0; }
+  .drow span { flex:1; min-width:0; } .drow small { display:block; color:var(--mist); font-size:12.5px; }
+</style>
+</head>
+<body>
+<header><div class="col">
+  <div class="side"><button class="icon" id="people" aria-label="Characters" aria-haspopup="dialog">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="9" cy="8.2" r="3.4"/><path d="M2.6 19.2c.4-3.5 3-5.7 6.4-5.7s6 2.2 6.4 5.7z"/><circle cx="16.9" cy="9" r="2.7" opacity=".5"/><path d="M16.6 13.5c2.8 0 4.7 1.9 5 4.8h-4.4c-.3-1.8-1.1-3.4-2.3-4.5.5-.2 1.1-.3 1.7-.3z" opacity=".5"/></svg>
+    <span class="udot" id="cdot" hidden></span>
+  </button>
+  <button class="icon" id="gear" aria-label="Settings" aria-haspopup="dialog">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.4 7.4 0 0 0-1.7 1l-2.4-1-2 3.4L6.6 11a7.6 7.6 0 0 0 0 2l-2 1.6 2 3.4 2.4-1c.5.4 1.1.7 1.7 1l.4 2.5h4l.4-2.5c.6-.3 1.2-.6 1.7-1l2.4 1 2-3.4zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg>
+  </button></div>
+  <button class="who" id="who" aria-haspopup="dialog">
+    <span class="av" id="hav" aria-hidden="true"></span>
+    <span class="nm"><b id="hname">Buddy</b><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></span>
+    <small id="hstate"></small>
+  </button>
+  <div class="side r"><button class="icon" id="call" aria-label="Call">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>
+  </button>
+</div>
+</div></header>
+
+<main id="list"><div id="msgs" class="col" aria-live="polite"></div></main>
+
+<footer><div class="col">
+  <div id="chips">
+    <button class="chip" id="advisor" aria-pressed="false" title="Quick and careful (Tinfoil enclave)">Advisor</button>
+    <button class="chip" id="companion" aria-pressed="false" title="Warm and personal">Companion</button>
+    <button class="chip" id="private" aria-pressed="false" title="Never saved anywhere: kept only in Buddy's memory on your Mac and gone after 12 hours or when Buddy restarts">Private</button>
+  </div>
+  <div id="warn" role="status" hidden></div>
+  <div class="inrow">
+    <button id="mic" aria-label="Talk (sends when you stop)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-2.08A7 7 0 0 0 19 12h-2z"/></svg>
+    </button>
+    <textarea id="text" rows="1" placeholder="Message" aria-label="Message"></textarea>
+    <button id="send" aria-label="Send" disabled>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 4l7 7-1.4 1.4L13 7.8V20h-2V7.8l-4.6 4.6L5 11z"/></svg>
+    </button>
+  </div>
+</div></footer>
+
+<!-- a live voice call -->
+<div class="callv" id="callv" role="dialog" aria-modal="true" aria-labelledby="cv-name" hidden>
+  <div class="top" id="cv-time">calling…</div>
+  <div class="mid"><div class="cv-ring" id="cv-ring"><div class="av" id="cv-av" aria-hidden="true"></div></div>
+    <b id="cv-name"></b><div class="st" id="cv-st" role="status"></div><div class="cap" id="cv-cap"></div></div>
+  <div class="btns">
+    <button class="cvb" id="cv-mute" aria-pressed="false"><i><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-2.08A7 7 0 0 0 19 12h-2z"/></svg></i><span>Mute</span></button>
+    <button class="cvb end" id="cv-end"><i><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 9c-1.6 0-3.1.3-4.6.7v3.1c0 .4-.2.7-.6.9-1 .5-1.9 1.1-2.7 1.8-.2.2-.4.3-.7.3s-.5-.1-.7-.3L.3 13.1A1 1 0 0 1 0 12.4c0-.3.1-.5.3-.7C3.3 8.8 7.4 7 12 7s8.7 1.8 11.7 4.7c.2.2.3.4.3.7s-.1.5-.3.7l-2.4 2.4c-.2.2-.4.3-.7.3s-.5-.1-.7-.3c-.8-.7-1.7-1.3-2.7-1.8-.4-.2-.6-.5-.6-.9V9.7C15.1 9.3 13.6 9 12 9z"/></svg></i><span>End</span></button>
+  </div>
+</div>
+<div id="viewer" hidden><img id="viewer-img" alt=""></div>
+
+<!-- first run on the Mac: the one thing Buddy needs is a Tinfoil key -->
+<div class="pairv" id="welcome" role="dialog" aria-modal="true" aria-labelledby="wl-t" hidden><div class="pbox">
+  <div class="lock" aria-hidden="true">👋</div>
+  <h2 id="wl-t">Welcome to Buddy</h2>
+  <p>Buddy thinks, talks and listens inside Tinfoil's sealed enclaves: nobody can read what you say, not even Tinfoil.
+    It needs your own Tinfoil key:</p>
+  <p>1. Make an account at <b>tinfoil.sh</b> and create an API key (you pay Tinfoil for what you use).<br>2. Paste it here.</p>
+  <input id="wl-key" type="password" autocomplete="off" spellcheck="false" placeholder="Tinfoil API key" aria-label="Tinfoil API key">
+  <button class="btn primary" id="wl-go">Save and start</button>
+  <div class="err" id="wl-err" role="alert"></div>
+  <small>Kept only on this Mac, readable only by you. Never shown again or sent to your phone.</small>
+</div></div>
+
+<!-- pairing this phone/tablet/browser with the Mac (nothing else gets in) -->
+<div class="pairv" id="pairv" role="dialog" aria-modal="true" aria-labelledby="pv-t" hidden><div class="pbox">
+  <div class="lock" aria-hidden="true">🔒</div>
+  <h2 id="pv-t">Pair with your Mac</h2>
+  <p>On your Mac, open Buddy → Settings → <b>Pair a phone</b>, then type the 6-digit code here.</p>
+  <p id="pv-ios" hidden>First add Buddy to your Home Screen (Share → Add to Home Screen), open it from there and pair
+    in that app: it keeps its own pairing.</p>
+  <input id="pv-code" inputmode="numeric" autocomplete="one-time-code" maxlength="7" placeholder="000 000" aria-label="Pairing code">
+  <input id="pv-name" type="text" maxlength="40" aria-label="Name for this device" placeholder="Name for this device">
+  <button class="btn primary" id="pv-go">Pair</button>
+  <div class="err" id="pv-err" role="alert"></div>
+  <small>Pairing keeps everyone else out: other devices on your network, other people and other websites.</small>
+</div></div>
+
+<!-- characters -->
+<div class="sheet" id="chars" role="dialog" aria-modal="true" aria-labelledby="chars-t"><div class="panel">
+  <div class="grab"></div>
+  <div class="ph"><span></span><h2 id="chars-t">Characters</h2><button class="tbtn strong" data-close>Done</button></div>
+  <div class="pb">
+    <div id="clist"></div>
+    <section class="newc" aria-labelledby="newc-t">
+      <h3 id="newc-t"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z"/></svg>New character</h3>
+      <textarea id="desc" rows="2" placeholder="Describe who you want, or several" aria-label="Describe who you want, or several"></textarea>
+      <div class="ex" aria-label="Examples">
+        <button data-ex="a blunt fitness coach who keeps me honest">a blunt fitness coach</button>
+        <button data-ex="3 study buddies for maths, history and French">3 study buddies</button>
+        <button data-ex="a calm late-night listener who never gives advice unless I ask">a calm listener</button>
+      </div>
+      <div class="acts"><button class="link" id="blank">Write one yourself</button>
+        <button class="btn primary" id="create">Create</button></div>
+      <div id="cstate" role="status"></div>
+    </section>
+  </div>
+</div></div>
+
+<!-- edit one character -->
+<div class="sheet top" id="editor" role="dialog" aria-modal="true" aria-labelledby="e-t"><div class="panel tall">
+  <div class="grab"></div>
+  <div class="ph"><button class="tbtn" data-close>Cancel</button><h2 id="e-t">Edit</h2><button class="tbtn strong" id="esave">Save</button></div>
+  <div class="pb">
+    <div class="ehead"><div class="av" id="eav" aria-hidden="true"></div><div class="swatches" id="eswatch" role="radiogroup" aria-label="Colour"></div></div>
+    <label class="field"><span>Name</span><input type="text" id="ename" maxlength="40" autocomplete="off" spellcheck="false"></label>
+    <label class="field"><span>Tagline</span><input type="text" id="etag" maxlength="80" autocomplete="off" placeholder="What they're for, in a few words"></label>
+    <div class="field"><span id="ev-l">Voice</span>
+      <div class="inline"><select id="evoice" aria-labelledby="ev-l"></select>
+        <button class="round" id="eplay" aria-label="Hear this voice"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button></div></div>
+    <div class="field"><span id="eb-l">Brain</span>
+      <div class="seg" role="radiogroup" aria-labelledby="eb-l">
+        <button role="radio" data-brain="advisor"><b>Advisor</b><small>Quick and careful</small></button>
+        <button role="radio" data-brain="companion"><b>Companion</b><small>Warm and personal</small></button>
+      </div><small class="help" id="ebhint" hidden></small></div>
+    <div class="field"><span id="ek-l">Knows</span>
+      <div class="opts" role="radiogroup" aria-labelledby="ek-l">
+        <label class="opt"><input type="radio" name="scope" value="all"><span>Everything in my notes</span></label>
+        <label class="opt"><input type="radio" name="scope" value="except"><span>Everything except these folders</span></label>
+        <label class="opt"><input type="radio" name="scope" value="some"><span>Only these folders</span></label>
+        <div class="folds" id="efolds" hidden></div>
+        <label class="opt"><input type="radio" name="scope" value="none"><span>Only our chats</span></label>
+      </div></div>
+    <label class="field"><span>Doesn't know about</span>
+      <textarea id="eavoid" rows="2" maxlength="1000" style="min-height:60px" placeholder="Optional: names, places or topics, separated by commas (e.g. Sarah, work, health)"></textarea>
+      <small class="help">Any note that mentions one of these words is kept from them completely. Add people's names too, not just "my ex".</small></label>
+    <div class="row" style="margin-top:10px"><span>Can text me first<small>Check-ins and follow-ups, when texting first is on in Settings</small></span>
+      <button class="sw" id="etexts" role="switch" aria-checked="false" aria-label="Can text me first"></button></div>
+    <div class="field" id="elooks-f"><span id="el-l">Looks and pictures</span>
+      <textarea id="elooks" rows="3" aria-labelledby="el-l" style="min-height:76px" placeholder="Face, hair, eyes, build, style. An original adult, never a real person."></textarea>
+      <div class="inline" id="epicopts" style="margin-top:8px"><select id="estyle" aria-label="Picture style">
+          <option value="photo">Photo</option><option value="illustration">Illustration</option><option value="anime">Anime</option>
+          <option value="cartoon">3D cartoon</option><option value="painting">Painting</option></select>
+        <input type="text" id="escene" maxlength="200" autocomplete="off" aria-label="Profile photo idea" placeholder="Optional: where or how (at a café, laughing)"></div>
+      <div class="acts picacts"><button class="btn" id="eup">Upload picture</button><button class="btn" id="epic">Make profile photo</button></div>
+      <small class="help" id="epic-s">Photos are made privately (enclave or on your Mac).</small>
+      <input type="file" id="efile" accept="image/*" hidden></div>
+    <label class="field"><span>Who they are</span><textarea id="epersona" rows="8" placeholder="Personality, how they talk, what they help with, anything they should always or never do."></textarea>
+      <small class="help">Written in plain words. This is all they know about themselves.</small></label>
+    <div class="err" id="eerr" role="alert"></div>
+    <div class="danger" id="edanger">
+      <button id="eforget">Delete conversation</button>
+      <button id="edel">Delete character</button>
+      <div class="confirm" id="econfirm" hidden><span id="econfirm-t"></span>
+        <label class="fold" id="eall-l"><input type="checkbox" id="eall" checked><span>Also everything we said (conversation, photos, saved chats)</span></label>
+        <div><button class="btn" id="enodel">Keep</button><button class="btn bad" id="eyesdel">Delete</button></div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- settings -->
+<div class="sheet" id="settings" role="dialog" aria-modal="true" aria-labelledby="set-t"><div class="panel">
+  <div class="grab"></div>
+  <div class="ph"><span></span><h2 id="set-t">Settings</h2><button class="tbtn strong" data-close>Done</button></div>
+  <div class="pb">
+    <div class="row"><span>Read replies out loud<small>Each character in their own voice, made privately in the enclave</small></span>
+      <button class="sw" id="voice" role="switch" aria-checked="false" aria-label="Read replies out loud"></button></div>
+    <div class="row"><span>Characters can text me first<small>Only the ones you allow, never during quiet hours</small></span>
+      <button class="sw" id="proactive" role="switch" aria-checked="false" aria-label="Characters can text me first"></button></div>
+    <div class="row phoneonly"><span>Notifications<small id="pushstate">…</small></span>
+      <button class="btn primary" id="push">Enable</button></div>
+    <div class="row"><span>Start a fresh conversation<small id="newchat-s">Earlier messages stay above</small></span>
+      <button class="btn" id="newchat">New chat</button></div>
+    <div class="row"><span>Characters<small>Switch, create, change voices and what they know</small></span>
+      <button class="btn" id="manage">Open</button></div>
+    <div class="row"><span>Memory<small id="memstate">…</small></span></div>
+    <div class="warnbox" id="syncwarn" role="alert" hidden><span id="syncwarn-t"></span>
+      <button class="link" id="synce2e">It's end-to-end encrypted (e.g. Cryptomator)</button></div>
+    <div class="row maconly"><span>Brain<small id="tfstate">…</small></span>
+      <button class="btn" id="tfkey">Replace key</button></div>
+    <div class="field maconly"><span id="cp-l">Companion runs on</span>
+      <div class="seg" role="radiogroup" aria-labelledby="cp-l">
+        <button role="radio" data-cp="tinfoil"><b>Tinfoil</b><small>Verified private; may refuse very explicit things</small></button>
+        <button role="radio" data-cp="phala"><b>Phala</b><small>Fully uncensored; private by Phala's word, not verified</small></button>
+      </div><small class="help" id="cphint"></small>
+      <button class="link" id="phkey" hidden>Replace or remove the Phala key</button></div>
+    <div class="keybox maconly" id="keybox" hidden>
+      <input id="kb-key" type="password" autocomplete="off" spellcheck="false" aria-label="API key">
+      <div class="acts"><button class="btn" id="kb-cancel">Cancel</button><button class="btn" id="kb-del" hidden>Remove Phala key</button>
+        <button class="btn primary" id="kb-save">Save</button></div>
+      <div class="err" id="kb-err" role="alert"></div></div>
+    <div class="row maconly"><span>Phone access<small id="tnstate">…</small></span>
+      <button class="btn" id="tnbtn" hidden>Turn on</button></div>
+    <div class="maconly" id="tnmore" hidden></div>
+    <div class="row maconly"><span>Phones &amp; tablets<small id="devstate">…</small></span>
+      <button class="btn primary" id="pairbtn">Pair a phone</button></div>
+    <div class="pairpanel maconly" id="pairpanel" hidden>
+      <div class="pcode" id="pcode" aria-live="polite">––– –––</div><small id="pexp"></small>
+      <img id="pqr" alt="QR code with your phone's address" hidden><p class="help" id="phow"></p></div>
+    <div id="devlist" class="maconly"></div>
+    <div class="row phoneonly"><span>App version<small id="ver">…</small></span>
+      <button class="btn" id="update">Check for updates</button></div>
+    <div id="hint"></div>
+  </div>
+</div></div>
+
+<template id="t-pencil"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 17.2V20h2.8l8.3-8.3-2.8-2.8zm15.7-9.5a1 1 0 0 0 0-1.4l-2-2a1 1 0 0 0-1.4 0l-1.6 1.6 2.8 2.8z"/></svg></template>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const MAC = new URLSearchParams(location.search).get("mac") === "1";      // inside the Mac app's window
+const VIA = MAC ? "mac" : "phone", OTHER = MAC ? "phone" : "mac";
+document.documentElement.classList.toggle("mac", MAC);
+const store = { get(k, d) { try { const v = localStorage.getItem("buddy." + k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem("buddy." + k, JSON.stringify(v)); } catch {} } };
+let pairing = false;
+function needPair() {                                  // this device isn't let in (yet)
+  if (MAC) { toApp({ type: "auth" }); return; }        // the Mac app hands its window the key
+  if (pairing) return; pairing = true;
+  if (call.on) endCall();                              // nothing stays live under it (the mic above all)
+  if (rec && rec.state === "recording") rec.stop();
+  closeAll(); stopVoice();
+  const ua = navigator.userAgent, ipad = /iPad/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  $("pv-ios").hidden = !((/iPhone/.test(ua) || ipad) && !standalone());
+  $("pv-name").value = ipad ? "iPad" : /iPhone/.test(ua) ? "iPhone" : /Android/.test(ua) ? "Phone" : "Browser";
+  $("pairv").hidden = false; $("pv-code").focus();
+}
+const api = (path, body) => fetch(path, body === undefined ? {} : { method: "POST",
+  headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+  .then((r) => { if (r.status === 401 && path !== "/api/pair") needPair(); return r; });
+const getJSON = (path) => fetch(path).then((r) => { if (r.status === 401) needPair(); if (!r.ok) throw new Error(r.status); return r.json(); });
+const native = window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.buddy;
+const toApp = (m) => { try { if (MAC && native) native.postMessage(m); } catch {} };
+
+const VOICE_KEY = MAC ? "voice.mac" : "voice";
+const state = {
+  chars: [], cur: store.get("char", "buddy"), mode: "advisor", private: false, voice: store.get(VOICE_KEY, MAC),
+  all: [], lastId: 0, loaded: false, busy: false, making: new Set(), toSay: [], typingChar: null, temp: [], version: null, status: {}, voices: [],
+  shown: !document.hidden, floor: 0, badge: -1, unread: {}, limit: 150, note: "", drafts: {}, fresh: new Set(),
+  seen: store.get("seen", {}), seenBase: store.get("seenBase", null), offline: false,
+  images: false, pendingPhoto: {},
+};
+
+// ---------- characters ----------
+const PALETTE = ["#d9973c", "#c8566a", "#8a6fd1", "#3f8fcf", "#2f9e8f", "#5f9e4a", "#b07a52", "#6b7480"];
+const hash = (s) => { let h = 0; for (const ch of String(s)) h = (h * 31 + ch.codePointAt(0)) >>> 0; return h; };
+function norm(c) {
+  c = Object.assign({}, c || {});
+  c.id = c.id == null ? "" : String(c.id);
+  c.name = String(c.name || "Unnamed").trim().slice(0, 60) || "Unnamed";
+  c.tagline = String(c.tagline || ""); c.persona = String(c.persona || ""); c.voice = String(c.voice || "");
+  c.brain = c.brain === "companion" ? "companion" : "advisor";
+  const k = c.knowledge || {};
+  c.knowledge = { scope: ["all", "except", "some", "none"].includes(k.scope) ? k.scope : "all",
+    folders: Array.isArray(k.folders) ? k.folders.map(String) : [], avoid: String(k.avoid || "") };
+  c.texts_first = !!c.texts_first; c.builtin = !!c.builtin || c.id === "buddy";
+  c.appearance = String(c.appearance || ""); c.avatar = Number(c.avatar) || 0;
+  c.style = ["photo", "illustration", "anime", "cartoon", "painting"].includes(c.style) ? c.style : "photo";
+  if (!/^#[0-9a-f]{6}$/i.test(c.color || "")) c.color = PALETTE[hash(c.id || c.name) % PALETTE.length];
+  return c;
+}
+const fallbackBuddy = () => norm({ id: "buddy", name: state.status.name || "Buddy", brain: "advisor", texts_first: true,
+  color: "#d9973c", builtin: true });
+const charById = (id) => state.chars.find((c) => c.id === id);
+const curChar = () => charById(state.cur) || charById("buddy") || state.chars[0] || fallbackBuddy();
+const charOf = (m) => m.char || "buddy";
+const initial = (s) => (Array.from(String(s).trim())[0] || "?").toUpperCase();
+function isLight(hex) {
+  const n = parseInt(hex.slice(1), 16), f = (v) => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+  return 0.2126 * f(n >> 16) + 0.7152 * f((n >> 8) & 255) + 0.0722 * f(n & 255) > 0.21;
+}
+function paintAv(node, c) {
+  node.textContent = initial(c.name); node.style.background = c.color; node.style.color = isLight(c.color) ? "#1d232b" : "#fff";
+  const pic = c.id && c.avatar;                       // their profile photo, if they have one
+  node.classList.toggle("pic", !!pic);
+  if (pic) node.style.backgroundImage = `url("/api/characters/${encodeURIComponent(c.id)}/avatar?v=${c.avatar}")`;
+}
+const brainName = (b) => (b === "companion" ? "Companion" : "Advisor");
+function voiceLabel(id) {
+  if (!id) return "Default voice";
+  const v = state.voices.find((x) => x.id === id);
+  return v ? v.label : id.replace(/_/g, " ").replace(/^./, (x) => x.toUpperCase());
+}
+function knowsText(c) {
+  const k = c.knowledge;
+  if (k.scope === "none") return "Knows only your chats";
+  if (k.scope === "some") return k.folders.length ? "Knows " + k.folders.join(", ") : "Knows no notes yet";
+  if (k.scope === "except" && k.folders.length) return "Knows your notes except " + k.folders.join(", ");
+  return "Knows your notes";
+}
+
+async function loadChars() {
+  const before = JSON.stringify(curChar());
+  try {
+    const j = await getJSON("/api/characters");
+    if (!Array.isArray(j)) throw 0;
+    const list = j.map(norm).filter((c) => c.id);
+    if (!list.some((c) => c.id === "buddy")) list.unshift(fallbackBuddy());
+    state.chars = list;
+  } catch { if (!state.chars.length) state.chars = [fallbackBuddy()]; }
+  if (!charById(state.cur)) setChar("buddy");
+  else if (JSON.stringify(curChar()) !== before && state.loaded) renderConversation(true);
+  header(); chips(); refreshUnread();
+}
+const loadVoices = () => getJSON("/api/voices").then((v) => { if (Array.isArray(v)) state.voices = v.filter((x) => x && x.id)
+  .map((x) => ({ id: String(x.id), label: String(x.label || x.id) })); }).catch(() => {});
+const loadImages = () => getJSON("/api/images").then((j) => { state.images = !!(j && j.available); }).catch(() => {});
+const loadStatus = () => getJSON("/api/status").then((s) => { state.status = s || {}; chips(); }).catch(() => {});
+
+function setChar(id) {
+  const prev = state.cur;
+  if (!charById(id)) id = charById("buddy") ? "buddy" : curChar().id;
+  if (prev !== id) { state.drafts[prev] = $("text").value; $("text").value = state.drafts[id] || ""; autosize(); }
+  state.cur = id; store.set("char", id);
+  state.mode = curChar().brain; state.limit = 150;
+  header(); chips(); renderConversation(); refreshUnread();
+}
+
+function header() {
+  const c = curChar();
+  paintAv($("hav"), c); $("hname").textContent = c.name; document.title = c.name;
+  $("who").setAttribute("aria-label", c.name + ". Switch character");
+  $("text").placeholder = state.private ? "Private message (not saved)" : "Message " + c.name;
+  $("newchat-s").textContent = c.name + " starts from a clean slate; earlier messages stay above";
+  statusLine();
+}
+function statusLine() {
+  const c = curChar();
+  $("hstate").textContent = state.typingChar === c.id ? "typing…" : state.note || (state.offline
+    ? (MAC ? "can't reach Buddy's server" : "can't reach your Mac") : c.tagline || brainName(c.brain));
+}
+let noteTimer = 0;
+function setNote(text, ms) {
+  clearTimeout(noteTimer); state.note = text || ""; statusLine();
+  if (ms) noteTimer = setTimeout(() => { state.note = ""; statusLine(); }, ms);
+}
+
+// ---------- the conversation (one shared thread; every message carries its character) ----------
+const list = $("list"), msgs = $("msgs");
+const nearBottom = () => list.scrollHeight - list.scrollTop - list.clientHeight < 120;
+const toBottom = () => { list.scrollTop = list.scrollHeight; };
+function dayLabel(ts) {
+  const d = new Date(ts * 1000), today = new Date(), y = new Date(Date.now() - 864e5);
+  const t = d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  if (d.toDateString() === today.toDateString()) return "Today " + t;
+  if (d.toDateString() === y.toDateString()) return "Yesterday " + t;
+  return d.toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }) + " " + t;
+}
+const bubble = (role, text, priv) => el("div", "b " + (role === "user" ? "me" : "them") + (priv ? " priv" : ""), text);
+function typingNode() {
+  const t = el("div", "b them typing"); t.setAttribute("aria-label", "typing");
+  t.append(el("i"), el("i"), el("i")); return t;
+}
+let lastTs = 0;
+function photoNode(id, name) {
+  const b = el("div", "b them pic"), img = el("img");
+  img.src = "/api/media/" + encodeURIComponent(id); img.loading = "lazy"; img.alt = "Photo from " + (name || "them");
+  img.onclick = () => { $("viewer-img").src = img.src; $("viewer-img").alt = img.alt; $("viewer").hidden = false; };
+  b.append(img); return b;
+}
+function waitNode() { const b = el("div", "b them pic wait"); b.append(el("span", "spin"), "sending a photo…"); return b; }
+function addMsg(m) {
+  if (m.role === "break") { msgs.append(el("div", "note", "New chat")); lastTs = 0; return; }
+  if (m.role !== "user" && m.role !== "assistant") return;
+  if (m.photo_failed) { msgs.append(el("div", "note", "The photo didn't come through.")); return; }
+  if (!lastTs || m.ts - lastTs > 3600) msgs.append(el("div", "day", dayLabel(m.ts)));
+  lastTs = m.ts;
+  if (m.image) { msgs.append(photoNode(m.image, (charById(charOf(m)) || {}).name)); return; }
+  msgs.append(bubble(m.role, String(m.content || ""), m.private));
+}
+// A photo that's still being made shows as "sending a photo…" until it arrives (or 4 minutes pass).
+const photoPending = (id) => state.pendingPhoto[id] && Date.now() - state.pendingPhoto[id] < 240000;
+function showPending(id) {
+  msgs.querySelector(".b.pic.wait")?.remove();
+  if (id === state.cur && photoPending(id)) msgs.append(waitNode());
+}
+$("viewer").onclick = () => { $("viewer").hidden = true; $("viewer-img").removeAttribute("src"); };
+const shownRole = (m) => m.role === "user" || m.role === "assistant" || m.role === "break";
+function intro(c, empty) {
+  const box = el("div", "intro"), av = el("div", "av");
+  paintAv(av, c); box.append(av, el("b", "", c.name));
+  if (c.tagline) box.append(el("small", "", c.tagline));
+  box.append(el("p", "knows", knowsText(c) + " · " + brainName(c.brain)));
+  if (empty) box.append(el("p", "hint", MAC ? "Type below, or press the mic and just talk." : "Say hi, or tap the mic and just talk."));
+  return box;
+}
+function renderConversation(keepScroll) {
+  const c = curChar(), mine = state.all.filter((m) => charOf(m) === c.id && shownRole(m));
+  const fromBottom = list.scrollHeight - list.scrollTop;
+  msgs.classList.add("still"); msgs.replaceChildren(); lastTs = 0;
+  const start = Math.max(0, mine.length - state.limit);
+  if (start) {
+    const more = el("button", "more", "Show earlier messages");
+    more.onclick = () => { state.limit += 150; renderConversation(true); };
+    msgs.append(more);
+  } else msgs.append(intro(c, !mine.some((m) => m.role !== "break") && !state.temp.some((t) => t.char === c.id)));
+  mine.slice(start).forEach(addMsg);
+  for (const t of state.temp) if (t.char === c.id) msgs.append(t.node);
+  showPending(c.id);
+  if (keepScroll) list.scrollTop = list.scrollHeight - fromBottom; else toBottom();
+  requestAnimationFrame(() => msgs.classList.remove("still"));
+}
+
+let pollP = null;
+function poll() {
+  if (state.busy || pairing) return Promise.resolve(false);
+  return pollP || (pollP = doPoll().finally(() => { pollP = null; }));
+}
+async function doPoll() {
+  let got;
+  try { got = await getJSON("/api/thread?after=" + state.lastId); }
+  catch { if (!state.offline) { state.offline = true; statusLine(); } return false; }
+  if (state.offline) { state.offline = false; statusLine(); }
+  if (state.busy || !Array.isArray(got)) return false;     // a reply started meanwhile: catch up after it
+  for (const t of state.temp) t.node.remove();             // local copies give way to the real entries
+  state.temp = [];
+  got = got.filter((m) => m && typeof m.id === "number" && m.id > state.lastId).sort((a, b) => a.id - b.id);
+  const first = !state.loaded; state.loaded = true;
+  for (const m of got) if (m.image || m.photo_failed) delete state.pendingPhoto[charOf(m)];   // the photo arrived
+  if (got.length) {
+    state.all.push(...got); state.lastId = got[got.length - 1].id;
+    if (state.all.length > 5000) state.all = state.all.slice(-4000);
+  }
+  const faded = Date.now() / 1000 - 12 * 3600, before = state.all.length;   // private messages fade here too
+  state.all = state.all.filter((m) => !(m.private && m.ts < faded));
+  if (state.all.length < before && !first) renderConversation(true);
+  if (first) {
+    if (state.seenBase === null) { state.seenBase = state.lastId; store.set("seenBase", state.lastId); }
+    state.floor = MAC && !visible() ? Math.min(store.get("floor", state.lastId), state.lastId) : state.lastId; renderConversation();
+  } else if (got.length) {
+    const stick = nearBottom();
+    msgs.querySelector(".intro .hint")?.remove();
+    for (const m of got) if (charOf(m) === state.cur && shownRole(m)) addMsg(m);
+    showPending(state.cur);
+    if (stick) toBottom();
+    announce(got);
+  }
+  if (got.some((m) => m.char && !charById(m.char))) loadChars();
+  refreshUnread();
+  return true;
+}
+
+// New texts that characters send on their own: spoken aloud where they were delivered.
+function announce(got) {
+  for (const m of got) {
+    if (m.role !== "assistant" || !m.proactive) continue;
+    const c = charById(charOf(m)); if (!c) continue;
+    const speakHere = MAC ? m.delivered === "mac" : (m.delivered !== "mac" && visible() && c.id === state.cur);
+    if (speakHere && state.voice && !call.on) {
+      if (MAC && !visible()) state.toSay.push([String(m.content || ""), c.voice]);   // said when you open the window,
+      else speakText(String(m.content || ""), c.voice);                               // so no one nearby overhears it
+    }
+  }
+}
+
+// ---------- unread ----------
+const visible = () => (MAC ? state.shown : document.visibilityState === "visible");
+const seenFor = (id) => (state.seen[id] != null ? state.seen[id] : state.seenBase || 0);
+function markSeen() {
+  if (!visible() || !state.loaded) return;
+  let top = 0;
+  for (const m of state.all) if (charOf(m) === state.cur && m.id > top) top = m.id;
+  if (top > seenFor(state.cur)) { state.seen[state.cur] = top; store.set("seen", state.seen); }
+}
+// Assistant messages you haven't seen on this device, skipping ones you already saw on the other device
+// (replies to what you sent from there, or texts delivered there).
+function unreadCounts(floor = 0) {
+  const lastVia = {}, out = {};
+  for (const m of state.all) {
+    const c = charOf(m);
+    if (m.role === "user") { lastVia[c] = m.via === "call" ? m.from : m.via; continue; }
+    if (m.role !== "assistant" || m.id <= floor || m.id <= seenFor(c) || !charById(c)) continue;
+    if (m.delivered === OTHER || (!m.proactive && lastVia[c] === OTHER)) continue;
+    out[c] = (out[c] || 0) + 1;
+  }
+  return out;
+}
+function refreshUnread() {
+  markSeen();
+  state.unread = unreadCounts();
+  $("cdot").hidden = !Object.keys(state.unread).some((id) => id !== state.cur);
+  $("people").setAttribute("aria-label", $("cdot").hidden ? "Characters" : "Characters (new messages)");
+  renderChars();
+  if (MAC) {
+    const n = visible() ? 0 : Object.values(unreadCounts(state.floor)).reduce((a, b) => a + b, 0);
+    if (n !== state.badge) { state.badge = n; toApp({ type: "unread", count: n }); }
+  }
+}
+// Coming back after a text arrived from someone else: open their conversation.
+function jumpToNews() {
+  const un = unreadCounts(state.floor);
+  for (let i = state.all.length - 1; i >= 0; i--) {
+    const m = state.all[i];
+    if (m.id <= state.floor) break;
+    if (m.role === "assistant" && m.proactive && un[charOf(m)]) { if (charOf(m) !== state.cur) setChar(charOf(m)); return; }
+  }
+}
+async function setShown(on) {
+  on = !!on;
+  if (on === state.shown) return;
+  state.shown = on;
+  if (!on) { if (call.on) endCall(); state.floor = state.lastId; if (MAC) store.set("floor", state.lastId); refreshUnread(); return; }
+  await poll(); jumpToNews(); refreshUnread(); checkUpdate();
+  if (MAC && !stack.length && !rec) ($("welcome").hidden ? $("text") : $("wl-key")).focus({ preventScroll: true });
+  for (const [t, v] of state.toSay.splice(0)) if (state.voice && !call.on) speakText(t, v);
+}
+
+// ---------- talking ----------
+async function send(text, charId = state.cur) {
+  text = String(text || "").trim(); if (!text) return;
+  unlockAudio();                                      // must happen inside the tap on iOS, before any await
+  if (!call.on) stopVoice();
+  while (state.busy) await sleep(150);                // one reply at a time
+  await poll();                                       // catch up first so ids stay in order
+  const c = charById(charId) || curChar(); charId = c.id;
+  const mode = charId === state.cur ? state.mode : c.brain, priv = state.private;
+  state.busy = true; updateSend();
+  const temp = (node) => { state.temp.push({ char: charId, node }); if (charId === state.cur) msgs.append(node); return node; };
+  const swap = (a, b) => { const t = state.temp.find((x) => x.node === a); if (t) t.node = b; if (a.isConnected) a.replaceWith(b); return b; };
+  if (charId === state.cur) msgs.querySelector(".intro .hint")?.remove();
+  temp(bubble("user", text, priv));
+  const dots = temp(typingNode()); if (charId === state.cur) toBottom();
+  state.typingChar = charId; statusLine();
+  const talk = state.voice && !call.on ? new Talk(c.voice) : null;
+  let her = null, full = "", problem = "", reached = false, note = "", gotPhoto = false;
+  try {
+    const r = await api("/api/chat", { text, char: charId, mode, private: priv, via: VIA, spoken: !!talk });
+    reached = r.ok;
+    if (!r.ok || !r.body) { problem = r.status ? "error " + r.status : ""; throw 0; }
+    const rd = r.body.getReader(), dec = new TextDecoder(); let pend = "";
+    for (;;) {
+      const { value, done } = await rd.read(); if (done) break;
+      pend += dec.decode(value, { stream: true });
+      let nl; while ((nl = pend.indexOf("\n")) >= 0) {
+        const line = pend.slice(0, nl); pend = pend.slice(nl + 1); if (!line.trim()) continue;
+        let m; try { m = JSON.parse(line); } catch { continue; }
+        if (m.error) { problem = String(m.error); throw 0; }
+        if (m.photo === "pending") { state.pendingPhoto[charId] = Date.now(); gotPhoto = true; }
+        if (m.s) {
+          const stick = charId === state.cur && nearBottom();
+          if (!her) her = swap(dots, bubble("assistant", "", priv));
+          full += (full ? " " : "") + m.s; her.textContent = full;
+          if (stick) toBottom();
+          if (talk) talk.add(m.s);
+        }
+      }
+    }
+    if (!full && !gotPhoto) throw 0;
+    if (!full) { dots.remove(); state.temp = state.temp.filter((t) => t.node !== dots); }
+  } catch {
+    dots.remove(); state.temp = state.temp.filter((t) => t.node !== dots);
+    note = problem ? `${c.name} couldn't answer (${problem}). Try again?`
+      : reached ? `${c.name} didn't answer. Try again?` : (MAC ? "Couldn't reach Buddy's server. Is it running?" : "Couldn't reach your Mac. Is Buddy running?");
+    if (!reached && !$("text").value && charId === state.cur) { $("text").value = text; autosize(); }
+  } finally {
+    if (talk) talk.end();
+    state.typingChar = null; state.busy = false; updateSend(); statusLine();
+    await poll();                                     // the real thread entries replace the local copies
+    if (note && charId === state.cur) { msgs.append(el("div", "note warn", note)); toBottom(); }
+    if (photoPending(charId) && charId === state.cur) { showPending(charId); toBottom(); }
+  }
+}
+function autosize() {
+  const t = $("text"); t.style.height = "auto"; t.style.height = Math.min(MAC ? 180 : 140, t.scrollHeight) + "px"; updateSend();
+}
+const updateSend = () => { $("send").disabled = !$("text").value.trim() || state.busy; };
+$("text").addEventListener("input", autosize);
+// On the Mac, a half-written message survives an update restarting the app (kept only in the app's own storage).
+if (MAC) $("text").addEventListener("input", () => { if (!state.private) store.set("draft", { c: state.cur, t: $("text").value }); });
+$("text").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey && !e.isComposing && (MAC || matchMedia("(hover: hover) and (pointer: fine)").matches)) {
+    e.preventDefault(); $("send").click();
+  }
+});
+$("send").onclick = () => {
+  const t = $("text"), v = t.value; if (!v.trim() || state.busy || !$("welcome").hidden || !$("pairv").hidden) return;
+  t.value = ""; state.drafts[state.cur] = ""; autosize(); send(v); if (MAC) store.set("draft", null);
+};
+
+// ---------- voices (each character speaks in their own) ----------
+// Their voice streams in while it's being made (raw 24 kHz sound from Tinfoil's enclave, passed on by Buddy) and each
+// piece is scheduled on the audio clock right after the one before, so they start talking at once and sentences
+// follow each other without gaps. (Falls back to whole WAV files when streaming isn't available.)
+let actx = null, outGain = null, outAn = null;
+const vq = { gen: 0, chain: Promise.resolve(), queued: 0, end: 0, nodes: new Set(), open: new Set(), cur: null, wav: false };
+function unlockAudio() {
+  try {
+    if (!actx) {
+      const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+      actx = new AC();
+      const b = actx.createBuffer(1, 1, 22050), s = actx.createBufferSource(); s.buffer = b; s.connect(actx.destination); s.start();
+    }
+    if (actx.state === "suspended") actx.resume().catch(() => {});
+  } catch {}
+}
+function outNode() {                                 // speaker output: a volume knob (lowered while you talk over them)
+  if (!outAn) {                                      // and a meter for the call screen
+    outGain = actx.createGain(); outAn = actx.createAnalyser(); outAn.fftSize = 512;
+    outGain.connect(outAn); outAn.connect(actx.destination);
+  }
+  return outGain;
+}
+function duck(on) { if (outGain) outGain.gain.setTargetAtTime(on ? 0.15 : 1, actx.currentTime, 0.03); }
+function stopVoice() {
+  vq.gen++; vq.end = 0; vq.queued = 0; vq.cur = null;
+  for (const s of vq.nodes) { try { s.stop(); } catch {} }
+  vq.nodes.clear();
+  for (const v of vq.open) { try { v.ctrl.abort(); } catch {} }
+  vq.open.clear(); duck(false);
+}
+const speakingNow = () => vq.queued > 0 || (!!actx && actx.currentTime < vq.end);
+const decode = (b) => new Promise((ok, no) => { const p = actx.decodeAudioData(b, ok, no); if (p && p.catch) p.catch(no); });
+function openVoice(text, voice) {                    // starts making it now (while what's before it still plays)
+  const v = { q: [], wake: null, ctrl: new AbortController() };
+  const push = (x) => { v.q.push(x); if (v.wake) { const w = v.wake; v.wake = null; w(); } };
+  vq.open.add(v);
+  (async () => {
+    try {
+      const r = await fetch("/api/speak", { method: "POST", signal: v.ctrl.signal, headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(voice ? { text, voice, stream: true } : { text, stream: true }) });
+      if (r.status === 401) needPair();
+      if (!r.ok || r.status === 204 || !r.body) throw 0;
+      if ((r.headers.get("Content-Type") || "").includes("pcm")) {   // 16-bit mono, little-endian
+        vq.wav = false;
+        const rate = Number(r.headers.get("X-Sample-Rate")) || 24000, rd = r.body.getReader();
+        let odd = null;
+        for (;;) {
+          const { value, done } = await rd.read(); if (done) break;
+          let b = value;
+          if (odd !== null) { const t = new Uint8Array(b.length + 1); t[0] = odd; t.set(b, 1); b = t; odd = null; }
+          if (b.length % 2) { odd = b[b.length - 1]; b = b.subarray(0, b.length - 1); }
+          if (!b.length) continue;
+          const dv = new DataView(b.buffer, b.byteOffset, b.length), f = new Float32Array(b.length / 2);
+          for (let i = 0; i < f.length; i++) f[i] = dv.getInt16(i * 2, true) / 32768;
+          push({ pcm: f, rate });
+        }
+      } else { vq.wav = true; push({ buf: await decode(await r.arrayBuffer()) }); }   // (whole files: see Talk)
+    } catch {}
+    vq.open.delete(v); push(null);
+  })();
+  return v;
+}
+// Schedules one piece of speech right after what's already scheduled; resolves once all of it is scheduled (so the
+// next piece can follow seamlessly). onstart runs when it starts being heard.
+async function playVoice(v, gen, onstart) {
+  let lead = true, started = false;
+  for (;;) {
+    if (!v.q.length) await new Promise((r) => { v.wake = r; });
+    const x = v.q.shift();
+    if (x === null) { if (gen === vq.gen && vq.cur && vq.cur.v === v) vq.cur = null; return; }
+    if (gen !== vq.gen || v.ctrl.signal.aborted) { try { v.ctrl.abort(); } catch {} return; }
+    let buf = x.buf;
+    if (!buf) {
+      let f = x.pcm;
+      if (lead) {                                    // the silence a voice starts with: skipped
+        let i = 0; while (i < f.length && Math.abs(f[i]) < 0.004) i++;
+        if (i === f.length) continue;
+        lead = false; f = f.subarray(Math.max(0, i - Math.round(x.rate * 0.01)));
+      }
+      buf = actx.createBuffer(1, f.length, x.rate); buf.getChannelData(0).set(f);
+    }
+    if (actx.state === "suspended") actx.resume().catch(() => {});
+    const now = actx.currentTime, at = Math.max(vq.end, now + 0.06);   // (a small head start so pieces never stutter)
+    const s = actx.createBufferSource(); s.buffer = buf; s.connect(outNode());
+    s.start(at + 1e-6);                              // (a hair late: a seam never repeats a sample when resampled)
+    vq.nodes.add(s); s.onended = () => vq.nodes.delete(s);
+    vq.end = at + buf.duration; v.started = true;
+    if (!started) { started = true; vq.cur = { v, from: at, est: v.est }; if (onstart) setTimeout(() => { if (gen === vq.gen) onstart(); }, Math.max(0, (at - now) * 1000)); }
+  }
+}
+// Says text in a voice after whatever is already playing; resolves when it has been said (or was stopped).
+function speakChunk(text, voice, onstart) {
+  if (!actx || !text) return Promise.resolve();
+  const gen = vq.gen; vq.queued++;
+  const v = openVoice(text, voice); v.est = text.length / 16;     // (about how long it takes to say, in seconds)
+  const scheduled = (vq.chain = vq.chain.then(() => (gen === vq.gen ? playVoice(v, gen, onstart) : null)).catch(() => {})
+    .finally(() => { if (gen === vq.gen) vq.queued = Math.max(0, vq.queued - 1); }));
+  const p = scheduled.then(() => new Promise((done) => setTimeout(done, gen === vq.gen ? Math.max(0, (vq.end - actx.currentTime) * 1000) : 0)));
+  p.voice = v;
+  return p;
+}
+// Streamed sentences become pieces of speech: the first goes out at once (they start talking right away); later ones
+// gather while the voice is busy and go out in time to follow on (fewer, longer pieces sound more natural).
+class Talk {
+  constructor(voice, onstart) { this.voice = voice; this.onstart = onstart; this.buf = ""; this.n = 0; this.t = 0; this.gen = vq.gen; }
+  add(s) {
+    s = String(s).replace(/\s+/g, " ").trim(); if (!s) return;
+    if (this.buf && this.buf.length + 1 + s.length > 240) this.flush();
+    this.buf += (this.buf ? " " : "") + s;
+    this.check();
+  }
+  check() {
+    clearTimeout(this.t); if (!this.buf) return;
+    if (vq.wav) {                                    // whole files (no streaming): each sentence goes out as it comes,
+      if (this.n || this.buf.length >= 40) this.flush();   // so it's made while the one before plays
+      else this.t = setTimeout(() => this.flush(), 300);
+      return;
+    }
+    const now = actx ? actx.currentTime : 0;         // how long until what's queued is said (the piece still streaming in:
+    let left = vq.end - now;                         // estimated from its length)
+    if (vq.cur && vq.queued === 1) left = Math.max(left, vq.cur.from + vq.cur.est - now);
+    if (!this.n || this.buf.length >= 160 || ((vq.queued === 0 || (vq.queued === 1 && vq.cur)) && left < 1.5)) this.flush();
+    else this.t = setTimeout(() => this.check(), 150);
+  }
+  flush() {
+    clearTimeout(this.t); if (!this.buf) return;
+    const text = this.buf, cb = this.onstart;
+    if (this.gen === vq.gen) speakChunk(text, this.voice, cb && (() => cb(text)));   // (stopped meanwhile: stay quiet)
+    this.n++; this.buf = "";
+  }
+  end() { this.flush(); }
+}
+function speakText(text, voice) {
+  const t = new Talk(voice);
+  for (const s of text.match(/[^.!?…\n]+(?:[.!?…]+["'”’)\]]*|\n|$)/g) || []) t.add(s);
+  t.end();
+}
+
+// ---------- mic: tap, talk, it sends when you go quiet ----------
+let rec = null;
+async function mic() {
+  if (call.on) return;                                 // the call already has the mic
+  if (rec && rec.state === "recording") { rec.stop(); return; }
+  if (!$("welcome").hidden) return;                    // (no key yet: nothing to talk to)
+  if (rec) return;                                   // still starting or transcribing
+  unlockAudio(); stopVoice();
+  const charId = state.cur;
+  let stream;
+  rec = { state: "starting" };
+  try { stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    if (call.on || pairing || !$("welcome").hidden) { stream.getTracks().forEach((t) => t.stop()); rec = null; return; } }
+  catch {
+    rec = null;
+    setNote(MAC ? "microphone blocked (System Settings → Privacy & Security → Microphone)"
+      : "microphone blocked (Settings → Safari → Microphone)", 6000);
+    return;
+  }
+  const chunks = [];
+  try { rec = new MediaRecorder(stream); } catch { stream.getTracks().forEach((t) => t.stop()); rec = null; setNote("can't record here", 4000); return; }
+  const vad = !!actx && actx.state === "running";
+  let an = null, src = null, buf = null, spoke = !vad, quiet = performance.now();
+  const t0 = performance.now();
+  if (vad) { src = actx.createMediaStreamSource(stream); an = actx.createAnalyser(); an.fftSize = 1024; src.connect(an); buf = new Float32Array(an.fftSize); }
+  const r = rec;
+  r.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
+  r.onstop = async () => {
+    clearInterval(tick);
+    stream.getTracks().forEach((t) => t.stop()); try { src && src.disconnect(); } catch {}
+    $("mic").classList.remove("rec"); $("mic").setAttribute("aria-label", "Talk (sends when you stop)");
+    const covered = pairing || !$("welcome").hidden;  // (stopped because a pairing or key screen came up: not sent)
+    if (!spoke || covered) { rec = null; setNote(covered ? "" : "didn't hear anything", 3000); return; }
+    setNote("understanding…");
+    const type = (r.mimeType || "audio/mp4").split(";")[0] || "audio/mp4";
+    const blob = new Blob(chunks, { type });
+    try {
+      const res = await fetch("/api/stt", { method: "POST", headers: { "Content-Type": type }, body: blob });
+      const j = await res.json(); setNote("");
+      if (j.text && String(j.text).trim()) send(j.text, charId); else setNote("didn't catch that", 3000);
+    } catch { setNote("hearing failed", 4000); }
+    finally { rec = null; }
+  };
+  r.start(); $("mic").classList.add("rec"); $("mic").setAttribute("aria-label", "Stop and send");
+  setNote(vad ? "listening…" : "listening… tap the mic again to send");
+  const tick = setInterval(() => {
+    if (r.state !== "recording") return clearInterval(tick);
+    const now = performance.now();
+    if (an) {
+      an.getFloatTimeDomainData(buf); let pk = 0; for (const x of buf) pk = Math.max(pk, Math.abs(x));
+      if (pk > 0.06) { spoke = true; quiet = now; }
+    }
+    if ((spoke && an && now - quiet > 1300) || now - t0 > 45000 || (!spoke && now - t0 > 8000)) r.stop();
+  }, 50);
+}
+$("mic").onclick = mic;
+
+// ---------- calls: just talk, back and forth, like a phone call ----------
+// The mic's sound goes into a short rolling recording (pcm-tap.js). Buddy notices when you start and stop talking,
+// starts understanding you at your first short pause, answers as soon as you're clearly done (it waits longer when
+// you trail off mid-sentence), and the character answers out loud, streaming. Talk over them to interrupt; a short
+// "mm-hm" or a cough only makes them a little quieter for a moment. What you both say lands in the conversation.
+const call = { gen: 0, on: false, char: null, stream: null, src: null, node: null, sink: null, phase: "", t0: 0,
+  muted: false, abort: null, stt: null, timer: 0, turn: 0, n: 0, ring: null, rate: 48000, pos: 0, floor: 0.01,
+  speech: false, segAt: 0, lastEnd: 0, loudRun: 0, loudSum: 0, lastLoud: 0, lastLoudAt: 0, eager: null, opened: "",
+  said: [], got: 0, heard: null, fillers: [], fillerAt: -9, recent: [], ducked: 0, bargeAt: 0, t: null };
+const fr = (ms) => Math.round(ms * call.rate / 1000);          // milliseconds <-> frames of the rolling recording
+const ms = (frames) => frames * 1000 / call.rate;
+const level = (an, buf) => { an.getFloatTimeDomainData(buf); let s = 0; for (const x of buf) s += x * x; return Math.sqrt(s / buf.length); };
+// Whisper sometimes "hears" these in noise; said that briefly, they're ignored.
+const phantom = (t, loudMs) => !t || t.length < 2 || (loudMs < 400 && /^(?:thank you[.!]?|thanks for watching[.!]?|you\.?)$/i.test(t));
+// You trailed off ("…and then the", "um"): give you a moment longer before answering.
+const dangling = (t) => /(?:,|\b(?:and|but|or|so|because|the|a|an|to|of|with|for|in|on|at|my|your|um+|uh+|like|if|that|when|then))[.…]*$/i.test(t.trim());
+function callPhase(p, caption) {
+  call.phase = p; $("callv").dataset.phase = p;
+  $("cv-st").textContent = { connecting: "calling…", listening: "listening", hearing: "listening…", thinking: "thinking…",
+    speaking: "", muted: "you're muted" }[p] ?? "";
+  if (caption !== undefined) $("cv-cap").textContent = caption;
+}
+function showTimes() {                               // (optional: store "buddy.calldebug" = true to see where time goes)
+  const t = call.t; if (!t || !store.get("calldebug", false)) return;
+  const d = (a, b) => (t[a] && t[b] ? Math.round(t[b] - t[a]) : "–");
+  $("cv-cap").title = `pause→sent ${d("end", "commit")} · heard ${d("commit", "stt")} · first words ${d("stt", "line")} · ` +
+    `voice ${d("line", "audio")} · total ${d("end", "audio")} ms`;
+  $("cv-st").textContent = `${d("end", "audio")} ms`;
+}
+async function startCall() {
+  if (call.on || !$("welcome").hidden) return;
+  unlockAudio(); stopVoice(); closeAll();
+  if (rec && rec.state === "recording") rec.stop();
+  const c = curChar(), gen = ++call.gen;
+  Object.assign(call, { on: true, char: c.id, muted: false, floor: 0.01, speech: false, t0: 0, turn: 0, n: 0, pos: 0,
+    loudRun: 0, loudSum: 0, lastEnd: 0, eager: null, opened: "", said: [], got: 0, heard: null, fillers: [], fillerAt: -9,
+    recent: [], ducked: 0, t: null, parts: [], replying: 0 });
+  $("callv").style.setProperty("--cc", c.color); paintAv($("cv-av"), c);
+  $("cv-name").textContent = c.name;
+  $("cv-mute").classList.remove("on"); $("cv-mute").setAttribute("aria-pressed", "false");
+  $("cv-time").textContent = "calling…"; callPhase("connecting", "");
+  $("callv").hidden = false; $("cv-end").focus({ preventScroll: true });
+  try { if (navigator.audioSession) navigator.audioSession.type = "play-and-record"; } catch {}   // (iPhone: speaker, mic on)
+  // While it "rings": Buddy gets ready (notes, connection) and they pick up as soon as their greeting can play.
+  api("/api/call/start", { char: c.id }).then((r) => (r.ok ? r.json() : null)).catch(() => null).then((w) => {
+    if (gen !== call.gen || !call.on || !call.phase) return;   // (the call couldn't start: no greeting)
+    call.fillers = (w && w.fillers) || [];
+    const greets = (w && w.greetings) || ["Hey!"], g = greets[Math.floor(Math.random() * greets.length)];
+    call.opened = g;                                // (their next answer knows they already said it)
+    if (call.phase === "connecting" || call.phase === "listening") callPhase("speaking", "");
+    speakChunk(g, c.voice);
+  });
+  let stream;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+  } catch {
+    stopVoice();
+    callPhase("", MAC ? "Microphone blocked (System Settings → Privacy & Security → Microphone)." : "Microphone blocked (Settings → Safari → Microphone).");
+    setTimeout(() => { if (gen === call.gen) endCall(); }, 2500); return;
+  }
+  if (gen !== call.gen || !call.on) { stream.getTracks().forEach((t) => t.stop()); return; }
+  call.stream = stream;
+  try {
+    if (!actx.audioWorklet) throw 0;
+    if (!actx.tapReady) { await actx.audioWorklet.addModule("/pcm-tap.js"); actx.tapReady = true; }
+    if (gen !== call.gen || !call.on) { stream.getTracks().forEach((t) => t.stop()); return; }
+    call.rate = actx.sampleRate; call.ring = new Float32Array(Math.round(actx.sampleRate * 32));
+    call.src = actx.createMediaStreamSource(stream);
+    call.node = new AudioWorkletNode(actx, "pcm-tap", { numberOfInputs: 1, numberOfOutputs: 1, outputChannelCount: [1] });
+    call.sink = actx.createGain(); call.sink.gain.value = 0;     // (keeps it running; nothing is played back)
+    call.src.connect(call.node); call.node.connect(call.sink); call.sink.connect(actx.destination);
+    call.node.port.onmessage = (e) => onBlock(e.data);
+  } catch {
+    stopVoice(); callPhase("", "Calls need a newer browser on this device."); setTimeout(() => { if (gen === call.gen) endCall(); }, 2500); return;
+  }
+  call.t0 = Date.now();
+  call.timer = setInterval(() => { const t = Math.floor((Date.now() - call.t0) / 1000);
+    $("cv-time").textContent = `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`; }, 500);
+  if (call.phase === "connecting") callPhase("speaking", "");   // (listening starts once their greeting is over)
+}
+function onBlock(f) {                               // ~20 ms of mic sound
+  if (!call.on || !call.ring) return;
+  const r = call.ring, n = r.length, at = call.pos % n, k = Math.min(f.length, n - at);
+  r.set(f.subarray(0, k), at); if (k < f.length) r.set(f.subarray(k), 0);
+  call.pos += f.length;
+  let e = 0; for (let i = 0; i < f.length; i++) e += f[i] * f[i];
+  const lvl = call.muted ? 0 : Math.sqrt(e / f.length);
+  const out = outAn && call.phase === "speaking" ? level(outAn, new Float32Array(outAn.fftSize)) : 0;
+  $("callv").style.setProperty("--lvl", Math.min(1, (call.phase === "speaking" ? out : lvl) * 6).toFixed(3));
+  step(lvl, f.length);
+}
+function step(lvl, len) {
+  const p = call.phase;
+  if ((p === "listening" || p === "muted") && !call.speech) call.floor = call.floor * 0.985 + Math.min(lvl, 0.05) * 0.015;   // room noise
+  const thr = Math.max(0.018, call.floor * 2.6);
+  if (p === "speaking") return barge(lvl, thr, len);
+  if (p !== "listening" && p !== "hearing" && p !== "thinking" && p !== "muted") return;
+  const loud = lvl > thr;
+  if (loud && !call.loudRun) call.runAt = call.pos - len;   // where this stretch of sound began
+  call.loudRun = loud ? call.loudRun + len : Math.max(0, call.loudRun - len);
+  if (loud) { call.lastLoud = call.pos; call.lastLoudAt = performance.now(); if (call.speech) call.loudSum += len; }
+  if (!call.speech) {
+    if (call.loudRun < fr(p === "thinking" ? 250 : 120)) return;
+    if (p === "thinking") {                        // you weren't done: carry on
+      if (call.replying === call.turn) interrupt();  // (their answer had started: it's dropped, you get the floor)
+      else { call.turn++; call.speech = true; call.loudSum = call.loudRun; callPhase("hearing"); return; }   // same turn
+    }
+    call.speech = true; call.loudSum = call.loudRun; call.eager = null;
+    call.segAt = Math.max(call.lastEnd, call.runAt - fr(300), call.pos - call.ring.length + fr(100));
+    callPhase("hearing");
+    return;
+  }
+  const quiet = ms(call.pos - call.lastLoud);
+  if (call.eager && call.eager.mark !== call.lastLoud) call.eager = null;   // you went on talking: that guess is stale
+  if (quiet >= 350 && !call.eager) call.eager = transcribe(call.segAt, call.lastLoud + fr(200), call.lastLoud);
+  const wait = call.eager && call.eager.text && dangling(call.eager.text) ? 1300 : 600;
+  if (quiet < 350 && ms(call.pos - call.segAt) > 30000) {   // talking on and on: what you said so far goes up now
+    call.parts.push(transcribe(call.segAt, call.pos, call.pos)); call.segAt = call.lastEnd = call.pos; return;
+  }
+  const guessing = call.eager && call.eager.text === null && quiet < 1300;   // (its first guess decides how long to wait)
+  if (quiet >= wait && !guessing) commit();
+}
+// What you said between two points of the rolling recording, as a 16 kHz WAV, transcribed in Tinfoil's enclave.
+function transcribe(from, to, mark) {
+  const job = { mark, text: null, loudMs: ms(call.loudSum) };
+  const wav = wav16(slice(from, Math.min(to, call.pos)), call.rate);
+  const ctrl = (call.stt = call.stt || new AbortController());
+  job.p = fetch(`/api/stt?char=${encodeURIComponent(call.char)}`, { method: "POST", headers: { "Content-Type": "audio/wav" },
+    body: wav, signal: ctrl.signal }).then((r) => r.json()).then((j) => { job.text = String(j.text || "").trim(); })
+    .catch(() => { job.text = ""; });
+  return job;
+}
+function slice(from, to) {
+  const r = call.ring, n = r.length; from = Math.max(from, call.pos - n + 1, 0); to = Math.max(from, to);
+  const out = new Float32Array(to - from), a = from % n, k = Math.min(out.length, n - a);
+  out.set(r.subarray(a, a + k)); if (k < out.length) out.set(r.subarray(0, out.length - k), k);
+  return out;
+}
+function wav16(f, rate) {                           // downsampled to 16 kHz (what Whisper uses), 16-bit mono
+  const ratio = rate / 16000, n = Math.floor(f.length / ratio), b = new ArrayBuffer(44 + n * 2), v = new DataView(b);
+  const w = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+  w(0, "RIFF"); v.setUint32(4, 36 + n * 2, true); w(8, "WAVEfmt "); v.setUint32(16, 16, true); v.setUint16(20, 1, true);
+  v.setUint16(22, 1, true); v.setUint32(24, 16000, true); v.setUint32(28, 32000, true); v.setUint16(32, 2, true);
+  v.setUint16(34, 16, true); w(36, "data"); v.setUint32(40, n * 2, true);
+  for (let i = 0; i < n; i++) {
+    const a = Math.floor(i * ratio), z = Math.min(f.length, Math.floor((i + 1) * ratio)); let s = 0;
+    for (let j = a; j < z; j++) s += f[j];
+    const x = Math.max(-1, Math.min(1, s / Math.max(1, z - a)));
+    v.setInt16(44 + i * 2, x < 0 ? x * 32768 : x * 32767, true);
+  }
+  return new Blob([b], { type: "audio/wav" });
+}
+async function commit() {
+  const mark = call.lastLoud, to = Math.min(call.pos, call.lastLoud + fr(250));
+  const job = call.eager && call.eager.mark === mark ? call.eager : transcribe(call.segAt, to, mark);
+  call.speech = false; call.eager = null; call.loudRun = 0; call.lastEnd = to;
+  const turn = ++call.turn; call.n++; callPhase("thinking");
+  call.t = { end: call.lastLoudAt, commit: performance.now() };
+  const parts = call.parts.slice();
+  if (job.text === null) await job.p;
+  await Promise.all(parts.map((p) => p.p));
+  if (!call.on || turn !== call.turn) return;          // (you went on talking: this part is sent with the rest)
+  call.parts = []; call.t.stt = performance.now();
+  const text = parts.map((p) => p.text).concat(job.text).filter(Boolean).join(" ");
+  if (phantom(text, job.loudMs)) return listen();
+  callPhase("thinking", "“" + text + "”");
+  reply(text, turn);
+}
+async function reply(text, turn) {
+  const c = charById(call.char) || curChar();
+  call.replying = turn; call.said = []; call.got = 0; call.fillerV = null;
+  const talk = new Talk(c.voice, (chunk) => {             // as each piece starts being heard
+    if (!call.on || turn !== call.turn) return;
+    if (!call.said.length && call.t) { call.t.audio = performance.now(); showTimes(); }
+    call.said.push(chunk); if (call.phase !== "speaking") callPhase("speaking");
+    $("cv-cap").textContent = call.said.join(" ");
+  });
+  call.abort = new AbortController();
+  const body = { text, char: c.id, mode: c.id === state.cur ? state.mode : c.brain, private: state.private, via: "call", from: VIA };
+  if (call.heard !== null) { body.heard = call.heard; call.heard = null; }   // you cut their last answer off here
+  if (call.opened) { body.opened = call.opened; call.opened = ""; }
+  const slow = setTimeout(() => filler(turn, c.voice), 1500);
+  try {
+    const r = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, signal: call.abort.signal,
+      body: JSON.stringify(body) });
+    const rd = r.body.getReader(), dec = new TextDecoder(); let pend = "";
+    for (;;) {
+      const { value, done } = await rd.read(); if (done) break;
+      pend += dec.decode(value, { stream: true });
+      let nl; while ((nl = pend.indexOf("\n")) >= 0) {
+        const line = pend.slice(0, nl); pend = pend.slice(nl + 1);
+        let m; try { m = JSON.parse(line); } catch { continue; }
+        if (m.error) throw new Error(m.error);
+        if (m.s && call.on && turn === call.turn) {
+          if (!call.got++) {
+            if (call.t) call.t.line = performance.now();
+            const f = call.fillerV; call.fillerV = null;   // the answer is here: a "Hmm." not yet heard is dropped
+            if (f && !f.started) try { f.ctrl.abort(); } catch {}
+          }
+          talk.add(m.s);
+        }
+      }
+    }
+    if (turn === call.turn) talk.end();
+  } catch (e) {
+    if (e && e.name === "AbortError") return;
+    if (call.on && turn === call.turn) { callPhase("speaking", `${c.name} couldn't answer. Say it again?`); }
+  } finally {
+    clearTimeout(slow);
+    if (turn === call.turn) call.abort = null;
+    if (call.on && turn === call.turn && call.phase === "thinking" && !speakingNow()) listen();
+    poll();
+  }
+}
+// Only when an answer is slow to come (and not every time): a short "Hmm." in their voice, like people do.
+function filler(turn, voice) {
+  if (!call.on || turn !== call.turn || call.phase !== "thinking" || call.speech || speakingNow()) return;
+  if (call.n - call.fillerAt < 3 || !call.fillers.length) return;
+  call.fillerAt = call.n; callPhase("speaking");
+  call.fillerV = speakChunk(call.fillers[Math.floor(Math.random() * call.fillers.length)], voice).voice;
+}
+// While they talk: you talking over them (for ~0.2 s within a short window) makes them quieter at once; if you keep
+// going (~0.45 s) they stop and listen, keeping what you said from just before; if it was only a moment, they go on.
+function barge(lvl, thr, len) {
+  if (!speakingNow()) { if (!call.abort) return listen(); if (!call.said.length) { callPhase("thinking"); return; } }
+  const playing = !!actx && actx.currentTime < vq.end;
+  call.recent.push([len, playing && lvl > Math.max(thr * 1.8, 0.045) ? len : 0]);
+  let span = 0, loud350 = 0, loud700 = 0;
+  for (let i = call.recent.length - 1; i >= 0; i--) {
+    const [l, x] = call.recent[i]; span += l;
+    if (ms(span) <= 350) loud350 += x;
+    if (ms(span) <= 700) loud700 += x; else { call.recent.splice(0, i); break; }
+  }
+  if (!call.ducked) {
+    if (ms(loud350) >= 200) { duck(true); call.ducked = call.pos; call.bargeAt = call.pos - loud350; }
+    return;
+  }
+  if (ms(loud700) >= 450) {                         // you're really talking: they stop, you have the floor
+    const from = Math.max(call.lastEnd, call.bargeAt - fr(300));
+    interrupt(); call.lastEnd = from; call.speech = true; call.loudSum = loud700; call.lastLoud = call.pos;
+    call.lastLoudAt = performance.now(); call.segAt = from; callPhase("hearing");
+  } else if (ms(call.pos - call.ducked) > 700 && loud350 === 0) { duck(false); call.ducked = 0; }   // just a moment
+}
+function interrupt() {
+  call.turn++;
+  if (call.got || call.abort) call.heard = call.said.join(" ");   // what you actually heard of their answer
+  call.got = 0; call.said = []; call.ducked = 0; call.recent = []; call.eager = null; call.parts = [];
+  stopVoice();
+  if (call.abort) { try { call.abort.abort(); } catch {} call.abort = null; }
+  if (call.stt) { try { call.stt.abort(); } catch {} call.stt = null; }
+}
+function listen() {
+  if (!call.on) return;
+  call.speech = false; call.loudRun = 0; call.eager = null; call.recent = []; call.ducked = 0; duck(false);
+  call.got = 0; call.said = [];                     // (their last answer was heard in full)
+  call.lastEnd = call.pos;                          // (their voice, picked up by the mic, never counts as yours)
+  callPhase(call.muted ? "muted" : "listening");
+}
+function endCall() {
+  const was = call.on && call.t0 ? Math.floor((Date.now() - call.t0) / 1000) : 0;
+  call.on = false; call.gen++;
+  clearInterval(call.timer);
+  interrupt();
+  if (call.node) { call.node.port.onmessage = null; try { call.node.disconnect(); } catch {} }
+  try { call.src && call.src.disconnect(); } catch {}
+  try { call.sink && call.sink.disconnect(); } catch {}
+  if (call.stream) call.stream.getTracks().forEach((t) => t.stop());
+  try { if (navigator.audioSession) navigator.audioSession.type = "auto"; } catch {}
+  Object.assign(call, { stream: null, src: null, node: null, sink: null, ring: null, abort: null, phase: "", heard: null });
+  $("callv").hidden = true; $("call").focus({ preventScroll: true }); $("callv").style.removeProperty("--lvl");
+  if (was) setNote(`call ended · ${Math.floor(was / 60)}:${String(was % 60).padStart(2, "0")}`, 5000);
+  poll(); checkUpdate();                               // an update that waited for the call
+}
+$("call").onclick = () => startCall();
+$("cv-end").onclick = endCall;
+$("cv-mute").onclick = () => {
+  call.muted = !call.muted;
+  if (call.stream) call.stream.getAudioTracks().forEach((t) => { t.enabled = !call.muted; });
+  $("cv-mute").classList.toggle("on", call.muted); $("cv-mute").setAttribute("aria-pressed", String(call.muted));
+  if (call.phase === "listening" || call.phase === "muted" || call.phase === "hearing") callPhase(call.muted ? "muted" : "listening");
+};
+
+// ---------- mode chips ----------
+function chips() {
+  for (const b of ["advisor", "companion"]) {
+    $(b).classList.toggle("on", state.mode === b); $(b).setAttribute("aria-pressed", String(state.mode === b));
+  }
+  $("private").classList.toggle("on", state.private); $("private").setAttribute("aria-pressed", String(state.private));
+  $("text").placeholder = state.private ? "Private message (not saved)" : "Message " + curChar().name;
+  const needKey = state.status.paired && state.status.tinfoil_key === false && !(state.mode === "companion" && state.status.companion_provider === "phala");
+  $("warn").hidden = !needKey;
+  $("warn").textContent = needKey ? "Buddy isn't set up yet: add your Tinfoil key on the Mac (Settings)." : "";
+}
+$("advisor").onclick = () => { state.mode = "advisor"; chips(); };
+$("companion").onclick = () => { state.mode = "companion"; chips(); };
+$("private").onclick = () => {
+  state.private = !state.private; chips();
+  if (state.private && MAC) store.set("draft", null);   // a private message is never kept as a draft
+  try { sessionStorage.setItem("buddy.private", state.private ? String(Date.now()) : ""); } catch {}
+};
+try { const t = +sessionStorage.getItem("buddy.private"); if (t && Date.now() - t < 12 * 3600 * 1000) state.private = true; } catch {}
+
+// ---------- sheets ----------
+const stack = [];
+const isOpen = (id) => $(id).classList.contains("open");
+function openSheet(id, focus) {
+  const s = $(id); if (isOpen(id)) return;
+  stack.push({ id, back: document.activeElement });
+  s.classList.add("open");
+  setTimeout(() => { const f = focus ? $(focus) : s.querySelector("[data-close]"); if (f) f.focus({ preventScroll: true }); }, 30);
+}
+function closeSheet(id) {
+  const i = stack.findIndex((x) => x.id === id); if (i < 0) return;
+  const [it] = stack.splice(i, 1); $(id).classList.remove("open");
+  if (id === "editor") { stopVoice(); $("eplay").classList.remove("playing"); }
+  if (it.back && it.back.isConnected && typeof it.back.focus === "function") it.back.focus({ preventScroll: true });
+}
+const closeAll = () => { while (stack.length) closeSheet(stack[stack.length - 1].id); };
+for (const s of document.querySelectorAll(".sheet")) {
+  let downOnScrim = false;
+  s.addEventListener("pointerdown", (e) => { downOnScrim = e.target === s; });
+  s.addEventListener("click", (e) => { if (e.target === s && downOnScrim) closeSheet(s.id); });
+  for (const b of s.querySelectorAll("[data-close]")) b.addEventListener("click", () => closeSheet(s.id));
+}
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !$("viewer").hidden) { $("viewer").click(); e.preventDefault(); return; }
+  if (e.key === "Escape" && stack.length) {
+    if (stack[stack.length - 1].id === "editor" && !$("econfirm").hidden) { hideConfirm(); e.preventDefault(); return; }
+    e.preventDefault(); closeSheet(stack[stack.length - 1].id);
+  }
+});
+
+// ---------- the character sheet ----------
+let charsSig = "";
+function renderChars(force) {
+  if (!isOpen("chars") && !force) return;
+  const sig = JSON.stringify([state.chars, state.cur, state.unread, creating, [...state.fresh], state.voices.length]);
+  if (sig === charsSig && !force) return;
+  charsSig = sig;
+  const box = $("clist"), a = document.activeElement, row0 = a && box.contains(a) ? a.closest(".crow") : null;
+  const refocus = row0 && { id: row0.dataset.id, cls: a.className };
+  box.replaceChildren();
+  for (const c of state.chars) {
+    const row = el("div", "crow" + (c.id === state.cur ? " cur" : "") + (state.fresh.has(c.id) ? " fresh" : ""));
+    row.dataset.id = c.id;
+    const pick = el("button", "cpick"), av = el("div", "av"), tx = el("div", "ctext");
+    paintAv(av, c); av.setAttribute("aria-hidden", "true");
+    tx.append(el("b", "", c.name));
+    if (c.tagline) tx.append(el("small", "", c.tagline));
+    tx.append(el("small", "meta", voiceLabel(c.voice) + " · " + brainName(c.brain)));
+    pick.append(av, tx);
+    if (c.id === state.cur) pick.setAttribute("aria-current", "true");
+    const n = state.unread[c.id] || 0;
+    if (n && c.id !== state.cur) { const d = el("span", "udot"); d.setAttribute("role", "img"); d.setAttribute("aria-label", n + " new"); pick.append(d); }
+    pick.onclick = () => { setChar(c.id); closeSheet("chars"); };
+    const ed = el("button", "cedit"); ed.setAttribute("aria-label", "Edit " + c.name);
+    ed.append($("t-pencil").content.cloneNode(true)); ed.onclick = () => openEditor(c);
+    row.append(pick, ed); box.append(row);
+  }
+  if (creating) {
+    const row = el("div", "crow skel"), pick = el("div", "cpick"), tx = el("div", "ctext");
+    tx.append(el("b"), el("small")); pick.append(el("div", "av"), tx); row.append(pick); box.append(row);
+  }
+  if (refocus) { const r = [...box.children].find((x) => x.dataset.id === refocus.id); const b = r && r.querySelector("." + refocus.cls.split(" ")[0]); if (b) b.focus({ preventScroll: true }); }
+}
+function openChars() { $("cstate").textContent = ""; $("cstate").className = ""; openSheet("chars"); renderChars(true); loadChars(); }
+$("who").onclick = openChars; $("people").onclick = openChars;
+for (const b of document.querySelectorAll("[data-ex]")) b.onclick = () => { $("desc").value = b.dataset.ex; $("desc").focus(); };
+$("desc").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey && !e.isComposing && (MAC || matchMedia("(hover: hover) and (pointer: fine)").matches)) { e.preventDefault(); $("create").click(); }
+});
+let creating = false;
+function setCreating(on) {
+  creating = on; const b = $("create");
+  b.disabled = on; $("desc").disabled = on; $("blank").disabled = on;
+  b.replaceChildren(); if (on) b.append(el("span", "spin")); b.append(on ? "Creating…" : "Create");
+  renderChars();
+}
+$("create").onclick = async () => {
+  const d = $("desc").value.trim(), st = $("cstate");
+  if (!d) { $("desc").focus(); st.className = ""; st.textContent = "Describe who you'd like first."; return; }
+  setCreating(true); st.className = ""; st.textContent = "Writing them… this takes a few seconds.";
+  try {
+    const r = await api("/api/characters/create", { description: d });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j || !Array.isArray(j.created) || !j.created.length) throw new Error((j && j.error) || (r.ok ? "nothing came back" : "error " + r.status));
+    const made = j.created.map(norm).filter((c) => c.id);
+    if (!made.length) throw new Error("nothing came back");
+    await loadChars();
+    for (const c of made) if (!charById(c.id)) state.chars.push(c);
+    state.fresh = new Set(made.map((c) => c.id)); setTimeout(() => state.fresh.clear(), 3000);
+    $("desc").value = "";
+    setChar(made[0].id);
+    st.textContent = made.length === 1 ? `Say hi to ${made[0].name}.`
+      : `Made ${made.map((c) => c.name).join(", ")}. You're talking to ${made[0].name} now.`;
+    if (state.images) (async () => {                  // their profile photos, one after another
+      for (const c of made) state.making.add(c.id);
+      for (const c of made) {
+        try { await loadChars(); const now = charById(c.id); if (now && !now.avatar) { refreshPic(); await makeAvatar(c.id); await loadChars(); } }
+        catch {} finally { state.making.delete(c.id); refreshPic(); }
+      }
+    })();
+  } catch (e) {
+    st.className = "warn"; st.textContent = `Couldn't create (${e.message || "error"}). Try again?`;
+  } finally {
+    setCreating(false);
+    const first = $("clist").querySelector(".crow.fresh");
+    if (first) first.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }
+};
+$("blank").onclick = () => openEditor(null);
+
+// ---------- editing one character ----------
+let ed = null;
+function setRadio(group, val, attr = "brain") { for (const b of group) b.setAttribute("aria-checked", String(b.dataset[attr] === val)); }
+async function openEditor(c) {
+  const orig = c ? norm(c) : norm({ id: "", name: "", brain: "advisor", texts_first: false, voice: (state.voices[0] || {}).id || "",
+    color: PALETTE[(state.chars.length * 3) % PALETTE.length], knowledge: { scope: "all", folders: [] } });
+  ed = { orig, isNew: !c, color: orig.color, brain: orig.brain, texts: orig.texts_first, folders: null,
+    foldScope: ["some", "except"].includes(orig.knowledge.scope) ? orig.knowledge.scope : null };
+  $("e-t").textContent = c ? "Edit " + orig.name : "New character";
+  $("ename").value = c ? orig.name : ""; $("etag").value = orig.tagline; $("epersona").value = orig.persona;
+  $("elooks").value = orig.appearance; $("estyle").value = orig.style; $("escene").value = "";
+  $("eavoid").value = orig.knowledge.avoid; picButton();
+  $("ename").placeholder = c ? "" : "Their name";
+  $("eerr").textContent = ""; hideConfirm();
+  $("edanger").hidden = !c; $("edel").hidden = !!orig.builtin;
+  setSw($("etexts"), ed.texts);
+  setRadio(document.querySelectorAll("[data-brain]"), ed.brain); brainHint();
+  for (const r of document.querySelectorAll("input[name=scope]")) r.checked = r.value === orig.knowledge.scope;
+  fillVoices(orig.voice); swatches(); editorAvatar();
+  fillFolders(orig.knowledge.folders, null);
+  openSheet("editor", c ? null : "ename");
+  if (!state.voices.length) { await loadVoices(); if (ed && ed.orig === orig) fillVoices($("evoice").value || orig.voice); }
+  try { const k = await getJSON("/api/knowledge"); if (ed && ed.orig === orig) fillFolders(orig.knowledge.folders, Array.isArray(k.folders) ? k.folders.map(String) : []); }
+  catch { if (ed && ed.orig === orig) fillFolders(orig.knowledge.folders, []); }
+}
+function editorAvatar() { paintAv($("eav"), { name: $("ename").value || "?", color: ed.color, id: ed.orig.id, avatar: ed.orig.avatar }); }
+const refreshPic = () => { if (ed && $("editor").classList.contains("open")) { picButton(ed.busy); editorAvatar(); } };
+function picButton(busy) {
+  if (ed) ed.busy = busy;
+  if (!busy && ed && state.making.has(ed.orig.id)) busy = "make";   // its first photo is still being made
+  const b = $("epic"); b.hidden = !state.images; b.disabled = !!busy; $("eup").disabled = !!busy;
+  $("epicopts").hidden = !state.images;
+  b.replaceChildren(); if (busy === "make") b.append(el("span", "spin"));
+  b.append(busy === "make" ? "Making…" : ed && ed.orig.avatar ? "New profile photo" : "Make profile photo");
+  $("epic-s").textContent = state.images ? "Photos are made privately (enclave or on your Mac)."
+    : "Photos need a private image maker (see README). You can still upload a picture.";
+}
+async function makeAvatar(id, scene) {
+  const r = await api("/api/characters/avatar", { id, scene }); const j = await r.json().catch(() => ({}));
+  if (!r.ok || !j.ok) throw new Error(j.error || "error " + r.status);
+  return j.avatar;
+}
+$("epic").onclick = async () => {
+  if (!ed) return;
+  if (ed.isNew) { $("eerr").textContent = "Save them first, then make their photo."; return; }
+  picButton("make"); $("eerr").textContent = "";
+  try {
+    const keep = Object.assign({}, ed.orig, { appearance: $("elooks").value.trim(), style: $("estyle").value });   // photo uses these
+    const r = await api("/api/characters/save", { character: keep }); const j = await r.json().catch(() => ({}));
+    if (!r.ok || j.ok === false) throw new Error(j.error || "error " + r.status);
+    ed.orig.appearance = keep.appearance; ed.orig.style = keep.style;
+    ed.orig.avatar = await makeAvatar(ed.orig.id, $("escene").value.trim());
+    editorAvatar(); await loadChars();
+  } catch (e) { $("eerr").textContent = `Couldn't make the photo (${e.message || "error"}).`; }
+  finally { picButton(false); }
+};
+// Your own picture: cropped to a square and re-encoded here (so no location or camera details go along), then saved on your Mac.
+function squareJpeg(file, size = 1024) {
+  return new Promise((ok, no) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const s = Math.min(img.naturalWidth, img.naturalHeight); if (!s) return no(new Error("empty picture"));
+      const cv = document.createElement("canvas"); cv.width = cv.height = Math.min(size, s);
+      const g = cv.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, cv.width, cv.height);   // transparent -> white
+      g.drawImage(img, (img.naturalWidth - s) / 2, (img.naturalHeight - s) / 2, s, s, 0, 0, cv.width, cv.height);
+      ok(cv.toDataURL("image/jpeg", 0.9));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); no(new Error("can't read that picture")); };
+    img.src = url;
+  });
+}
+$("eup").onclick = () => {
+  if (!ed) return;
+  if (ed.isNew) { $("eerr").textContent = "Save them first, then add their picture."; return; }
+  $("efile").value = ""; $("efile").click();
+};
+$("efile").onchange = async () => {
+  const f = $("efile").files && $("efile").files[0]; if (!f || !ed) return;
+  picButton(true); $("eerr").textContent = "";
+  try {
+    const image = await squareJpeg(f);
+    const r = await api("/api/characters/avatar/upload", { id: ed.orig.id, image }); const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.ok) throw new Error(j.error || "error " + r.status);
+    ed.orig.avatar = j.avatar; editorAvatar(); await loadChars();
+  } catch (e) { $("eerr").textContent = `Couldn't use that picture (${e.message || "error"}).`; }
+  finally { picButton(false); }
+};
+function swatches() {
+  const box = $("eswatch"); box.replaceChildren();
+  const colors = PALETTE.includes(ed.color.toLowerCase()) ? PALETTE : [ed.color, ...PALETTE];
+  for (const col of colors) {
+    const b = el("button"); b.style.background = col; b.setAttribute("role", "radio");
+    b.setAttribute("aria-checked", String(col.toLowerCase() === ed.color.toLowerCase())); b.setAttribute("aria-label", "Colour " + col);
+    b.onclick = () => { ed.color = col; swatches(); editorAvatar(); };
+    box.append(b);
+  }
+}
+function fillVoices(sel) {
+  const s = $("evoice"); s.replaceChildren();
+  const opts = state.voices.slice();
+  if (sel && !opts.some((v) => v.id === sel)) opts.unshift({ id: sel, label: voiceLabel(sel) });
+  if (!opts.length) opts.push({ id: "", label: "Default voice" });
+  for (const v of opts) { const o = el("option", "", v.label); o.value = v.id; s.append(o); }
+  s.value = sel && opts.some((v) => v.id === sel) ? sel : opts[0].id;
+}
+function fillFolders(chosen, all) {
+  const box = $("efolds"); box.replaceChildren();
+  const prev = ed.folders ? ed.folders : chosen;
+  if (all === null) { box.append(el("span", "empty", "Loading your folders…")); scopeChanged(); return; }
+  const names = [...all, ...prev.filter((f) => !all.includes(f))];
+  if (!names.length) box.append(el("span", "empty", "No folders found in your notes yet."));
+  for (const f of names) {
+    const l = el("label", "fold"), i = el("input"); i.type = "checkbox"; i.value = f; i.checked = prev.includes(f);
+    i.onchange = () => { ed.folders = [...box.querySelectorAll("input:checked")].map((x) => x.value); };
+    l.append(i, el("span", "", f)); box.append(l);
+  }
+  scopeChanged();
+}
+const scopeVal = () => (document.querySelector("input[name=scope]:checked") || {}).value || "all";
+function scopeChanged() {                          // the folder list sits under "except" or "only", whichever is chosen
+  const v = scopeVal(), box = $("efolds"), on = v === "some" || v === "except";
+  box.hidden = !on;
+  if (on && ed && ed.foldScope && ed.foldScope !== v) {     // ticks for "only" would mean the opposite under "except"
+    for (const i of box.querySelectorAll("input:checked")) i.checked = false;
+    ed.folders = [];
+  }
+  if (on && ed) ed.foldScope = v;
+  if (on) { const r = document.querySelector(`input[name=scope][value=${v}]`); if (r) r.closest("label").after(box); }
+}
+for (const r of document.querySelectorAll("input[name=scope]")) r.onchange = scopeChanged;
+for (const b of document.querySelectorAll("[data-brain]")) b.onclick = () => { ed.brain = b.dataset.brain; setRadio(document.querySelectorAll("[data-brain]"), ed.brain); brainHint(); };
+function brainHint() {
+  const h = $("ebhint"), off = ed.brain === "companion" && state.status.companion_ready === false;
+  h.hidden = !off; h.textContent = off ? "Buddy needs your Tinfoil key first (on the Mac: Settings → Brain)." : "";
+}
+$("etexts").onclick = () => { ed.texts = !ed.texts; setSw($("etexts"), ed.texts); };
+$("ename").addEventListener("input", editorAvatar);
+$("editor").addEventListener("keydown", (e) => {
+  if (e.key !== "Enter" || e.isComposing) return;
+  if (e.target.id === "escene") { e.preventDefault(); if (!$("epic").disabled && !$("epic").hidden) $("epic").click(); return; }
+  if (e.metaKey || e.ctrlKey || (e.target.tagName === "INPUT" && e.target.type === "text")) { e.preventDefault(); $("esave").click(); }
+});
+$("eplay").onclick = () => {
+  unlockAudio(); stopVoice();
+  const name = $("ename").value.trim(), tag = $("etag").value.trim(), b = $("eplay");
+  const line = (name ? `Hi, I'm ${name}.` : "Hi, this is how I'd sound.") + (tag ? ` ${tag.replace(/[.!?]*$/, ".")}` : " Nice to meet you.");
+  b.classList.add("playing");
+  speakChunk(line.slice(0, 160), $("evoice").value).finally(() => b.classList.remove("playing"));
+};
+$("esave").onclick = async () => {
+  const err = $("eerr"), name = $("ename").value.trim(), scope = scopeVal();
+  const folders = [...$("efolds").querySelectorAll("input:checked")].map((x) => x.value);
+  if (!name) { err.textContent = "Give them a name."; $("ename").focus(); return; }
+  if ((scope === "some" || scope === "except") && !folders.length) {
+    err.textContent = scope === "some" ? "Pick at least one folder, or choose what else they know." : "Pick the folders they shouldn't know.";
+    return;
+  }
+  const ch = Object.assign({}, ed.orig, { name, tagline: $("etag").value.trim(), voice: $("evoice").value, brain: ed.brain,
+    knowledge: { scope, folders: scope === "some" || scope === "except" ? folders : [], avoid: $("eavoid").value.trim() },
+    texts_first: ed.texts, persona: $("epersona").value.trim(), color: ed.color, appearance: $("elooks").value.trim(),
+    style: $("estyle").value });
+  if (ed.isNew) { delete ch.id; delete ch.builtin; }
+  err.textContent = ""; $("esave").disabled = true;
+  try {
+    const r = await api("/api/characters/save", { character: ch });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j || j.ok === false) throw new Error((j && j.error) || "error " + r.status);
+    const saved = norm(j.character || ch);
+    if (!saved.id) throw new Error("no id came back");
+    const i = state.chars.findIndex((x) => x.id === saved.id);
+    if (i >= 0) state.chars[i] = saved; else state.chars.push(saved);
+    const wasNew = ed.isNew;
+    closeSheet("editor");
+    if (wasNew) { state.fresh = new Set([saved.id]); setTimeout(() => state.fresh.clear(), 3000); setChar(saved.id); }
+    else if (saved.id === state.cur) { state.mode = saved.brain; header(); chips(); renderConversation(true); }
+    renderChars(); loadChars();
+  } catch (e) { err.textContent = `Couldn't save (${e.message || "error"}).`; }
+  finally { $("esave").disabled = false; }
+};
+let confirming = "";
+function hideConfirm() { $("econfirm").hidden = true; $("eforget").hidden = false; $("edel").hidden = !!(ed && ed.orig.builtin); }
+$("edel").onclick = () => {
+  confirming = "char"; $("eall-l").hidden = false;
+  $("econfirm-t").textContent = `Delete ${ed.orig.name}? This can't be undone.`;
+  $("edel").hidden = $("eforget").hidden = true; $("econfirm").hidden = false; $("enodel").focus();
+};
+$("eforget").onclick = () => {
+  confirming = "talk"; $("eall-l").hidden = true;
+  $("econfirm-t").textContent = `Delete everything you and ${ed.orig.name} said: the conversation on all your devices, ` +
+    `the photos, and the chats saved in your notes (chats/${ed.orig.id}). ${ed.orig.name} stays. This can't be undone.`;
+  $("edel").hidden = $("eforget").hidden = true; $("econfirm").hidden = false; $("enodel").focus();
+};
+$("enodel").onclick = hideConfirm;
+$("eyesdel").onclick = async () => {
+  const id = ed.orig.id; $("eyesdel").disabled = true;
+  if (confirming === "talk") {
+    try {
+      const r = await api("/api/characters/forget", { id }); const j = await r.json().catch(() => ({}));
+      if (!r.ok || j.ok === false) throw new Error(j.error || "error " + r.status);
+      state.all = state.all.filter((m) => charOf(m) !== id); state.drafts[id] = "";
+      closeSheet("editor"); if (state.cur === id) renderConversation(true); setNote("conversation deleted", 4000);
+    } catch (e) { $("eerr").textContent = `Couldn't delete (${e.message || "error"}).`; }
+    finally { $("eyesdel").disabled = false; hideConfirm(); }
+    return;
+  }
+  try {
+    const r = await api("/api/characters/delete", { id, forget: $("eall").checked }); const j = await r.json().catch(() => ({}));
+    if (!r.ok || j.ok === false) throw new Error(j.error || "error " + r.status);
+    if ($("eall").checked) state.all = state.all.filter((m) => charOf(m) !== id);
+    state.chars = state.chars.filter((c) => c.id !== id);
+    closeSheet("editor");
+    if (state.cur === id) setChar("buddy"); else refreshUnread();
+    renderChars(); loadChars();
+  } catch (e) { $("eerr").textContent = `Couldn't delete (${e.message || "error"}).`; hideConfirm(); }
+  finally { $("eyesdel").disabled = false; }
+};
+
+// ---------- settings ----------
+const setSw = (b, on) => b.setAttribute("aria-checked", on ? "true" : "false");
+$("gear").onclick = () => { openSheet("settings"); refreshSettings(); };
+$("manage").onclick = () => { closeSheet("settings"); openChars(); };
+$("voice").onclick = () => {
+  state.voice = !state.voice; store.set(VOICE_KEY, state.voice); setSw($("voice"), state.voice);
+  if (state.voice) unlockAudio(); else stopVoice();
+};
+$("proactive").onclick = async () => {
+  const on = $("proactive").getAttribute("aria-checked") !== "true";
+  setSw($("proactive"), on); await api("/api/settings", { proactive: on }).catch(() => {});
+};
+$("newchat").onclick = async () => {
+  await api("/api/newchat", { char: state.cur }).catch(() => {});
+  closeSheet("settings"); poll();
+};
+$("update").onclick = async () => {
+  $("ver").textContent = "checking…"; const v = await version();
+  if (v && v !== state.version) location.reload(); else $("ver").textContent = (v || "?") + " · up to date";
+};
+const standalone = () => navigator.standalone || matchMedia("(display-mode: standalone)").matches;
+async function refreshSettings() {
+  setSw($("voice"), state.voice);
+  $("hint").textContent = "Everything runs on your Mac and in private enclaves." +
+    (MAC ? "" : " Notifications only ever say \"Buddy sent you a message\".");
+  getJSON("/api/settings").then((s) => setSw($("proactive"), s.proactive)).catch(() => {});
+  getJSON("/api/status").then((s) => {
+    state.status = s || {}; if (MAC) { brainSettings(s); tailnetSettings(s.tailnet); } const m = s.memory || {}, n = m.notes || 0, notes = `${n} note${n === 1 ? "" : "s"}`;
+    $("memstate").textContent = !n ? "No notes found in your notes folder yet"
+      : m.smart_by === "tinfoil" ? `${notes} · smart search in Tinfoil's enclave`
+      : m.smart_notes ? `${notes} · smart search paused (Tinfoil not verified right now); keyword search on`
+      : !s.tinfoil_key ? `${notes} · keyword search on your Mac; add your Tinfoil key for smart search`
+      : `${notes} · keyword search on your Mac; smart search starts once Tinfoil is verified`;
+    const sy = s.synced || {}, w = $("syncwarn"), where = [sy.notes && `your notes folder (${sy.notes})`, sy.buddy && `Buddy's own files (${sy.buddy})`].filter(Boolean);
+    w.hidden = !where.length || !!s.sync_e2e;
+    $("syncwarn-t").textContent = where.length ? `Heads up: ${where.join(" and ")} ${where.length > 1 ? "are" : "is"} synced to a cloud service. ` +
+      "It can read your notes and the chats Buddy saves there, which the enclaves can't protect. Move them to a folder that isn't synced " +
+      "(or use end-to-end encrypted sync, e.g. iCloud with Advanced Data Protection)." : "";
+  }).catch(() => {});
+  if (MAC) { refreshDevices(); return; }
+  $("ver").textContent = state.version || "?";
+  const p = $("pushstate"), b = $("push");
+  if (!("serviceWorker" in navigator) || !("PushManager" in window) || !window.Notification) {
+    p.textContent = standalone() ? "Not supported on this device" : "First add Buddy to your Home Screen: Share → Add to Home Screen, then open it from there";
+    b.hidden = true; return;
+  }
+  b.hidden = false;
+  try {
+    const reg = await navigator.serviceWorker.ready, sub = await reg.pushManager.getSubscription();
+    if (sub && Notification.permission === "granted") { p.textContent = "On (content-free)"; b.textContent = "Test"; }
+    else if (Notification.permission === "denied") { p.textContent = "Blocked in iOS Settings → Notifications → Buddy"; b.hidden = true; }
+    else { p.textContent = "Off"; b.textContent = "Enable"; }
+  } catch { p.textContent = "Not available"; b.hidden = true; }
+}
+const b64 = (s) => { s = (s + "===".slice((s.length + 3) % 4)).replace(/-/g, "+").replace(/_/g, "/");
+  return Uint8Array.from(atob(s), (c) => c.charCodeAt(0)); };
+$("push").onclick = async () => {
+  const p = $("pushstate");
+  try {
+    const asking = $("push").textContent !== "Test" ? Notification.requestPermission() : null;   // inside the tap
+    const reg = await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (sub && !asking) {
+      await api("/api/push/subscribe", sub.toJSON());
+      const r = await (await api("/api/push/test", {})).json();
+      p.textContent = r.sent ? "Test sent. It should arrive in a few seconds" : "Couldn't send. Is pywebpush installed on the Mac?"; return;
+    }
+    if (await asking !== "granted") { p.textContent = "Not allowed"; return; }
+    const { key } = await getJSON("/api/push/key");
+    if (!key) { p.textContent = "Your Mac needs pywebpush for notifications"; return; }
+    sub = sub || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64(key) });
+    if (!(await api("/api/push/subscribe", sub.toJSON())).ok) throw { name: "Mac didn't save it" };
+    refreshSettings();
+  } catch (e) { p.textContent = "Couldn't turn on notifications (" + (e.name || "error") + ")"; }
+};
+
+// ---------- updates: the page comes from your Mac, so it updates whenever Buddy does ----------
+const version = () => getJSON("/api/version").then((j) => j.version).catch(() => null);
+async function checkUpdate() {
+  const v = await version(); if (!v) return;
+  if (state.version === null) state.version = v;
+  else if (v !== state.version && !state.busy && !$("text").value && !stack.length && !rec && !call.on) location.reload();
+  if (!MAC && navigator.serviceWorker) navigator.serviceWorker.getRegistration().then((r) => r && r.update()).catch(() => {});
+}
+
+// ---------- the Mac app ----------
+window.buddyNative = {
+  shown(on) { setShown(on); },
+  talk() { if (call.on) { setShown(true); return; } closeAll(); setShown(true); mic(); },
+  // The Mac app asks before updating: not while you're on a call, talking, typing, or chatting from the phone.
+  // overdue (no update for a day): only a call, the mic, a reply on its way or speech still hold it up.
+  busy(overdue) {
+    if (call.on || !!rec || state.busy || speakingNow()) return true;
+    if (overdue) return false;
+    const newest = state.all.length ? state.all[state.all.length - 1].ts : 0;
+    return !!$("text").value.trim() || Date.now() / 1000 - newest < 600;
+  },
+  call() { setShown(true); startCall(); },
+  qr(src) { $("pqr").src = src; $("pqr").hidden = false; },    // the pairing QR code, made by the Mac app
+};
+
+$("synce2e").onclick = async () => { await api("/api/settings", { sync_e2e: true }).catch(() => {}); $("syncwarn").hidden = true; };
+
+// ---------- keys and brains (Mac) ----------
+async function saveKey(provider, key, errEl) {
+  const r = await api("/api/setup/key", { provider, key }).catch(() => null), j = r ? await r.json().catch(() => ({})) : {};
+  if (!r || !r.ok) { errEl.textContent = (j && j.error) || "Couldn't save it."; return false; }
+  return true;
+}
+$("wl-go").onclick = async () => {
+  const k = $("wl-key").value.trim(); if (!k) { $("wl-err").textContent = "Paste your key first."; return; }
+  $("wl-go").disabled = true; $("wl-err").textContent = "";
+  if (await saveKey("tinfoil", k, $("wl-err"))) {
+    $("wl-key").value = ""; $("welcome").hidden = true; modal();
+    $("text").focus({ preventScroll: true });          // straight on to the first message
+    await loadStatus();
+  }
+  $("wl-go").disabled = false;
+};
+$("wl-key").addEventListener("keydown", (e) => { if (e.key === "Enter") $("wl-go").click(); });
+let keyFor = "tinfoil", selectOnSave = false;
+function openKeybox(provider, select = false) {
+  keyFor = provider; selectOnSave = select; $("keybox").hidden = false; $("kb-key").value = ""; $("kb-err").textContent = "";
+  $("kb-key").placeholder = provider === "phala" ? "Phala API key" : "Tinfoil API key";
+  $("kb-del").hidden = !(provider === "phala" && state.status.phala_key); $("kb-key").focus();
+}
+$("tfkey").onclick = () => openKeybox("tinfoil");
+$("phkey").onclick = () => openKeybox("phala");
+$("kb-cancel").onclick = () => { $("keybox").hidden = true; $("kb-key").value = ""; };
+$("kb-save").onclick = async () => {
+  const k = $("kb-key").value.trim(); if (!k) { $("kb-err").textContent = "Paste the key first."; return; }
+  if (await saveKey(keyFor, k, $("kb-err"))) {
+    $("kb-key").value = ""; $("keybox").hidden = true;
+    if (keyFor === "phala" && selectOnSave) await api("/api/settings", { companion_provider: "phala" }).catch(() => {});
+    refreshSettings();
+  }
+};
+$("kb-del").onclick = async () => {
+  await api("/api/setup/key", { provider: "phala", remove: true }).catch(() => {});
+  await api("/api/settings", { companion_provider: "tinfoil" }).catch(() => {});
+  $("keybox").hidden = true; refreshSettings();
+};
+for (const b of document.querySelectorAll("[data-cp]")) b.onclick = async () => {
+  if (b.dataset.cp === "phala" && !state.status.phala_key) { openKeybox("phala", true); return; }   // needs a Phala key first
+  await api("/api/settings", { companion_provider: b.dataset.cp }).catch(() => {}); refreshSettings();
+};
+function brainSettings(s) {
+  const t = s.tinfoil || {};
+  $("tfstate").textContent = !s.tinfoil_key ? "No Tinfoil key yet"
+    : t.ready ? "Tinfoil enclave verified" + (t.source === "legacy app" ? " (through the Tinfoil Proxy app)" : "")
+    : t.error ? "Not connected: " + t.error : "Checking Tinfoil's enclave…";
+  $("tfkey").textContent = s.tinfoil_key ? "Replace key" : "Add key";
+  setRadio(document.querySelectorAll("[data-cp]"), s.companion_provider || "tinfoil", "cp");
+  $("cphint").textContent = s.companion_provider === "phala" ? "Companion uses Phala (fully uncensored, not verified)."
+    : s.phala_key ? "" : "Phala needs its own key (you'll be asked for it).";
+  $("phkey").hidden = !s.phala_key;
+}
+
+// ---------- pairing ----------
+$("pv-go").onclick = async () => {
+  const code = $("pv-code").value.replace(/\D/g, "");
+  if (code.length !== 6) { $("pv-err").textContent = "The code has 6 digits."; return; }
+  $("pv-go").disabled = true; $("pv-err").textContent = "";
+  try {
+    const r = await api("/api/pair", { code, name: $("pv-name").value.trim() || "Phone" });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || "error " + r.status);
+    location.reload();
+  } catch (e) { $("pv-err").textContent = e.message || "Couldn't pair."; $("pv-code").select(); }
+  finally { $("pv-go").disabled = false; }
+};
+$("pv-code").addEventListener("keydown", (e) => { if (e.key === "Enter") $("pv-go").click(); });
+const ago = (t) => { const m = Math.round((Date.now() / 1000 - t) / 60);
+  return m < 2 ? "just now" : m < 120 ? `${m} min ago` : m < 2880 ? `${Math.round(m / 60)} h ago` : `${Math.round(m / 1440)} days ago`; };
+async function refreshDevices() {                     // Mac: the phones/tablets that can use Buddy
+  if (!MAC) return;
+  try {
+    const list = ((await getJSON("/api/devices")).devices || []).filter((d) => d.kind !== "mac");
+    $("devstate").textContent = list.length ? `${list.length} paired; only these can use Buddy` : "None yet";
+    const box = $("devlist"); box.replaceChildren();
+    for (const d of list) {
+      const row = el("div", "drow"), name = el("span", "", d.name), b = el("button", "btn", "Remove");
+      name.append(el("small", "", "last used " + ago(d.seen)));
+      b.onclick = async () => { b.disabled = true; await api("/api/devices/remove", { id: d.id }).catch(() => {}); refreshDevices(); };
+      row.append(name, b); box.append(row);
+    }
+    return list.length;
+  } catch { return null; }
+}
+// Mac: phone access through Buddy's own Tailscale node (tailnet.py). The sign-in link is only ever shown here.
+let tnTimer = 0;
+function tailnetSettings(t) {
+  clearTimeout(tnTimer);
+  const again = () => { if (isOpen("settings")) tnTimer = setTimeout(async () => tailnetSettings(await getJSON("/api/tailnet").catch(() => null)), 2000); };
+  if (!t) { again(); return; }
+  const st = $("tnstate"), b = $("tnbtn"), more = $("tnmore");
+  const link = (text, url) => { const a = el("a", "link", text); a.href = url; a.target = "_blank"; a.rel = "noopener"; return a; };
+  more.replaceChildren(); b.hidden = false; b.disabled = false;
+  if (!t.on) {
+    if (t.signout_failed) more.append("Couldn't reach Tailscale to sign out. Remove \"buddy\" there: ",
+      link("Tailscale's admin console", "https://login.tailscale.com/admin/machines"), ".");
+    more.hidden = !more.childNodes.length;
+    if (!t.available) { st.textContent = "Through the Tailscale app on this Mac (see README)"; b.hidden = true; return; }
+    st.textContent = "Off: only this Mac can reach Buddy"; b.textContent = "Turn on"; b.onclick = () => setTailnet(true);
+    return;
+  }
+  b.textContent = "Turn off"; b.onclick = () => setTailnet(false);
+  const s = t.state;
+  st.textContent = s === "ready" ? `On: ${t.host}` : s === "login" ? "Almost: sign in to Tailscale to finish"
+    : s === "approve" ? "Approve this device in Tailscale's admin console" : s === "missing" ? "Buddy's Tailscale part is missing"
+    : s === "error" ? `Not yet: ${t.error}` : "Connecting…";
+  if (s === "login" && t.url) more.append(link("Sign in to Tailscale", t.url),
+    " (free). Then put the Tailscale app on your phone, sign in with the same account, and pair it below.");
+  else if (s === "error" && /admin console/.test(t.error || "")) more.append(link("Open Tailscale's DNS settings", "https://login.tailscale.com/admin/dns"));
+  else if (s === "approve") more.append(link("Open Tailscale's admin console", "https://login.tailscale.com/admin/machines"));
+  else if (s === "ready") {
+    const so = el("button", "link", "Sign out of Tailscale");
+    so.onclick = async () => { so.disabled = true; b.disabled = true; st.textContent = "Signing out…";
+      const r = await api("/api/tailnet/signout", {}).catch(() => null); tailnetSettings(r && r.ok ? await r.json() : null); };
+    more.append("Your phone opens https://" + t.host + "/phone (only your own devices get in). ", so, " takes Buddy off your tailnet.");
+  }
+  more.hidden = !more.childNodes.length;
+  if (s !== "ready") again();
+}
+async function setTailnet(on) {
+  $("tnbtn").disabled = true;
+  const r = await api("/api/tailnet", { on }).catch(() => null);
+  tailnetSettings(r && r.ok ? await r.json() : null);
+}
+let pairTimer = 0;
+$("pairbtn").onclick = async () => {
+  const r = await api("/api/pair/start", {}).catch(() => null), j = r && r.ok ? await r.json() : null;
+  if (!j) return;
+  const before = await refreshDevices(), until = Date.now() + j.expires_in * 1000;
+  $("pairpanel").hidden = false; $("pcode").textContent = j.code.slice(0, 3) + " " + j.code.slice(3);
+  $("pexp").textContent = "Works once, for 10:00";
+  $("phow").textContent = j.url
+    ? `On your phone or iPad (Tailscale app on, same account), open ${j.url} (or scan this), add it to the Home Screen, open it from there and type the code.` +
+      (j.serving === false ? " Phone access isn't on yet: run  tailscale serve --bg 12400  once on this Mac." : "") +
+      (j.builtin ? "" : ` Note: this Mac's Tailscale name "${j.host}" is public in certificate logs, so give the Mac a neutral name in Tailscale.`)
+    : j.builtin ? "Phone access isn't ready yet: see Phone access above."
+    : j.tailscale ? "Tailscale is installed but not connected: open it and sign in, then try again."
+    : "Your phone reaches this Mac through Tailscale (free, private): install it on both (see README), then come back.";
+  $("pqr").hidden = true; if (j.url) toApp({ type: "qr", text: j.url });
+  clearInterval(pairTimer);
+  pairTimer = setInterval(async () => {
+    const left = Math.max(0, Math.round((until - Date.now()) / 1000)), n = left % 3 ? null : await refreshDevices();
+    if (n != null && before != null && n > before) {     // the phone just paired
+      clearInterval(pairTimer); $("pcode").textContent = "Paired ✓"; $("pexp").textContent = ""; $("pqr").hidden = true; return;
+    }
+    $("pexp").textContent = left ? `Works once, for ${Math.floor(left / 60)}:${String(left % 60).padStart(2, "0")}` : "Expired: make a new one";
+    if (!left) { clearInterval(pairTimer); $("pcode").textContent = "––– –––"; $("pqr").hidden = true; }
+  }, 1000);
+};
+
+// ---------- start ----------
+// While the welcome (key) or pairing screen is up, nothing behind it can be reached (keyboard included), and nothing
+// typed then is kept as a draft: a key pasted in the wrong place must never end up in a message.
+function modal() {
+  const open = [$("welcome"), $("pairv")].find((e) => !e.hidden);
+  for (const e of document.body.children) if (e.tagName !== "SCRIPT") e.inert = !!open && e !== open;
+  if (!open) return;
+  if (call.on) endCall();                              // nothing live behind it (the mic above all)
+  if (rec && rec.state === "recording") rec.stop();
+  $("text").value = ""; state.drafts = {}; if (MAC) store.set("draft", null); autosize();
+}
+const watchModal = new MutationObserver(modal);
+for (const id of ["welcome", "pairv"]) watchModal.observe($(id), { attributes: true, attributeFilter: ["hidden"] });
+function restoreDraft() {                              // a draft from before the app restarted (Mac)
+  const d = store.get("draft", null);
+  if (d && d.t && typeof d.t === "string") {
+    state.drafts[d.c] = d.t;
+    if (d.c === state.cur && !$("text").value) { $("text").value = d.t; autosize(); }
+  }
+}
+toApp({ type: "ready" });
+if (!MAC && "serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").then(async () => {
+  const sub = await (await navigator.serviceWorker.ready).pushManager?.getSubscription();
+  if (sub) api("/api/push/subscribe", sub.toJSON()).catch(() => {});   // keep the Mac's list of phones current
+}).catch(() => {});
+if (MAC) unlockAudio();                                // the app lets the page play sound on its own
+addEventListener("pointerdown", () => { if (state.voice) unlockAudio(); }, { capture: true });
+addEventListener("keydown", () => { if (state.voice) unlockAudio(); }, { capture: true });
+document.addEventListener("visibilitychange", () => {
+  setShown(document.visibilityState === "visible");
+  if (!MAC && document.visibilityState === "visible") { loadChars(); navigator.clearAppBadge?.().catch(() => {}); }
+});
+(async () => {
+  if (MAC) document.querySelector("footer").inert = true;   // nothing typed until it's sure the key screen won't come up
+  const me = await getJSON("/api/me").catch(() => null);
+  if (me && !me.paired) { needPair(); return; }        // nothing loads until this device is paired
+  header(); chips();
+  const keyScreen = async () => {                      // Mac: the key screen or the message box, as soon as it's known
+    if (!MAC) return loadStatus();
+    while (!(await getJSON("/api/status").then((s) => { state.status = s || {}; chips(); return true; }).catch(() => false))) await sleep(1000);
+    if (state.status.paired && !state.status.tinfoil_key) { $("welcome").hidden = false; $("wl-key").focus(); }
+    else { restoreDraft(); document.querySelector("footer").inert = false; }
+  };
+  await Promise.all([loadChars(), keyScreen(), loadVoices(), loadImages()]);
+  setChar(state.cur);
+  await poll(); checkUpdate();
+  if (MAC && visible()) ($("welcome").hidden ? $("text") : $("wl-key")).focus({ preventScroll: true });
+})();
+setInterval(() => { if (MAC || visible()) poll(); }, 4000);
+setInterval(() => { if (visible()) { loadChars(); loadStatus(); loadImages(); } }, 60 * 1000);
+setInterval(checkUpdate, 30 * 60 * 1000);
+if (!MAC) navigator.clearAppBadge?.().catch(() => {});
+</script>
+</body>
+</html>

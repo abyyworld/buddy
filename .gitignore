@@ -1,0 +1,51 @@
+# ---- NEVER commit: secrets and personal data ----
+.tinfoil_key
+.phala_key
+.vapid.json
+.push_subs.json
+.mac_token
+.devices.json
+.thread.json
+.thread.json.tmp
+.memory_index.json
+.memory_index.json.tmp
+*.key
+.env
+
+# ---- generated / downloaded ----
+.venv/
+__pycache__/
+web/node_modules/
+web/models/*.vrm
+web/models/previews/
+voice-samples/
+app/*.app
+.DS_Store
+
+# ---- your own settings (override the shipped defaults; updates never touch them) ----
+config.local.json
+*.local.txt
+*.tmp
+web/icons/
+.update.log
+.update_bad
+.update_result
+.update_from
+.release_signers*
+.bin/
+.tinfoil_proxy.pid
+.tinfoil_cache_secret
+.update.lock/
+.update.flock
+
+# your characters (made in the app; personal)
+my-characters/
+
+# left over from the old 3D character (ignored so old installs stay clean)
+animations/
+
+# pictures from your characters (private)
+.media/
+
+# Buddy's own Tailscale node (its keys; phone access)
+.tailnet/

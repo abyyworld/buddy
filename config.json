@@ -1,0 +1,12 @@
+{
+  "advisor_model": "gemma4-31b",
+  "companion_model": "phala/gemma-4-26b-a4b-uncensored",
+  "memory_snippets": 5,
+  "name": "Buddy",
+  "save_chats": true,
+  "voice": "casual_male",
+  "proactive": true,
+  "quiet_from": 23.0,
+  "quiet_until": 8.5,
+  "proactive_mode": "advisor"
+}

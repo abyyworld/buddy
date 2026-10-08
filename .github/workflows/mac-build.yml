@@ -1,0 +1,70 @@
+# Compiles Buddy.app on a GitHub Mac and syntax-checks the server, scripts and web code,
+# so a broken change is caught here instead of on your Mac. Uses no keys and no personal data.
+name: Mac build check
+on:
+  push:
+    paths: ["app/**", "**.py", "scripts/**", "web/**.js", "web/**.html", ".github/workflows/**"]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile Buddy.app
+        run: HOME="$RUNNER_TEMP" zsh app/build.sh
+      - name: Python compiles
+        run: python3 -m py_compile buddy_server.py characters.py images.py social.py memory.py devices.py localcheck.py tinfoilproxy.py tailnet.py scripts/migrate_local.py set_tinfoil_key.py set_phala_key.py
+      - name: Tinfoil's verifying proxy was fetched and matches its pinned checksum
+        run: |
+          zsh scripts/fetch_tinfoil_proxy.sh | tee "$RUNNER_TEMP/fetch.txt"
+          grep -Eq "^tinfoil-proxy: .*(installed|ready)" "$RUNNER_TEMP/fetch.txt" && test -x .bin/tinfoil-proxy
+      - name: Server starts and answers
+        run: |
+          export HOME="$RUNNER_TEMP/home"; mkdir -p "$HOME/Buddy/journal"; echo "Fake note." > "$HOME/Buddy/journal/a.md"
+          python3 buddy_server.py > "$RUNNER_TEMP/server.log" 2>&1 & pid=$!
+          for i in $(seq 1 30); do curl -sf -o /dev/null http://127.0.0.1:12400/api/status && break; sleep 1; done
+          curl -sf http://127.0.0.1:12400/api/status | python3 -c "import json,sys; s=json.load(sys.stdin); assert s['pid'] and 'memory' not in s, s"
+          curl -sf -o /dev/null http://127.0.0.1:12400/phone
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:12400/api/characters)" = 401   # locked without a key
+          K="buddy=$(cat .mac_token)"
+          curl -sf -H "Cookie: $K" http://127.0.0.1:12400/api/status | python3 -c "import json,sys; s=json.load(sys.stdin); assert 'memory' in s, s"
+          curl -sf -H "Cookie: $K" http://127.0.0.1:12400/api/characters | python3 -c "import json,sys; assert json.load(sys.stdin)[0]['id']=='buddy'"
+          kill $pid; cat "$RUNNER_TEMP/server.log"
+      - name: Every private file is git-ignored (one by one)
+        run: |
+          python3 -c "import buddy_server as b; print('\n'.join(b.PRIVATE_FILES))" > "$RUNNER_TEMP/private.txt"
+          printf '%s\n' my-characters/x.json .media/x.png .bin/tinfoil-proxy .bin/buddy-tailnet .tailnet/tailscaled.state .update.flock >> "$RUNNER_TEMP/private.txt"
+          while read -r f; do git check-ignore -q --no-index "$f" || { echo "NOT IGNORED: $f"; exit 1; }; done < "$RUNNER_TEMP/private.txt"
+      - name: Shell scripts parse
+        run: for f in scripts/*.sh app/build.sh; do zsh -n "$f" || exit 1; done
+      - name: JavaScript parses
+        run: |
+          node --check web/sw.js
+          node --check web/pcm-tap.js
+          python3 - <<'PY'
+          import re, subprocess, os
+          html = open("web/chat.html").read()
+          js = re.search(r"<script>(.*)</script>", html, re.S).group(1)
+          p = os.path.join(os.environ["RUNNER_TEMP"], "phone.js"); open(p, "w").write(js)
+          subprocess.run(["node", "--check", p], check=True)
+          PY
+  tailnet:
+    # Buddy's own Tailscale part: its tests (against Tailscale's test control server, all on this machine), and the
+    # Apple-silicon build, whose checksum is printed so anyone can compare it with theirs (the build is reproducible).
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: app/tailnet/go.mod
+          cache-dependency-path: app/tailnet/go.sum
+      - name: Vet and test
+        working-directory: app/tailnet
+        run: go vet ./... && go test -count=1 ./...
+      - name: Build for Apple silicon
+        working-directory: app/tailnet
+        run: |
+          CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -trimpath -buildvcs=false -ldflags="-s -w" -o "$RUNNER_TEMP/buddy-tailnet" .
+          go version; sha256sum "$RUNNER_TEMP/buddy-tailnet"
