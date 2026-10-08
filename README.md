@@ -101,7 +101,9 @@ do. Keep them in a folder that isn't synced, or use end-to-end encrypted sync wh
 Settings (Memory); if your sync is end-to-end encrypted, tell it so there.
 
 ## Your phone (iPhone / iPad)
-The phone app is served by your Mac over your private Tailscale network (free). Your phone needs the Tailscale app;
+The phone app is served by your Mac over your private Tailscale network (free), so it works wherever you are as long
+as your Mac is on, awake and online (System Settings → Battery → Options: prevent sleeping when the display is off,
+on power). Your phone needs the Tailscale app;
 the Mac doesn't, when Buddy has its built-in phone access (for now: install [Go](https://go.dev/dl/) once, then run
 `zsh ~/BuddyFace/scripts/build_tailnet.sh` in Terminal; the coming one-file download will have it built in):
 1. On the Mac: Buddy → ⚙︎ → **Phone access** → **Turn on**, then **Sign in to Tailscale** (makes a free account if you
