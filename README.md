@@ -8,6 +8,35 @@ phone, and can text you first.
 It's built so that **nobody can read your conversations**: the AI runs inside confidential-computing enclaves
 (Tinfoil, Phala), and everything else stays on your Mac.
 
+## Install
+
+**You need:** a Mac with Apple silicon (M1 or newer, macOS 13+). Optional: an iPhone or iPad.
+
+**1. Get a Tinfoil API key** (the AI's private enclaves; pay as you go, the only account Buddy needs):
+[tinfoil.sh](https://tinfoil.sh) → Get Started → Dashboard → Private Inference → API Keys
+([how-to](https://docs.tinfoil.sh/get-api-key)).
+
+**2. Install Buddy on your Mac.** Open Terminal (⌘ Space, type "Terminal") and paste:
+```bash
+git clone https://github.com/abyyworld/buddy.git ~/BuddyFace && zsh ~/BuddyFace/app/build.sh && open ~/Applications/Buddy.app
+```
+If a window asks to install the "command line developer tools", click **Install**, wait for it to finish, then paste
+the line again. Buddy appears in the menu bar (two speech bubbles); paste your Tinfoil key into its welcome screen
+(kept only on this Mac, readable only by you) and allow the microphone once.
+
+**3. Optional: your phone or iPad.** Install [Tailscale for iPhone/iPad](https://apps.apple.com/app/tailscale/id1470499037) (free), then follow
+[Your phone](#your-phone-iphone--ipad) below. Buddy runs on your phone as a Home Screen app from Safari; there's
+nothing else to install.
+
+**Optional extras:** [Obsidian](https://obsidian.md) to write the notes Buddy remembers (open `~/Buddy` as a vault);
+[Draw Things](https://apps.apple.com/app/draw-things-offline-ai-art/id6444050820) (free) for your characters' pictures, made on your Mac; a [Phala](https://phala.com) key if you
+want Companion fully uncensored (Settings → Brain).
+
+**Updates are automatic** on the Mac (or menu bar → Check for Updates…), and the phone app updates along with it.
+Buddy must stay a `git clone` in `~/BuddyFace`: that's where the app looks, and how it updates (a downloaded ZIP won't).
+(A one-file download is coming.) Keys can also be set from Terminal:
+`read -rs "K?Paste Tinfoil key: " && BUDDY_KEY="$K" python3 ~/BuddyFace/set_tinfoil_key.py; unset K`.
+
 ## What it does
 - **Talk or type.** Tap the mic and speak; it sends when you stop. Replies are spoken out loud in the character's voice.
 - **Call them.** Tap the phone button for a live, hands-free voice call: just talk, they answer out loud almost at
@@ -71,37 +100,16 @@ do. Keep them in a folder that isn't synced, or use end-to-end encrypted sync wh
 (also on top of Dropbox), Obsidian Sync, or iCloud with Advanced Data Protection. Buddy checks this and warns you in
 Settings (Memory); if your sync is end-to-end encrypted, tell it so there.
 
-## Requirements
-- A Mac with Apple silicon, macOS 13 or later
-- A [Tinfoil](https://tinfoil.sh) account and API key. That's the only account Buddy needs: Tinfoil's verifying proxy
-  now comes inside Buddy (no separate Tinfoil Proxy app).
-- Optional: a [Phala](https://phala.com) key, only if you want Companion fully uncensored (Settings → Brain)
-- Optional: your notes. Buddy uses `~/Buddy` (it makes it on first run); point Obsidian at it if you like
-- Optional, for the phone/iPad: [Tailscale](https://tailscale.com) (see below)
-
-## Install (Mac)
-For now Buddy is installed from this repo with `git` (a one-file download is coming). It must be a `git clone` into
-`~/BuddyFace` (that's where the app looks, and how it updates; a downloaded ZIP won't update). You need the Xcode
-Command Line Tools (`xcode-select --install`), which include git and Python 3:
-```bash
-git clone https://github.com/abyyworld/buddy.git ~/BuddyFace && cd ~/BuddyFace
-zsh app/build.sh                    # builds ~/Applications/Buddy.app and fetches Tinfoil's verifying proxy (pinned)
-open ~/Applications/Buddy.app
-```
-Buddy lives in the menu bar (two speech bubbles). The first time, it asks for your Tinfoil key (paste it into its
-welcome screen; it's kept only on this Mac, readable only by you). macOS asks once for the microphone.
-(You can also set keys from Terminal: `read -rs "K?Paste Tinfoil key: " && BUDDY_KEY="$K" python3 set_tinfoil_key.py; unset K`.)
-
 ## Your phone (iPhone / iPad)
 The phone app is served by your Mac over your private Tailscale network (free). Your phone needs the Tailscale app;
-the Mac doesn't, when Buddy has its built-in phone access (for now: install Go once from go.dev/dl, then run
-`zsh ~/BuddyFace/scripts/build_tailnet.sh`; the coming one-file download will have it built in):
+the Mac doesn't, when Buddy has its built-in phone access (for now: install [Go](https://go.dev/dl/) once, then run
+`zsh ~/BuddyFace/scripts/build_tailnet.sh` in Terminal; the coming one-file download will have it built in):
 1. On the Mac: Buddy → ⚙︎ → **Phone access** → **Turn on**, then **Sign in to Tailscale** (makes a free account if you
    don't have one). If it says so, turn on HTTPS certificates in Tailscale's DNS settings (the link is right there).
    Buddy is now a device called `buddy` on your tailnet; only your own devices can reach it.
    (Without the built-in part: install Tailscale on the Mac, give the Mac a neutral name, and run
    `/Applications/Tailscale.app/Contents/MacOS/Tailscale serve --bg 12400` once.)
-2. Install Tailscale on the phone and sign in with the same account.
+2. Install [Tailscale](https://apps.apple.com/app/tailscale/id1470499037) on the phone or iPad and sign in with the same account.
 3. On the Mac: ⚙︎ → **Pair a phone**. It shows a code and a QR code with the phone's address
    (`https://buddy.<tailnet>.ts.net/phone`).
 4. Open that address in Safari on the phone, Share → **Add to Home Screen**, open Buddy from the Home Screen and type
@@ -115,7 +123,7 @@ The phone app updates itself whenever your Mac does.
 ## Photos
 Pictures are only ever made privately, in this order: an image model in Tinfoil's enclave, an image model in Phala's
 enclave (`is_tee` only), or an image app on your own Mac. Buddy checks which one is available by itself. If neither
-enclave offers an image model on your account, use an app on your Mac, for example **Draw Things** (free, Mac App Store):
+enclave offers an image model on your account, use an app on your Mac, for example [**Draw Things**](https://apps.apple.com/app/draw-things-offline-ai-art/id6444050820) (free, Mac App Store):
 open it, pick a model, and turn on its **HTTP API server** (port 7860). Nothing leaves your Mac that way. Characters'
 looks are always original fictional adults, never real people. Photos are stored in `.media/` (git-ignored, only
 readable by you).
