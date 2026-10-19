@@ -1,0 +1,38 @@
+# Buddy's sync relay on your own Cloudflare account (free plan). Deploy with: zsh relay/deploy.sh (README.md).
+name = "buddy-relay"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+workers_dev = true          # https://buddy-relay.<your subdomain>.workers.dev (or add a custom domain in Cloudflare)
+preview_urls = false
+send_metrics = false        # (wrangler's own usage reports)
+
+# No logs: Workers observability (Workers Logs) and Logpush stay off, and the code never logs.
+logpush = false
+[observability]
+enabled = false
+
+[[durable_objects.bindings]]
+name = "ACCOUNTS"
+class_name = "Account"
+
+[[durable_objects.bindings]]
+name = "MAILBOXES"
+class_name = "Mailbox"
+
+[[durable_objects.bindings]]
+name = "GATES"
+class_name = "Gate"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Account", "Mailbox", "Gate"]
+
+[[r2_buckets]]
+binding = "BLOBS"
+bucket_name = "buddy-relay-blobs"
+
+[vars]
+# The website allowed to use this relay from a browser (CORS). Other sites' pages get 403; apps without an Origin work.
+ALLOWED_ORIGINS = "https://abyyworld.github.io"
+# Quotas per account (optional): QUOTA_RECORDS, QUOTA_RECORD_BYTES, QUOTA_BLOB_BYTES, QUOTA_DEVICES.
+# The INVITE secret is set by deploy.sh (wrangler secret put INVITE), never here.

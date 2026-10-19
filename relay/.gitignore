@@ -1,0 +1,5 @@
+# the relay's own secrets (deploy.sh keeps the invite secret here, 0600) and tool output: never committed
+.secrets/
+node_modules/
+.wrangler/
+.dev.vars

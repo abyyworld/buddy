@@ -3,18 +3,23 @@
 name: Mac build check
 on:
   push:
-    paths: ["app/**", "**.py", "scripts/**", "web/**.js", "web/**.html", ".github/workflows/**"]
+    paths: ["app/**", "**.py", "scripts/**", "web/**.js", "web/**.mjs", "web/**.html", "tests/**", "scripts/vendor/**",
+            "relay/**", ".github/workflows/**"]
   workflow_dispatch:
 jobs:
   build:
     runs-on: macos-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Compile Buddy.app
         run: HOME="$RUNNER_TEMP" zsh app/build.sh
       - name: Python compiles
-        run: python3 -m py_compile buddy_server.py characters.py images.py social.py memory.py devices.py localcheck.py tinfoilproxy.py tailnet.py scripts/migrate_local.py set_tinfoil_key.py set_phala_key.py
+        run: python3 -m py_compile buddy_server.py backup.py billing.py characters.py edition.py facts.py images.py kitparts.py lives.py recovery.py social.py memory.py devices.py localcheck.py tinfoilproxy.py tailnet.py near.py scripts/migrate_local.py set_tinfoil_key.py set_phala_key.py set_near_key.py tests/*.py tests/phonemode/*.py tests/phonemode/integration/*.py relay/ref.py relay/tests/ref_harness.py
+      - name: Backups encrypt, decrypt and catch tampering (fake data in temp folders)
+        run: |
+          python3 -m venv "$RUNNER_TEMP/bk" && "$RUNNER_TEMP/bk/bin/pip" install -q cryptography
+          "$RUNNER_TEMP/bk/bin/python" backup.py --selftest
       - name: Tinfoil's verifying proxy was fetched and matches its pinned checksum
         run: |
           zsh scripts/fetch_tinfoil_proxy.sh | tee "$RUNNER_TEMP/fetch.txt"
@@ -30,18 +35,35 @@ jobs:
           K="buddy=$(cat .mac_token)"
           curl -sf -H "Cookie: $K" http://127.0.0.1:12400/api/status | python3 -c "import json,sys; s=json.load(sys.stdin); assert 'memory' in s, s"
           curl -sf -H "Cookie: $K" http://127.0.0.1:12400/api/characters | python3 -c "import json,sys; assert json.load(sys.stdin)[0]['id']=='buddy'"
+          curl -sf -H "Cookie: $K" http://127.0.0.1:12400/api/backup | python3 -c "import json,sys; s=json.load(sys.stdin); assert 'available' in s and 'key' not in s and not s['on'], s"
           kill $pid; cat "$RUNNER_TEMP/server.log"
+      - name: Tests (fake or recorded data only; no keys)
+        run: |
+          # cryptography, then (a separate run: hash mode covers a whole pip run) the pinned, hash-checked dcap-qvl
+          python3 -m venv "$RUNNER_TEMP/tv"
+          "$RUNNER_TEMP/tv/bin/pip" install -q --disable-pip-version-check cryptography
+          "$RUNNER_TEMP/tv/bin/pip" install -q --disable-pip-version-check --only-binary=:all: --require-hashes -r scripts/near-requirements.txt
+          # NEAR's real recorded answers from teep's tests (AGPL test data, used in place, never copied into Buddy)
+          git clone -q --filter=blob:none --no-checkout https://github.com/13rac1/teep "$RUNNER_TEMP/teep"
+          git -C "$RUNNER_TEMP/teep" sparse-checkout set --no-cone '/internal/integration/testdata/nearcloud_*' '/internal/integration/testdata/neardirect_*'
+          git -C "$RUNNER_TEMP/teep" checkout -q d9f59d8
+          mkdir -p "$RUNNER_TEMP/testhome"
+          HOME="$RUNNER_TEMP/testhome" BUDDY_NEAR_FIXTURES="$RUNNER_TEMP/teep" "$RUNNER_TEMP/tv/bin/python" -m unittest discover -s tests -v
       - name: Every private file is git-ignored (one by one)
         run: |
           python3 -c "import buddy_server as b; print('\n'.join(b.PRIVATE_FILES))" > "$RUNNER_TEMP/private.txt"
-          printf '%s\n' my-characters/x.json .media/x.png .bin/tinfoil-proxy .bin/buddy-tailnet .tailnet/tailscaled.state .update.flock >> "$RUNNER_TEMP/private.txt"
+          printf '%s\n' my-characters/x.json .media/x.png .media/x.v.jpg .bin/tinfoil-proxy .bin/buddy-tailnet .tailnet/tailscaled.state .update.flock .restore/plan.json relay/.secrets/invite.key relay/node_modules/x relay/.wrangler/x relay/.dev.vars >> "$RUNNER_TEMP/private.txt"
           while read -r f; do git check-ignore -q --no-index "$f" || { echo "NOT IGNORED: $f"; exit 1; }; done < "$RUNNER_TEMP/private.txt"
       - name: Shell scripts parse
-        run: for f in scripts/*.sh app/build.sh; do zsh -n "$f" || exit 1; done
+        run: for f in scripts/*.sh app/build.sh relay/deploy.sh; do zsh -n "$f" || exit 1; done
       - name: JavaScript parses
         run: |
           node --check web/sw.js
           node --check web/pcm-tap.js
+          node --check web/direct.js
+          node --check web/vendor/tinfoil.mjs
+          node --check tests/phonemode/unit_seam.mjs
+          for f in relay/*.js relay/*.mjs relay/tests/*.mjs relay/tests/*.js; do node --check "$f" || exit 1; done
           python3 - <<'PY'
           import re, subprocess, os
           html = open("web/chat.html").read()
@@ -49,6 +71,132 @@ jobs:
           p = os.path.join(os.environ["RUNNER_TEMP"], "phone.js"); open(p, "w").write(js)
           subprocess.run(["node", "--check", p], check=True)
           PY
+      - name: "Phone mode: pinned SDK, adult rule, no test hooks, key hygiene"
+        run: |
+          head -1 web/vendor/tinfoil.mjs | grep -q '^// tinfoil@1.2.1 '
+          (cd web/vendor && shasum -a 256 -c tinfoil.mjs.sha256)
+          sh scripts/build_tinfoil_js.sh --check
+          node tests/phonemode/sdk_selfcheck.mjs
+          grep -q 'You are an adult.' web/direct.js
+          if grep -nE '__FAKE|__TEST|testHook' web/direct.js web/sw.js web/chat.html; then exit 1; fi
+          python3 -c "import buddy_server as b; assert 'https://inference.tinfoil.sh' in b.Handler.PHONE_CSP and 'https://atc.tinfoil.sh' in b.Handler.PHONE_CSP and 'tinfoil' not in b.Handler.CSP"
+          # no page code renders HTML from data (the real protection of the key in the page)
+          if grep -nE 'innerHTML|outerHTML|insertAdjacentHTML|document\.write|srcdoc' web/chat.html web/direct.js; then exit 1; fi
+          # Tinfoil is reached only through the SDK: one host string (ENCLAVE_URL), one client().fetch call (inside tinfoil()),
+          # no plain fetch to it, no console output, one IndexedDB opener, localStorage only for the content-free wipe marker
+          test "$(grep -o 'tinfoil\.sh' web/direct.js | wc -l)" -eq 1
+          test "$(grep -o 'client()\.fetch(' web/direct.js | wc -l)" -eq 1
+          test "$(grep -o 'indexedDB\.open(' web/direct.js | wc -l)" -eq 1
+          if grep -nE 'console\.|fetch\([^)]*tinfoil' web/direct.js; then exit 1; fi
+          if grep -n 'localStorage' web/direct.js | grep -v 'buddy\.wipe'; then exit 1; fi
+      - name: "Phone mode: JS tests"
+        run: |
+          node tests/phonemode/unit_direct.mjs
+          node tests/phonemode/unit_seam.mjs
+  solo:
+    # Buddy for phones' own code (web/solo/*: the site's engine, storage, characters, facts and learning, lives, edition
+    # and keys): it never reaches the Mac's /phone, keeps its key hygiene, and its ports match the Python. Fake data and
+    # keys made in the tests.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: JavaScript parses
+        run: for f in web/solo/*.js tests/solo/*.mjs tests/solo/e2e/*.mjs; do node --check "$f" || exit 1; done
+      - name: "The Mac's /phone never loads web/solo/; the site's key hygiene"
+        run: |
+          # the page the Mac serves at /phone (chat.html) and its service worker never name web/solo/; nor does the shell list
+          if grep -n 'solo/' web/chat.html web/sw.js; then exit 1; fi
+          python -c "import buddy_server as b; assert not any('solo' in f for f in b.SHELL_FILES), b.SHELL_FILES"
+          # one IndexedDB opener (store.js), no console, eval or test hooks, no HTML sinks, localStorage only for the
+          # content-free wipe marker, no host in the code (Tinfoil is reached only through direct.js's SDK)
+          test "$(cat web/solo/*.js | grep -o 'indexedDB\.open(' | wc -l)" -eq 1 && grep -q 'indexedDB\.open(' web/solo/store.js
+          if grep -nE 'console\.|eval\(|new Function|__FAKE|__TEST|testHook' web/solo/*.js; then exit 1; fi
+          if grep -nE 'innerHTML|outerHTML|insertAdjacentHTML|document\.write|srcdoc' web/solo/*.js; then exit 1; fi
+          if grep -n 'localStorage' web/solo/*.js | grep -v 'buddy\.site\.wipe'; then exit 1; fi
+          if grep -nE 'https?://' web/solo/*.js; then exit 1; fi
+          grep -q 'const PUBLIC = true;' web/solo/edition.js   # (the site is always the public edition: a constant, never data)
+          # learning, lives and texts first reach the network only through direct.js (Tinfoil, verified): no fetch of
+          # their own; the engine's one fetch reads the site's own files (kit.json, version.json)
+          if grep -n 'fetch(' web/solo/facts.js web/solo/life.js; then exit 1; fi
+          test "$(grep -c 'root\.fetch(' web/solo/engine.js)" -eq 1
+      - name: Storage, engine and parity tests (fake data and keys)
+        run: |
+          python -m venv "$RUNNER_TEMP/sv" && "$RUNNER_TEMP/sv/bin/pip" install -q --disable-pip-version-check cryptography
+          export PYTHON="$RUNNER_TEMP/sv/bin/python"
+          node tests/solo/unit_store.mjs
+          node tests/solo/unit_engine.mjs
+          node tests/solo/unit_life.mjs
+          mkdir -p "$RUNNER_TEMP/home" && HOME="$RUNNER_TEMP/home" "$PYTHON" -B -m unittest tests.test_solo_parity tests.test_solo_lives -v
+  site:
+    # Buddy for phones' website (scripts/build_pages.py, web/sw-site.js, web/site.js, publish.sh's site signing,
+    # scripts/check_site.sh, pages.yml): built from the public copy with test keys the tests make, on the oldest Python
+    # Buddy supports. Temp folders and local bare repos only; nothing is published.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: zsh (publish.sh is a zsh script)
+        run: sudo apt-get install -y -qq zsh > /dev/null
+      - name: "Site code parses; no HTML sinks, eval, console output, test hooks or web storage in it"
+        run: |
+          for f in web/sw-site.js web/site.js web/vendor/ed25519.js tests/site/*.mjs tests/site/e2e/*.mjs; do node --check "$f" || exit 1; done
+          python -m py_compile scripts/build_pages.py tests/test_pages_build.py
+          if grep -nE 'innerHTML|outerHTML|insertAdjacentHTML|document\.write|srcdoc|eval\(|new Function' web/sw-site.js web/site.js; then exit 1; fi
+          if grep -nE 'console\.|__FAKE|__TEST|testHook|localStorage' web/sw-site.js web/site.js; then exit 1; fi
+          test "$(grep -o 'indexedDB\.open(' web/sw-site.js | wc -l)" -eq 1
+          if grep -n 'indexedDB' web/site.js; then exit 1; fi
+          (cd web/vendor && sha256sum -c ed25519.js.sha256)
+      - name: The pinned noble-ed25519 rebuilds bit for bit from its npm tarball
+        run: sh scripts/build_ed25519_js.sh --check
+      - name: Site build, publish.sh's site signing and check_site.sh (Python 3.9)
+        run: mkdir -p "$RUNNER_TEMP/home" && HOME="$RUNNER_TEMP/home" python -B -m unittest tests.test_pages_build -v
+      - name: The site's service worker (signatures, versions, hashes, the relay in the CSP, headers)
+        run: HOME="$RUNNER_TEMP/home" BUDDY_PYTHON=python node tests/site/unit_sw.mjs
+  relay:
+    # Buddy for phones' sync relay (relay/): the protocol tests against the stdlib reference relay, on the oldest
+    # Python Buddy supports. Random keys and invented records in temp folders only.
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Relay protocol tests (ref.py)
+        run: node relay/tests/run.mjs --target ref --python python
+  relay-worker:
+    # The same tests against the Cloudflare Worker in `wrangler dev` (Cloudflare's runtime, workerd, on the runner:
+    # Durable Objects + R2 on disk; no account, nothing deployed). Only when run by hand (Actions → Run workflow),
+    # since it installs wrangler from npm (exact versions and hashes from relay/package-lock.json, no install scripts).
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install wrangler (pinned)
+        working-directory: relay
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Relay protocol tests (the Worker)
+        run: node relay/tests/run.mjs --target worker
   tailnet:
     # Buddy's own Tailscale part: its tests (against Tailscale's test control server, all on this machine), and the
     # Apple-silicon build, whose checksum is printed so anyone can compare it with theirs (the build is reproducible).
@@ -68,3 +216,31 @@ jobs:
         run: |
           CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -trimpath -buildvcs=false -ldflags="-s -w" -o "$RUNNER_TEMP/buddy-tailnet" .
           go version; sha256sum "$RUNNER_TEMP/buddy-tailnet"
+  phone-e2e:
+    # Phone mode end to end in Chromium against a fake Mac and a fake Tinfoil SDK (tests/phonemode/e2e), and Buddy for
+    # phones' site (tests/site/e2e: the shell with the real engine, and the whole built site with the fake SDK). Only
+    # when started by hand (Actions -> Mac build check -> Run workflow): it downloads Playwright and a browser.
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Playwright suite (fake data, fake key)
+        run: npm i -g playwright@1.56.1 && npx playwright install --with-deps chromium && NODE_PATH="$(npm root -g)" node tests/phonemode/e2e/run.mjs
+      - name: "Buddy for phones: the site shell under / and /buddy/ (install, offline, signed updates only, never in a call)"
+        run: sudo apt-get install -y -qq zsh > /dev/null && NODE_PATH="$(npm root -g)" node tests/site/e2e/shell.mjs
+      - name: "Buddy for phones: the built, test-signed site end to end (gate, install, key, chat, a character, offline, Update now)"
+        run: NODE_PATH="$(npm root -g)" node tests/site/e2e/built.mjs
+  solo-e2e:
+    # Buddy for phones end to end in Chromium: a stand-in for the site (tests/solo/site.mjs, its CSP, under /buddy/) and
+    # the fake Tinfoil SDK; no Mac. Only when started by hand (it downloads Playwright and a browser).
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Playwright suite (fake data, fake key)
+        run: npm i -g playwright@1.56.1 && npx playwright install --with-deps chromium && NODE_PATH="$(npm root -g)" node tests/solo/e2e/run.mjs

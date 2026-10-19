@@ -1,0 +1,162 @@
+{
+ "about": "Recovery key vectors (SPEC3 §7.1/§7.8) for recovery.py and its JS port: the backup tag's texts and HKDF outputs were made by backup.py before the split (so every existing backup key still parses), the sync tag's by recovery.py. Fixed test keys only.",
+ "tags": {
+  "backup": "buddy recovery key",
+  "sync": "buddy sync key"
+ },
+ "errors": {
+  "INCOMPLETE": "That recovery key isn't complete: it has 14 groups of 4 letters and numbers.",
+  "TYPO": "That recovery key has a typo somewhere. Check each group.",
+  "NOT_SYNC": "That's a backup recovery key, not a sync key.",
+  "NOT_BACKUP": "That's a sync recovery key, not a backup key."
+ },
+ "texts": [
+  {
+   "name": "zeros",
+   "key": "0000000000000000000000000000000000000000000000000000000000000000",
+   "backup": "0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-000F-63D3",
+   "sync": "0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0000-0005-MJ41"
+  },
+  {
+   "name": "counting",
+   "key": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+   "backup": "000G-40R4-0M30-E209-185G-R38E-1W81-24GK-2GAH-C5RR-34D1-P70X-3RFX-SJ6T",
+   "sync": "000G-40R4-0M30-E209-185G-R38E-1W81-24GK-2GAH-C5RR-34D1-P70X-3RFX-14JQ"
+  },
+  {
+   "name": "ones",
+   "key": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+   "backup": "ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZJ-N5BH",
+   "sync": "ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZV-Z7AZ"
+  },
+  {
+   "name": "hashed",
+   "key": "90f7021b4024d6d8c4ff9d18c61a895307811b315939db783aa36f3c1fa803ce",
+   "backup": "J3VG-46T0-4KBD-HH7Z-KMCC-C6M9-AC3R-26SH-B4WX-PY1T-MDQK-R7X8-0F72-BE9P",
+   "sync": "J3VG-46T0-4KBD-HH7Z-KMCC-C6M9-AC3R-26SH-B4WX-PY1T-MDQK-R7X8-0F7B-JE75"
+  }
+ ],
+ "parse": [
+  {
+   "text": "000G-40R4-0M30-E209-185G-R38E-1W81-24GK-2GAH-C5RR-34D1-P70X-3RFX-SJ6T",
+   "tag": "backup",
+   "key": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+  },
+  {
+   "text": "000G-40R4-0M30-E209-185G-R38E-1W81-24GK-2GAH-C5RR-34D1-P70X-3RFX-14JQ",
+   "tag": "sync",
+   "key": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+  },
+  {
+   "text": "000g 40r4 0m30 e209 185g r38e 1w81 24gk 2gah c5rr 34d1 p70x 3rfx 14jq",
+   "tag": "sync",
+   "key": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+  },
+  {
+   "text": "000G.40R4.0M30.E209.185G.R38E.1W81.24GK.2GAH.C5RR.34D1.P70X.3RFX.14JQ",
+   "tag": "sync",
+   "key": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+  },
+  {
+   "text": "\t000G40R40M30E209185GR38E1W8124GK2GAHC5RR34D1P70X3RFX14JQ\n",
+   "tag": "sync",
+   "key": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+  },
+  {
+   "text": "000G-40R4-0M30-E209-185G-R38E-1W81-24GK-2GAH-C5RR-34D1-P70X-3RFX-SJ6T",
+   "tag": "sync",
+   "error": "NOT_SYNC"
+  },
+  {
+   "text": "000G-40R4-0M30-E209-185G-R38E-1W81-24GK-2GAH-C5RR-34D1-P70X-3RFX-14JQ",
+   "tag": "backup",
+   "error": "NOT_BACKUP"
+  },
+  {
+   "text": "000G40R40M10E209185GR38E1W8124GK2GAHC5RR34D1P70X3RFX14JQ",
+   "tag": "sync",
+   "error": "TYPO"
+  },
+  {
+   "text": "000G40R40M10E209185GR38E1W8124GK2GAHC5RR34D1P70X3RFX14JQ",
+   "tag": "backup",
+   "error": "TYPO"
+  },
+  {
+   "text": "000G-40R4-0M30-E209-185G-R38E-1W81-24GK-2GAH-C5RR-34D1-P70X-3RFX",
+   "tag": "sync",
+   "error": "INCOMPLETE"
+  },
+  {
+   "text": "000G-40R4-0M30-E209-185G-R38E-1W81-24GK-2GAH-C5RR-34D1-P70X-3RFX-14JU",
+   "tag": "sync",
+   "error": "INCOMPLETE"
+  },
+  {
+   "text": "000G-40R4-0M30-E209-185G-R38E-1W81-24GK-2GAH-C5RR-34D1-P70X-3RFX-14JQ-0000",
+   "tag": "sync",
+   "error": "INCOMPLETE"
+  },
+  {
+   "text": "",
+   "tag": "backup",
+   "error": "INCOMPLETE"
+  },
+  {
+   "text": "oooo-oooo-oooo-oooo-oooo-oooo-oooo-oooo-oooo-oooo-oooo-oooo-ooo5-MJ4I",
+   "tag": "sync",
+   "key": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+ ],
+ "hkdf": [
+  {
+   "ikm": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+   "info": "",
+   "n": 42,
+   "out": "8da4e775a563c18f715f802a063c5a31b8a11f5c5ee1879ec3454e5f3c738d2d9d201395faa4b61a96c8",
+   "about": "RFC 5869 A.3"
+  },
+  {
+   "ikm": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+   "info": "buddy-sync v1 admin",
+   "n": 32,
+   "out": "ea55b0a34d325c403ebb916178c34705703b6cd07eacfe0e22c5d6673b8311da"
+  },
+  {
+   "ikm": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+   "info": "buddy-sync v1 data",
+   "n": 32,
+   "out": "7d76c101c8be024e7f4ce1a7818650cd92625960c8eb3ccc959ad3d2b44d04b6"
+  },
+  {
+   "ikm": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+   "info": "buddy-sync v1 names",
+   "n": 32,
+   "out": "5bae10b6da8d07fad91346857e2d68443fc00fdb21f11b7920e01f7d4490c878"
+  },
+  {
+   "ikm": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+   "info": "buddy-sync v1 file",
+   "n": 32,
+   "out": "83387376389c82c336b10c938d4106c7eded9835b6eb19ddd20e1b70023f5c62"
+  },
+  {
+   "ikm": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+   "info": "buddy-sync v1 key-id",
+   "n": 8,
+   "out": "c3fa873a8df73ff0"
+  },
+  {
+   "ikm": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+   "info": "buddy-backup v1 key-id",
+   "n": 8,
+   "out": "02f133a0ff02cea3"
+  },
+  {
+   "ikm": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+   "info": "buddy-backup v1 wrap",
+   "n": 32,
+   "out": "b900c24b6f18428d84ef57042d992ff9e74c987d0522bc6cec6e985d320d7b6a"
+  }
+ ]
+}

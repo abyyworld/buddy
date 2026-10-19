@@ -4,9 +4,14 @@
   "memory_snippets": 5,
   "name": "Buddy",
   "save_chats": true,
+  "learn_facts": true,
   "voice": "casual_male",
   "proactive": true,
+  "lives": true,
+  "life_texts": "some",
   "quiet_from": 23.0,
   "quiet_until": 8.5,
-  "proactive_mode": "advisor"
+  "proactive_mode": "advisor",
+  "pictures": "local",
+  "see_photos": true
 }

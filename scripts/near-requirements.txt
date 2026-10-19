@@ -1,0 +1,7 @@
+# NEAR picture checker: Intel TDX quote verification (Phala-Network/dcap-qvl, MIT). Pinned and hash-checked; no dependencies.
+# Installed by scripts/deps.sh only once you've added a NEAR AI key. Wheels only: macOS arm64, macOS x86_64, Linux x86_64
+# (tests/CI). 0.6.3 = 2026-08-31; bump deliberately after reading the diff (hashes from PyPI's own listing).
+dcap-qvl==0.6.3 \
+    --hash=sha256:1a16bb8b9eb21f27e10f1886735367da82ca80e334e38ea8df4c0d80c1211373 \
+    --hash=sha256:993f7bc59e6cb7de0a383f2cd9b99f1f151f9d399a70783cfc8bc886318fdbfd \
+    --hash=sha256:3ac72a0ef2eb7e591ac66646b3899a0e008a46bf743d07716c34d7540214c295

@@ -1,14 +1,21 @@
 # ---- NEVER commit: secrets and personal data ----
 .tinfoil_key
 .phala_key
+.near_key
+.cloudflare_key
 .vapid.json
 .push_subs.json
 .mac_token
 .devices.json
+.backup_key
+.backup_state.json
+.restore/
 .thread.json
 .thread.json.tmp
 .memory_index.json
 .memory_index.json.tmp
+.facts_state.json
+.gens.json
 *.key
 .env
 
@@ -21,6 +28,8 @@ web/models/previews/
 voice-samples/
 app/*.app
 .DS_Store
+scripts/vendor/tinfoil/node_modules/
+scripts/vendor/tinfoil/out/
 
 # ---- your own settings (override the shipped defaults; updates never touch them) ----
 config.local.json

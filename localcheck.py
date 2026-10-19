@@ -99,12 +99,15 @@ def opener():
     """For urllib: never through a proxy, and every connection to a helper on this Mac checked as above."""
     return urllib.request.build_opener(urllib.request.ProxyHandler({}), _Handler())
 
+class NotYours(RuntimeError):
+    """No program of yours listens on that port: someone else's does, or (lsof can't tell these apart) nothing at all."""
+
 def check(url):
-    """Raises unless url is remote, or local and served by a program of yours."""
+    """Raises NotYours unless url is remote, or local and served by a program of yours."""
     u = urllib.parse.urlparse(url)
     if _local(u.hostname) and not own_port(u.port or 80):
-        raise RuntimeError(f"the program on this Mac's port {u.port} isn't running as you, so nothing was sent "
-                           "(is the Tinfoil Proxy running?)")
+        raise NotYours(f"the program on this Mac's port {u.port} isn't running as you, so nothing was sent "
+                       "(is the Tinfoil Proxy running?)")
 
 def forget(port):
     """Forgets a "yes" for this port (its program stopped; whatever listens there next is checked again)."""

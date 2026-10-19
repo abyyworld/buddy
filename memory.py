@@ -5,8 +5,8 @@ Two kinds of search, combined:
   only if you happen to run it and Tinfoil isn't set up.
 - keyword search on this Mac (nothing leaves it), so memory always works, even before Tinfoil is set up.
 The index is stored next to Buddy's other private files (.memory_index.json, readable only by you)."""
-import collections, json, math, operator, os, re, threading, time, urllib.request
-import localcheck, tinfoilproxy
+import collections, json, math, operator, os, re, threading, time, urllib.error, urllib.request
+import billing, localcheck, tinfoilproxy
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 VAULT = os.path.expanduser("~/Buddy")
@@ -16,6 +16,8 @@ EMBED_MODEL = "nomic-embed-text"
 SKIP_DIRS = {".obsidian", ".trash", "templates", "skills", "system-prompts", "copilot-custom-prompts"}
 SKIP_ROOT_FILES = {"AGENTS.md", "CLAUDE.md"}      # instruction files for AI coding tools that some vaults contain
 CHUNK = 900
+FACTS = "Buddy knows"      # facts about you per character (facts.py): given only by facts.py, never found by search
+                           # (any case: macOS folders are case-insensitive, so "Buddy Knows" is the same folder)
 
 _lock = threading.Lock()
 _write_lock = threading.Lock()   # one index write at a time (searches don't wait for it)
@@ -45,8 +47,9 @@ def _embed(texts, prefix, timeout=120):
             for i in range(0, len(inp), 64):
                 d = _post(tinfoilproxy.url() + "/embeddings", {"model": EMBED_MODEL, "input": inp[i:i + 64]}, _key(), timeout)["data"]
                 out += [x["embedding"] for x in sorted(d, key=lambda x: x.get("index", 0))]
-            STATE.update(by="tinfoil", error=""); return out
+            STATE.update(by="tinfoil", error=""); billing.worked(); return out
         except Exception as e:
+            if isinstance(e, urllib.error.HTTPError): billing.refused(e)   # (your Tinfoil credits ran out: billing.py)
             STATE["error"] = f"Tinfoil: {type(e).__name__}"
     try:
         out = _post(OLLAMA, {"model": EMBED_MODEL, "input": inp}, timeout=min(timeout, 60))["embeddings"]
@@ -71,16 +74,18 @@ def _chunks(path):
 
 def _vault_files():
     for root, dirs, files in os.walk(VAULT):
-        dirs[:] = [d for d in dirs if d not in SKIP_DIRS and not d.startswith(".")]
+        dirs[:] = [d for d in dirs if d not in SKIP_DIRS and not d.startswith(".")
+                   and not (root == VAULT and d.lower() == FACTS.lower())]
         for f in files:
             if f.endswith(".md") and not (root == VAULT and f in SKIP_ROOT_FILES):
                 yield os.path.join(root, f)
 
 def refresh():
     """Index notes that changed (always, for keyword search) and add meaning vectors whenever the enclave is
-    reachable; notes indexed while it wasn't get their vectors on a later round."""
+    reachable; notes indexed while it wasn't get their vectors on a later round. When a note changes, the parts of it
+    that are still the same keep their vectors: only new text is embedded (a day's saved chat grows all day)."""
     global _index
-    seen, changed, down = set(), 0, False
+    seen, changed, down = set(), 0, billing.paused()   # (credits ran out: keyword index only for now, vectors later)
     for p in _vault_files():
         seen.add(p)
         m = os.path.getmtime(p)
@@ -89,11 +94,20 @@ def refresh():
         if fresh and (down or all(c.get("vec") and e.get("by") == (STATE["by"] or e.get("by")) for c in e["chunks"])):
             continue
         ch = [c["text"] for c in e["chunks"]] if fresh else _chunks(p)
-        vecs, by = [None] * len(ch), None
-        if ch and not down:
-            try: vecs, by = _embed(ch, "search_document: "), STATE["by"]
-            except Exception: down = True                # try again next round; keyword search works meanwhile
-        if fresh and by is None:
+        keep = {}                                      # vectors of text that's still there (made by the same search)
+        if e and e.get("by") and e["by"] == (STATE["by"] or e["by"]):
+            keep = {c["text"]: c["vec"] for c in e["chunks"] if c.get("vec")}
+        vecs, by, got = [keep.get(t) for t in ch], (e["by"] if keep else None), None
+        new = [t for t in dict.fromkeys(ch) if t not in keep]
+        if new and not down:
+            try:
+                made = dict(zip(new, _embed(new, "search_document: ")))
+                if keep and STATE["by"] != by:         # (it just changed between Tinfoil and Ollama: none of those fit)
+                    keep, rest = {}, [t for t in dict.fromkeys(ch) if t not in made]
+                    made.update(zip(rest, _embed(rest, "search_document: ")))
+                vecs, by, got = [made.get(t, keep.get(t)) for t in ch], STATE["by"], made
+            except Exception: down = True              # try again next round; keyword search works meanwhile
+        if fresh and got is None:
             continue
         with _lock:
             _index[p] = {"mtime": m, "by": by, "chunks": [{"text": t, "vec": v} for t, v in zip(ch, vecs)]}
@@ -140,6 +154,8 @@ def _allowed(path, folders, own=None, skip=None):
     own: the character's own chats folder (chats/<id>); old top-level chats belong to Buddy.
     skip: folders kept from the character ("everything except these")."""
     rel = os.path.relpath(path, VAULT).replace(os.sep, "/")
+    if rel.lower().startswith(FACTS.lower() + "/"):   # (never: one character's facts must not reach another one)
+        return False
     if rel.startswith("chats/"):
         legacy = own == "chats/buddy" and rel.count("/") == 1
         if not (own and rel.startswith(own + "/")) and not legacy:
@@ -234,7 +250,7 @@ def folders():
     """Top-level note folders (names only) that can be given to characters."""
     try:
         return sorted(d for d in os.listdir(VAULT) if os.path.isdir(os.path.join(VAULT, d))
-                      and d not in SKIP_DIRS and d != "chats" and not d.startswith("."))   # chats: per character
+                      and d not in SKIP_DIRS and d != "chats" and d.lower() != FACTS.lower() and not d.startswith("."))
     except OSError:
         return []
 
@@ -249,6 +265,35 @@ def forget_chats(cid):
             _index.pop(p, None); _tokens.pop(p, None)
     if gone:
         _write()
+
+def coverage(folders=None, own=None, skip=None, avoid=None):
+    """How much of your notes a character can read, as counts only (never what's in them):
+    {"folders": {name: [notes, readable]}, "root": [notes, readable], "avoided": n, "own_chats": n}."""
+    banned = avoid_pattern(avoid)
+    out = {"folders": {}, "root": [0, 0], "avoided": 0, "own_chats": 0}
+    with _lock:
+        for p, e in _index.items():
+            rel = os.path.relpath(p, VAULT).replace(os.sep, "/")
+            if rel.startswith("chats/"):
+                out["own_chats"] += bool(_allowed(p, folders, own, skip))
+                continue
+            if rel.lower().startswith(FACTS.lower() + "/"):
+                continue
+            slot = out["folders"].setdefault(rel.split("/")[0], [0, 0]) if "/" in rel else out["root"]
+            slot[0] += 1
+            if _allowed(p, folders, own, skip):
+                if _banned_note(p, e, banned): out["avoided"] += 1
+                else: slot[1] += 1
+    return out
+
+def forget_path(p):
+    """Drops one note from the index at once (a saved chat you deleted)."""
+    with _lock:
+        hit = _index.pop(p, None) is not None
+        _tokens.pop(p, None)
+    if hit:
+        _write()
+    return hit
 
 def stats():
     with _lock:

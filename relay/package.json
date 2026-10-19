@@ -1,0 +1,12 @@
+{
+  "name": "buddy-relay",
+  "private": true,
+  "type": "module",
+  "description": "Buddy's end-to-end encrypted sync relay (Cloudflare Worker + Durable Objects + R2). wrangler is only for deploying and for the Worker tests.",
+  "scripts": {
+    "test": "node tests/run.mjs --target all"
+  },
+  "devDependencies": {
+    "wrangler": "4.136.3"
+  }
+}

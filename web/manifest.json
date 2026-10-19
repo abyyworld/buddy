@@ -1,7 +1,7 @@
 {
   "name": "Buddy",
   "short_name": "Buddy",
-  "description": "Your private AI characters, running on your own Mac.",
+  "description": "Your private AI characters, on your own Mac, or straight from Tinfoil's verified enclaves when your Mac is away.",
   "id": "/phone",
   "start_url": "/phone",
   "scope": "/",

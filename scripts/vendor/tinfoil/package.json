@@ -1,0 +1,13 @@
+{
+  "name": "buddy-tinfoil-vendor",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Builds web/vendor/tinfoil.mjs (one self-contained ESM file) from the pinned npm package 'tinfoil'.",
+  "dependencies": {
+    "tinfoil": "1.2.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

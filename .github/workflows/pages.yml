@@ -1,0 +1,84 @@
+# Buddy for phones: deploys the static site to GitHub Pages (https://abyyworld.github.io/buddy/), SPEC3 §3.5.
+# Runs only in the public repo (abyyworld/buddy), only for a v* tag signed by Buddy's release key, and only after the
+# owner approves the deploy (the github-pages environment's required reviewer; set it to deploy from v* tags only). It
+# builds the site from the tag with scripts/build_pages.py and deploys it only if every byte matches the manifest that
+# publish.sh signed on the owner's Mac (site-release/), whose signature it checks with site-signers. The release key
+# never comes here. Every action is pinned to a commit.
+# Owner, once: Settings -> Pages -> Source "GitHub Actions"; Settings -> Environments -> github-pages: required reviewer
+# (you) and deployment tags v*; a tag ruleset so only you can create v* tags; branch protection on main; hardware-key 2FA.
+# The site shares the abyyworld.github.io origin with every other Pages site of the account, so no other Pages site may
+# ever be published on abyyworld (owner decision, 2026-10-10): SITE_ORIGIN_SHARED_OK says that's understood.
+name: Pages
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: read
+concurrency:
+  group: pages
+  cancel-in-progress: false
+env:
+  SITE_ORIGIN_SHARED_OK: "1"
+jobs:
+  build:
+    if: github.repository == 'abyyworld/buddy'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683   # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: The public copy, a release tag, an origin of its own (or the owner's word)
+        run: |
+          test -f edition.json || { echo "no edition.json: not the public copy"; exit 1; }
+          [[ "$GITHUB_REF_TYPE" == tag && "$GITHUB_REF_NAME" =~ ^v[1-9][0-9]*$ ]] || { echo "not a release tag"; exit 1; }
+          if [[ ! -f CNAME && "${GITHUB_REPOSITORY#*/}" != "${GITHUB_REPOSITORY_OWNER}.github.io" && "$SITE_ORIGIN_SHARED_OK" != 1 ]]; then
+            echo "This site would share ${GITHUB_REPOSITORY_OWNER}.github.io with every other Pages site of the account."; exit 1
+          fi
+      - name: The tag is signed by Buddy's release key
+        run: |
+          git fetch -q --force origin "refs/tags/$GITHUB_REF_NAME:refs/tags/$GITHUB_REF_NAME"
+          test -s release-signers && test -s site-signers
+          git -c gpg.ssh.program=ssh-keygen -c gpg.ssh.allowedSignersFile=release-signers verify-tag "$GITHUB_REF_NAME"
+          test "$(git rev-parse "$GITHUB_REF_NAME^{commit}")" = "$(git rev-parse HEAD)"
+      - name: Build the site from the tag
+        run: python3 -I scripts/build_pages.py --tree . --out "$RUNNER_TEMP/site" --version "${GITHUB_REF_NAME#v}"
+      - name: It matches the signed manifest byte for byte
+        run: |
+          ssh-keygen -Y verify -f site-signers -I buddy-release -n buddy-site -s site-release/site-manifest.json.sig \
+            < site-release/site-manifest.json
+          cmp site-release/site-manifest.json "$RUNNER_TEMP/site/site-manifest.json"
+          python3 -I - "$RUNNER_TEMP/site" "${GITHUB_REF_NAME#v}" <<'PY'
+          import hashlib, json, os, sys
+          site, v = sys.argv[1], int(sys.argv[2])
+          man = json.load(open(os.path.join(site, "site-manifest.json")))
+          assert man["v"] == v and man["edition"] == "public", "the manifest isn't this public release"
+          have = set()
+          for root, _, names in os.walk(site):
+              for n in names:
+                  p = os.path.relpath(os.path.join(root, n), site).replace(os.sep, "/")
+                  have.add(p)
+          assert have - {"site-manifest.json"} == set(man["files"]), "files differ from the manifest"
+          for p, h in man["files"].items():
+              assert hashlib.sha256(open(os.path.join(site, p), "rb").read()).hexdigest() == h, p + " differs"
+          print("v%d: %d files match the signed manifest" % (v, len(man["files"])))
+          PY
+          cp site-release/site-manifest.json.sig "$RUNNER_TEMP/site/"
+      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b   # v4.0.0
+        with:
+          path: ${{ runner.temp }}/site
+  deploy:
+    needs: build
+    if: github.repository == 'abyyworld/buddy'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e   # v4.0.5

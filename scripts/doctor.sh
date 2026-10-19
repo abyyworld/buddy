@@ -1,6 +1,6 @@
 #!/bin/zsh
 # Buddy doctor: shows why updates aren't applying, then updates and restarts Buddy in the open.
-# Run from ~/BuddyFace:  zsh scripts/doctor.sh
+# Run from ~/BuddyFace:  zsh scripts/doctor.sh      (zsh scripts/doctor.sh mic: when a call hears only silence)
 # Prints only update logs, versions and errors (never chats, notes, keys or settings).
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 DIR="${BUDDY_DIR:-$HOME/BuddyFace}"
@@ -8,6 +8,12 @@ APP="$HOME/Applications/Buddy.app"
 cd "$DIR" 2>/dev/null && [[ -f buddy_server.py ]] || { print "Can't find Buddy in $DIR"; exit 1; }
 say() { print -r -- "$*"; }
 problem() { say ""; say "PROBLEM: $*"; say "(Send this whole output to whoever is helping you.)"; exit 1; }
+if [[ "$1" == mic ]]; then   # zsh scripts/doctor.sh mic: a call hears only silence. Updates rebuild the app, and macOS can
+  # keep a microphone permission that no longer fits it; this forgets it, so macOS asks again on the next call.
+  tccutil reset Microphone local.buddy.companion || problem "macOS didn't reset Buddy's microphone permission"
+  say "Done. Quit Buddy (menu bar → Quit), open it again and call; when your Mac asks, allow the microphone."
+  exit 0
+fi
 
 say "=== Buddy doctor ==="
 say "--- last update attempts"

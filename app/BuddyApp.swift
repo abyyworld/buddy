@@ -2,6 +2,7 @@
 // The menu bar icon opens a small chat window: the page served by buddy_server.py at http://127.0.0.1:12400/?mac=1.
 // Closing the window only hides it, so characters can still text you first (spoken aloud) and the icon fills when
 // something new arrives. Menu: Open Buddy, Talk to Buddy, Open Saved Chats, Check for Updates, Open at Login, Quit.
+// Settings → Backup asks this app for the usual macOS pickers (where backups go, a backup to restore) and Show in Finder.
 import Cocoa
 import CoreImage
 import CryptoKit
@@ -293,9 +294,27 @@ final class App: NSObject, NSApplicationDelegate, NSWindowDelegate, WKScriptMess
                 web.loadHTMLString(note("Buddy's window couldn't sign in to Buddy. Quit Buddy and open it again; if " +
                     "that doesn't help, run <code>zsh ~/BuddyFace/scripts/doctor.sh</code> in Terminal."), baseURL: nil)
             } else { verified = false; connect() }
+        case "micsettings":                                // a call hears only silence: where the microphone is allowed
+            if let u = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone") {
+                NSWorkspace.shared.open(u)
+            }
         case "qr":
             if let t = d["text"] as? String, t.hasPrefix("https://"), t.count < 300, let png = qr(t) {
                 js("window.buddyNative && window.buddyNative.qr && window.buddyNative.qr('\(png)')")
+            }
+        case "pick":                                       // Settings → Backup: a folder, or a backup file to restore
+            guard let id = (d["id"] as? NSNumber)?.intValue, let purpose = d["purpose"] as? String else { return }
+            pick(purpose, start: d["start"] as? String) { [weak self] path in
+                var chosen: Any = NSNull()
+                if let p = path { chosen = p }
+                let arg = (try? JSONSerialization.data(withJSONObject: [id, chosen] as [Any]))
+                    .flatMap { String(data: $0, encoding: .utf8) } ?? "[\(id),null]"
+                self?.js("window.buddyNative && window.buddyNative.picked && window.buddyNative.picked.apply(null, \(arg))")
+            }
+        case "reveal":                                     // "Show in Finder" (your home folder or a drive only)
+            if let p = d["path"] as? String, p.hasPrefix(home + "/") || p.hasPrefix("/Volumes/"),
+               FileManager.default.fileExists(atPath: p) {
+                NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: p)])
             }
         default: break
         }
@@ -354,6 +373,25 @@ final class App: NSObject, NSApplicationDelegate, NSWindowDelegate, WKScriptMess
         } else {
             completionHandler(panel.runModal() == .OK ? panel.urls : nil)
         }
+    }
+    // Backups: the usual macOS picker for where backups go, or for a backup to restore. Only the chosen path goes
+    // back to the page (JSON-encoded, so any name is safe); the server checks it again.
+    func pick(_ purpose: String, start: String?, done: @escaping (String?) -> Void) {
+        let folder = purpose == "folder", panel = NSOpenPanel()
+        panel.canChooseDirectories = folder; panel.canChooseFiles = !folder
+        panel.canCreateDirectories = folder; panel.allowsMultipleSelection = false
+        panel.prompt = folder ? "Use This Folder" : "Choose"
+        panel.message = folder ? "Choose where Buddy keeps its encrypted backups (iCloud Drive, Dropbox, Google Drive, OneDrive or a USB drive)."
+                               : "Choose a Buddy backup (a file named like 2026-10-09.buddybackup)."
+        if !folder { panel.allowedContentTypes = [UTType(filenameExtension: "buddybackup") ?? .data] }
+        for p in [start ?? "", home + "/Library/Mobile Documents/com~apple~CloudDocs"] {
+            var isDir: ObjCBool = false
+            if (p.hasPrefix(home + "/") || p.hasPrefix("/Volumes/")) && FileManager.default.fileExists(atPath: p, isDirectory: &isDir) && isDir.boolValue {
+                panel.directoryURL = URL(fileURLWithPath: p); break
+            }
+        }
+        showBuddy()
+        panel.beginSheetModal(for: window) { r in done(r == .OK ? panel.url?.path : nil) }
     }
     func openExternally(_ u: URL) {
         let scheme = (u.scheme ?? "").lowercased()

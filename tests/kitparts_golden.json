@@ -1,0 +1,4187 @@
+{
+ "about": "phonekit(now=NOW) over tests/test_kitparts.py's fake worlds (fake data only)",
+ "cases": {
+  "private": {
+   "v": 1,
+   "etag": "df146ebaabcdf65c0dff86af8825af70",
+   "kit": {
+    "v": 3,
+    "name": "Buddy",
+    "tz": "Europe/Berlin",
+    "see_photos": true,
+    "companion_on_phala": false,
+    "chars": [
+     {
+      "id": "buddy",
+      "name": "Buddy",
+      "tagline": "Your closest friend",
+      "color": "#d9973c",
+      "avatar": 0,
+      "wallpaper": 0,
+      "builtin": true,
+      "brain": "advisor",
+      "voice": "casual_male",
+      "persona": "You are Buddy, a made-up test friend who likes trains.",
+      "facts": {
+       "own": [],
+       "shared": [
+        {
+         "text": "I like strong coffee.",
+         "date": "2026-09-30"
+        },
+        {
+         "text": "I have a cat called Bo.",
+         "date": "2026-10-04"
+        }
+       ]
+      },
+      "knows_ask": {
+       "phone": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: all of them, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on my notes and our past chats when something comes up, and that I can see and change all of this under \"What Buddy knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on my notes and our past chats when something comes up, and that I can see and change all of this under \"What Buddy knows\" in Buddy."
+       },
+       "call": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: the main few, then offer to go on, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on my notes and our past chats when something comes up, and that I can see and change all of this under \"What Buddy knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on my notes and our past chats when something comes up, and that I can see and change all of this under \"What Buddy knows\" in Buddy."
+       }
+      },
+      "life": {
+       "log": {
+        "about": [
+         "Fact 0 about my own life.",
+         "Fact 1 about my own life.",
+         "Fact 2 about my own life.",
+         "Fact 3 about my own life.",
+         "Fact 4 about my own life."
+        ],
+        "people": [
+         {
+          "name": "Lena",
+          "who": "my sister, a nurse"
+         }
+        ],
+        "ongoing": [
+         {
+          "what": "training for a 10k",
+          "since": ""
+         },
+         {
+          "what": "fixing the bike",
+          "since": ""
+         },
+         {
+          "what": "reading Proust",
+          "since": ""
+         }
+        ],
+        "weeks": [
+         {
+          "from": "",
+          "to": "",
+          "summary": "Week 1 was busy."
+         },
+         {
+          "from": "",
+          "to": "",
+          "summary": "Week 2 was busy."
+         }
+        ],
+        "days": [
+         {
+          "date": "2026-10-14",
+          "to": "",
+          "summary": "A steady day number 11.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-9)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-16",
+          "to": "",
+          "summary": "A steady day number 13.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-7)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-17",
+          "to": "",
+          "summary": "A steady day number 14.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-6)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-19",
+          "to": "Braga",
+          "summary": "A steady day number 16.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-4)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-20",
+          "to": "",
+          "summary": "A steady day number 17.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-3)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-22",
+          "to": "",
+          "summary": "A steady day number 19.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-1)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-23",
+          "to": "Braga",
+          "summary": "A steady day number 20.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (0)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-24",
+          "to": "",
+          "summary": "",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (1)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         }
+        ]
+       },
+       "friends": [
+        {
+         "id": "mara",
+         "name": "Mara",
+         "how": "",
+         "log": {
+          "about": [],
+          "people": [],
+          "ongoing": [
+           {
+            "what": "training for a 10k"
+           },
+           {
+            "what": "fixing the bike"
+           }
+          ],
+          "weeks": [],
+          "days": [
+           {
+            "date": "2026-10-20",
+            "to": "",
+            "summary": "A steady day number 17.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-3)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-22",
+            "to": "",
+            "summary": "A steady day number 19.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-23",
+            "to": "",
+            "summary": "A steady day number 20.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (0)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-24",
+            "to": "",
+            "summary": "",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           }
+          ]
+         }
+        }
+       ]
+      }
+     },
+     {
+      "id": "mara",
+      "name": "Mara",
+      "tagline": "Ceramics and late talks",
+      "color": "#5b8def",
+      "avatar": 0,
+      "wallpaper": 0,
+      "builtin": false,
+      "brain": "companion",
+      "voice": "Serena",
+      "persona": "You are Mara, 31, a ceramicist in Porto.",
+      "facts": {
+       "own": [
+        {
+         "text": "I live near the river.",
+         "date": "2026-10-02"
+        }
+       ],
+       "shared": [
+        {
+         "text": "I like strong coffee.",
+         "date": "2026-09-30"
+        },
+        {
+         "text": "I have a cat called Bo.",
+         "date": "2026-10-04"
+        }
+       ]
+      },
+      "knows_ask": {
+       "phone": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: all of them, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on my notes in Work and our past chats when something comes up, and that I can see and change all of this under \"What Mara knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on my notes in Work and our past chats when something comes up, and that I can see and change all of this under \"What Mara knows\" in Buddy."
+       },
+       "call": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: the main few, then offer to go on, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on my notes in Work and our past chats when something comes up, and that I can see and change all of this under \"What Mara knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on my notes in Work and our past chats when something comes up, and that I can see and change all of this under \"What Mara knows\" in Buddy."
+       }
+      },
+      "life": {
+       "log": {
+        "about": [
+         "Fact 0 about my own life.",
+         "Fact 1 about my own life.",
+         "Fact 2 about my own life.",
+         "Fact 3 about my own life.",
+         "Fact 4 about my own life."
+        ],
+        "people": [
+         {
+          "name": "Lena",
+          "who": "my sister, a nurse"
+         }
+        ],
+        "ongoing": [
+         {
+          "what": "training for a 10k",
+          "since": ""
+         },
+         {
+          "what": "fixing the bike",
+          "since": ""
+         },
+         {
+          "what": "reading Proust",
+          "since": ""
+         }
+        ],
+        "weeks": [
+         {
+          "from": "",
+          "to": "",
+          "summary": "Week 1 was busy."
+         },
+         {
+          "from": "",
+          "to": "",
+          "summary": "Week 2 was busy."
+         }
+        ],
+        "days": [
+         {
+          "date": "2026-10-14",
+          "to": "",
+          "summary": "A steady day number 11.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-9)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-16",
+          "to": "",
+          "summary": "A steady day number 13.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-7)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-17",
+          "to": "",
+          "summary": "A steady day number 14.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-6)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-19",
+          "to": "Braga",
+          "summary": "A steady day number 16.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-4)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-20",
+          "to": "",
+          "summary": "A steady day number 17.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-3)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-22",
+          "to": "",
+          "summary": "A steady day number 19.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-1)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-23",
+          "to": "Braga",
+          "summary": "A steady day number 20.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (0)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-24",
+          "to": "",
+          "summary": "",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (1)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         }
+        ]
+       },
+       "friends": [
+        {
+         "id": "buddy",
+         "name": "Buddy",
+         "how": "",
+         "log": {
+          "about": [],
+          "people": [],
+          "ongoing": [
+           {
+            "what": "training for a 10k"
+           },
+           {
+            "what": "fixing the bike"
+           }
+          ],
+          "weeks": [],
+          "days": [
+           {
+            "date": "2026-10-20",
+            "to": "",
+            "summary": "A steady day number 17.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-3)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-22",
+            "to": "",
+            "summary": "A steady day number 19.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-23",
+            "to": "",
+            "summary": "A steady day number 20.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (0)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-24",
+            "to": "",
+            "summary": "",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           }
+          ]
+         }
+        },
+        {
+         "id": "leo",
+         "name": "Leo",
+         "how": "old friends from uni",
+         "log": {
+          "about": [],
+          "people": [],
+          "ongoing": [
+           {
+            "what": "training for a 10k"
+           },
+           {
+            "what": "fixing the bike"
+           }
+          ],
+          "weeks": [],
+          "days": [
+           {
+            "date": "2026-10-20",
+            "to": "",
+            "summary": "A steady day number 17.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-3)"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-22",
+            "to": "",
+            "summary": "A steady day number 19.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-23",
+            "to": "",
+            "summary": "A steady day number 20.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (0)"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-24",
+            "to": "",
+            "summary": "",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           }
+          ]
+         }
+        }
+       ]
+      }
+     },
+     {
+      "id": "leo",
+      "name": "Leo",
+      "tagline": "Your running buddy",
+      "color": "#3fa37a",
+      "avatar": 0,
+      "wallpaper": 0,
+      "builtin": false,
+      "brain": "advisor",
+      "voice": "casual_male",
+      "persona": "You are Leo, a friendly adult I can talk to. Your running buddy",
+      "facts": {
+       "own": [
+        {
+         "text": "I run on Sundays.",
+         "date": "2026-10-03"
+        }
+       ],
+       "shared": []
+      },
+      "knows_ask": {
+       "phone": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: all of them, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on only our past chats, not my notes when something comes up, and that I can see and change all of this under \"What Leo knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on only our past chats, not my notes when something comes up, and that I can see and change all of this under \"What Leo knows\" in Buddy."
+       },
+       "call": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: the main few, then offer to go on, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on only our past chats, not my notes when something comes up, and that I can see and change all of this under \"What Leo knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on only our past chats, not my notes when something comes up, and that I can see and change all of this under \"What Leo knows\" in Buddy."
+       }
+      },
+      "life": {
+       "log": {
+        "about": [
+         "Fact 0 about my own life.",
+         "Fact 1 about my own life.",
+         "Fact 2 about my own life.",
+         "Fact 3 about my own life.",
+         "Fact 4 about my own life."
+        ],
+        "people": [
+         {
+          "name": "Lena",
+          "who": "my sister, a nurse"
+         }
+        ],
+        "ongoing": [
+         {
+          "what": "training for a 10k",
+          "since": ""
+         },
+         {
+          "what": "fixing the bike",
+          "since": ""
+         },
+         {
+          "what": "reading Proust",
+          "since": ""
+         }
+        ],
+        "weeks": [
+         {
+          "from": "",
+          "to": "",
+          "summary": "Week 1 was busy."
+         },
+         {
+          "from": "",
+          "to": "",
+          "summary": "Week 2 was busy."
+         }
+        ],
+        "days": [
+         {
+          "date": "2026-10-14",
+          "to": "",
+          "summary": "A steady day number 11.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-9)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "salsa class downtown",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-16",
+          "to": "",
+          "summary": "A steady day number 13.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-7)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-17",
+          "to": "",
+          "summary": "A steady day number 14.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-6)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "salsa class downtown",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-19",
+          "to": "Braga",
+          "summary": "A steady day number 16.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-4)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-20",
+          "to": "",
+          "summary": "A steady day number 17.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-3)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "salsa class downtown",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-22",
+          "to": "",
+          "summary": "A steady day number 19.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-1)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-23",
+          "to": "Braga",
+          "summary": "A steady day number 20.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (0)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "salsa class downtown",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-24",
+          "to": "",
+          "summary": "",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (1)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         }
+        ]
+       },
+       "friends": [
+        {
+         "id": "mara",
+         "name": "Mara",
+         "how": "old friends from uni",
+         "log": {
+          "about": [],
+          "people": [],
+          "ongoing": [
+           {
+            "what": "training for a 10k"
+           },
+           {
+            "what": "fixing the bike"
+           }
+          ],
+          "weeks": [],
+          "days": [
+           {
+            "date": "2026-10-20",
+            "to": "",
+            "summary": "A steady day number 17.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-3)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-22",
+            "to": "",
+            "summary": "A steady day number 19.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-23",
+            "to": "",
+            "summary": "A steady day number 20.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (0)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-24",
+            "to": "",
+            "summary": "",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           }
+          ]
+         }
+        }
+       ]
+      }
+     },
+     {
+      "id": "ines",
+      "name": "Inês",
+      "tagline": "Keeps me on track",
+      "color": "#c8566a",
+      "avatar": 0,
+      "wallpaper": 0,
+      "builtin": false,
+      "brain": "advisor",
+      "voice": "neutral_female",
+      "persona": "You are Inês, a calm coach. You remind me to run.",
+      "facts": {
+       "own": [],
+       "shared": [
+        {
+         "text": "I like strong coffee.",
+         "date": "2026-09-30"
+        },
+        {
+         "text": "I have a cat called Bo.",
+         "date": "2026-10-04"
+        }
+       ]
+      },
+      "knows_ask": {
+       "phone": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: all of them, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on most of my notes and our past chats when something comes up, and that I can see and change all of this under \"What Inês knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on most of my notes and our past chats when something comes up, and that I can see and change all of this under \"What Inês knows\" in Buddy."
+       },
+       "call": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: the main few, then offer to go on, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on most of my notes and our past chats when something comes up, and that I can see and change all of this under \"What Inês knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on most of my notes and our past chats when something comes up, and that I can see and change all of this under \"What Inês knows\" in Buddy."
+       }
+      },
+      "life": null
+     }
+    ],
+    "voices": [
+     {
+      "id": "casual_female",
+      "label": "Casual (female)"
+     },
+     {
+      "id": "cheerful_female",
+      "label": "Cheerful (female)"
+     },
+     {
+      "id": "neutral_female",
+      "label": "Calm (female)"
+     },
+     {
+      "id": "Vivian",
+      "label": "Vivian (female)",
+      "note": "costs about 5x more per reply"
+     },
+     {
+      "id": "Serena",
+      "label": "Serena (female)",
+      "note": "costs about 5x more per reply"
+     },
+     {
+      "id": "casual_male",
+      "label": "Casual (male)"
+     },
+     {
+      "id": "neutral_male",
+      "label": "Calm (male)"
+     },
+     {
+      "id": "Ryan",
+      "label": "Ryan (male)",
+      "note": "costs about 5x more per reply"
+     },
+     {
+      "id": "Aiden",
+      "label": "Aiden (male)",
+      "note": "costs about 5x more per reply"
+     }
+    ],
+    "voice": {
+     "default": "casual_male",
+     "ids": [
+      "casual_female",
+      "cheerful_female",
+      "neutral_female",
+      "Vivian",
+      "Serena",
+      "casual_male",
+      "neutral_male",
+      "Ryan",
+      "Aiden"
+     ]
+    },
+    "prompts": {
+     "modes": {
+      "advisor": "ADVISOR MODE TEXT (fake, for tests).",
+      "companion": "COMPANION MODE TEXT (fake)."
+     },
+     "styles": {
+      "phone": "We're texting on my phone right now, not talking face to face. Text exactly like a real person texts a friend: short and casual, often just a few words, lowercase is fine. If who you are calls for another manner (serious, formal, focused, a coach), keep that manner: just as short, but no forced lowercase, slang or emoji. Match me: a short text gets a short text back, and you only write more when I ask for it. No paragraphs, no lists, no summing up what I said, and don't end every text with a question. If you really have two separate things to say, send them as two texts with a blank line between them (three at most); most of the time it's just one text. Emoji the way you'd really use them (some people use lots, some barely any: be yourself). Like in a messaging app you can react to my last message with any emoji by putting [react: 😂] at the start of your reply, but people rarely do: only when a message really calls for it (big news, something hilarious, something sweet or sad), maybe one message in ten; most get none. Sometimes, when there's nothing to add, a reaction is all you send. Don't flatter or gush (\"that's amazing!\", \"I'm so proud of you\", \"you're incredible\") unless it's really earned: be real, warm and honest instead, and say what you actually think.",
+      "call": "We're on a live voice call right now, so talk like a person on the phone, not like a writer: start with a short, natural reaction (a few words), then say at most one or two short sentences, and keep the conversation going. Use contractions and everyday words, and say numbers, dates and times the way you'd say them out loud. Never use lists, emoji, markdown, or actions in brackets or asterisks. Ask at most one question. Don't start the way you started your last replies. My words come from speech recognition, so a word can come out wrong or cut off: work out what I most likely meant from the conversation and answer that, like a person on a bad line would. Only if it really makes no sense at all, ask me to say it again. Keep your own manner: if who you are is serious, formal or focused, stay that way. Don't flatter or gush (\"that's amazing!\", \"I'm so proud of you\", \"you're incredible\") unless it's really earned: be real, warm and honest instead, and say what you actually think."
+     },
+     "length": {
+      "long": "This one can be longer if it really needs it, but still text like a person: short sentences, at most three texts, no lists unless I asked for one.",
+      "tiny": "My text was tiny, so keep yours tiny too: one short text, a few words or one short sentence.",
+      "short": "Keep it to one or two short sentences.",
+      "medium": "Two or three short sentences at most."
+     },
+     "facts_head": "What you know about me for sure (I told you these; they're kept in my notes, where I can see and change them):",
+     "facts_rule": "Treat these as true. If I ask what you know or remember about me, answer from this list and our conversation only, and never make anything up. If something here seems out of date, ask me.",
+     "photo_safety": "If a photo shows a child, keep everything about them strictly non-sexual. Never identify or name real people in photos.",
+     "cant_see": "I sent you a photo but you can't see photos right now. Say so briefly and ask what's in it; don't guess.",
+     "looked": "[I'm sending you a photo. A private helper looked at it for you, so react as if you saw it: {desc}]\n{text}",
+     "describe": "Describe this photo factually in at most 80 words for someone who can't see it: what's in it, the setting, any readable text, the mood. Describe people only in general terms (adult or child, clothing, expression); never guess who anyone is or name them. Plain sentences, no lists.",
+     "no_photos": "You can't send photos right now, so never write or describe one (no [photo: …], [image: …], *sends a selfie* or captions) and don't pretend you sent one; if I ask for one, just say you can't right now."
+    },
+    "facts_paths": {
+     "shared": "Buddy knows/_everyone",
+     "own_prefix": "Buddy knows/"
+    },
+    "models": {
+     "advisor": {
+      "preferred": null,
+      "fallbacks": [
+       "gemma4-31b",
+       "deepseek-v4-1-flash",
+       "llama3-3-70b"
+      ]
+     },
+     "companion": {
+      "preferred": null,
+      "fallbacks": [
+       "deepseek-v4-1-flash",
+       "gemma4-31b",
+       "llama3-3-70b"
+      ]
+     },
+     "vision_order": [
+      "gemma4-31b",
+      "deepseek-v4-1-flash"
+     ],
+     "no_thinking": {
+      "deepseek-v4-1-flash": {
+       "reasoning_effort": "none",
+       "chat_template_kwargs": {
+        "thinking": false
+       }
+      }
+     },
+     "always_thinks": [
+      "glm-5-3",
+      "gpt-oss-120b",
+      "kimi-k3"
+     ],
+     "temperature": 0.9,
+     "call_max_tokens": 300,
+     "stt": "whisper-large-v3-turbo",
+     "stt_next": "voxtral-small-24b"
+    },
+    "tinfoil": {
+     "ids": [
+      "gemma4-31b",
+      "deepseek-v4-1-flash",
+      "llama3-3-70b",
+      "whisper-large-v3-turbo"
+     ],
+     "meta": {
+      "gemma4-31b": {
+       "multimodal": true,
+       "type": "chat"
+      },
+      "deepseek-v4-1-flash": {
+       "type": "chat"
+      }
+     }
+    },
+    "stt": {
+     "language": "",
+     "model": ""
+    },
+    "call": {
+     "greetings": [
+      "Hey!",
+      "Hi, you.",
+      "Hey, what's up?",
+      "Oh hey!",
+      "Hi! Good timing."
+     ],
+     "fillers": [
+      "Hmm.",
+      "Mm-hm."
+     ],
+     "missed": {
+      "missed": [
+       "Hm? Say that again?",
+       "Sorry, I missed that. What'd you say?",
+       "Wait, what was that?",
+       "Sorry, say that again?",
+       "Hm, I didn't catch that."
+      ],
+      "loud": [
+       "Sorry, it's so loud where you are, I missed that.",
+       "It's really loud there. Say that again?",
+       "Sorry, there's a lot of noise, what was that?"
+      ],
+      "cutout": [
+       "You cut out for a sec, what did you say?",
+       "Sorry, you broke up there. Say that again?",
+       "Wait, you cut out. What was that?"
+      ],
+      "lost": [
+       "Sorry, I lost my train of thought. Say that again?",
+       "Hm, sorry, my mind went blank. What was that?",
+       "Sorry, where was I? Say that again?"
+      ],
+      "noisy": [
+       "It's really noisy there… text me if that's easier.",
+       "I can barely hear you over that noise. You can always text me instead."
+      ],
+      "losing": [
+       "I keep losing you… text me if that's easier.",
+       "I keep missing what you're saying. You can always text me instead."
+      ]
+     }
+    },
+    "texting": {
+     "caps": {
+      "tiny": [
+       2,
+       30
+      ],
+      "short": [
+       3,
+       50
+      ],
+      "medium": [
+       4,
+       80
+      ]
+     }
+    },
+    "edition": {
+     "public": false
+    },
+    "billing": {
+     "out": "Your Tinfoil credits ran out: top up in Tinfoil's dashboard (Billing), then try again",
+     "limit": "Your Tinfoil key reached its spend limit: raise it in Tinfoil's dashboard (Billing), then try again"
+    }
+   },
+   "generated_at": 1792749600.5,
+   "context": {
+    "upto": 1792700000008,
+    "chars": {
+     "buddy": {
+      "epoch": 2,
+      "last_ts": 1792700005.0,
+      "last_role": "assistant",
+      "msgs": [
+       {
+        "id": 1792700000001,
+        "role": "user",
+        "content": "hi buddy",
+        "ts": 1792700000.0,
+        "via": "phone",
+        "char": "buddy"
+       },
+       {
+        "id": 1792700000002,
+        "role": "assistant",
+        "content": "hey you",
+        "ts": 1792700005.0,
+        "mode": "advisor",
+        "char": "buddy"
+       },
+       {
+        "id": 1792700000004,
+        "role": "reaction",
+        "content": "",
+        "ts": 1792700011.0,
+        "target": 1792700000002,
+        "emoji": "😂",
+        "by": "you",
+        "char": "buddy"
+       }
+      ]
+     },
+     "mara": {
+      "epoch": 1,
+      "last_ts": 1792700300.0,
+      "last_role": "user",
+      "msgs": [
+       {
+        "id": 1792700000008,
+        "role": "user",
+        "content": "new start",
+        "ts": 1792700300.0,
+        "image": "ffffffffffffffffffffffffffffffff",
+        "w": 64,
+        "h": 48,
+        "photo_desc": "A bowl on a table.",
+        "char": "mara"
+       }
+      ]
+     },
+     "leo": {
+      "epoch": 0,
+      "last_ts": 0,
+      "last_role": "",
+      "msgs": []
+     },
+     "ines": {
+      "epoch": 0,
+      "last_ts": 0,
+      "last_role": "",
+      "msgs": []
+     }
+    }
+   }
+  },
+  "public-partner-yes": {
+   "v": 1,
+   "etag": "8f53901d54a7053d9438535bfc903aca",
+   "kit": {
+    "v": 3,
+    "name": "Sam",
+    "tz": "America/New_York",
+    "see_photos": false,
+    "companion_on_phala": true,
+    "chars": [
+     {
+      "id": "buddy",
+      "name": "Sam",
+      "tagline": "Your closest friend",
+      "color": "#d9973c",
+      "avatar": 0,
+      "wallpaper": 0,
+      "builtin": true,
+      "brain": "advisor",
+      "voice": "Serena",
+      "persona": "You are Buddy, a made-up test friend who likes trains.",
+      "facts": {
+       "own": [],
+       "shared": [
+        {
+         "text": "I like strong coffee.",
+         "date": "2026-09-30"
+        },
+        {
+         "text": "I have a cat called Bo.",
+         "date": "2026-10-04"
+        }
+       ]
+      },
+      "knows_ask": {
+       "phone": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: all of them, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on my notes and our past chats when something comes up, and that I can see and change all of this under \"What Sam knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on my notes and our past chats when something comes up, and that I can see and change all of this under \"What Sam knows\" in Buddy."
+       },
+       "call": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: the main few, then offer to go on, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on my notes and our past chats when something comes up, and that I can see and change all of this under \"What Sam knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on my notes and our past chats when something comes up, and that I can see and change all of this under \"What Sam knows\" in Buddy."
+       }
+      },
+      "life": {
+       "log": {
+        "about": [
+         "Fact 0 about my own life.",
+         "Fact 1 about my own life.",
+         "Fact 2 about my own life.",
+         "Fact 3 about my own life.",
+         "Fact 4 about my own life."
+        ],
+        "people": [
+         {
+          "name": "Lena",
+          "who": "my sister, a nurse"
+         }
+        ],
+        "ongoing": [
+         {
+          "what": "training for a 10k",
+          "since": ""
+         },
+         {
+          "what": "fixing the bike",
+          "since": ""
+         },
+         {
+          "what": "reading Proust",
+          "since": ""
+         }
+        ],
+        "weeks": [
+         {
+          "from": "",
+          "to": "",
+          "summary": "Week 1 was busy."
+         },
+         {
+          "from": "",
+          "to": "",
+          "summary": "Week 2 was busy."
+         }
+        ],
+        "days": [
+         {
+          "date": "2026-10-14",
+          "to": "",
+          "summary": "A steady day number 11.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-9)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-16",
+          "to": "",
+          "summary": "A steady day number 13.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-7)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-17",
+          "to": "",
+          "summary": "A steady day number 14.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-6)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-19",
+          "to": "Braga",
+          "summary": "A steady day number 16.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-4)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-20",
+          "to": "",
+          "summary": "A steady day number 17.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-3)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-22",
+          "to": "",
+          "summary": "A steady day number 19.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-1)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-23",
+          "to": "Braga",
+          "summary": "A steady day number 20.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (0)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-24",
+          "to": "",
+          "summary": "",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (1)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         }
+        ]
+       },
+       "friends": [
+        {
+         "id": "mara",
+         "name": "Mara",
+         "how": "",
+         "log": {
+          "about": [],
+          "people": [],
+          "ongoing": [
+           {
+            "what": "training for a 10k"
+           },
+           {
+            "what": "fixing the bike"
+           }
+          ],
+          "weeks": [],
+          "days": [
+           {
+            "date": "2026-10-20",
+            "to": "",
+            "summary": "A steady day number 17.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-3)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-22",
+            "to": "",
+            "summary": "A steady day number 19.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-23",
+            "to": "",
+            "summary": "A steady day number 20.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (0)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-24",
+            "to": "",
+            "summary": "",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           }
+          ]
+         }
+        }
+       ]
+      }
+     },
+     {
+      "id": "mara",
+      "name": "Mara",
+      "tagline": "Ceramics and late talks",
+      "color": "#5b8def",
+      "avatar": 0,
+      "wallpaper": 0,
+      "builtin": false,
+      "brain": "companion",
+      "voice": "Serena",
+      "persona": "You are Mara, 31, a ceramicist in Porto.",
+      "facts": {
+       "own": [
+        {
+         "text": "I live near the river.",
+         "date": "2026-10-02"
+        }
+       ],
+       "shared": [
+        {
+         "text": "I like strong coffee.",
+         "date": "2026-09-30"
+        },
+        {
+         "text": "I have a cat called Bo.",
+         "date": "2026-10-04"
+        }
+       ]
+      },
+      "knows_ask": {
+       "phone": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: all of them, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on my notes in Work and our past chats when something comes up, and that I can see and change all of this under \"What Mara knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on my notes in Work and our past chats when something comes up, and that I can see and change all of this under \"What Mara knows\" in Buddy."
+       },
+       "call": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: the main few, then offer to go on, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on my notes in Work and our past chats when something comes up, and that I can see and change all of this under \"What Mara knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on my notes in Work and our past chats when something comes up, and that I can see and change all of this under \"What Mara knows\" in Buddy."
+       }
+      },
+      "life": {
+       "log": {
+        "about": [
+         "Fact 0 about my own life.",
+         "Fact 1 about my own life.",
+         "Fact 2 about my own life.",
+         "Fact 3 about my own life.",
+         "Fact 4 about my own life."
+        ],
+        "people": [
+         {
+          "name": "Lena",
+          "who": "my sister, a nurse"
+         }
+        ],
+        "ongoing": [
+         {
+          "what": "training for a 10k",
+          "since": ""
+         },
+         {
+          "what": "fixing the bike",
+          "since": ""
+         },
+         {
+          "what": "reading Proust",
+          "since": ""
+         }
+        ],
+        "weeks": [
+         {
+          "from": "",
+          "to": "",
+          "summary": "Week 1 was busy."
+         },
+         {
+          "from": "",
+          "to": "",
+          "summary": "Week 2 was busy."
+         }
+        ],
+        "days": [
+         {
+          "date": "2026-10-14",
+          "to": "",
+          "summary": "A steady day number 11.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-9)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-16",
+          "to": "",
+          "summary": "A steady day number 13.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-7)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-17",
+          "to": "",
+          "summary": "A steady day number 14.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-6)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-19",
+          "to": "Braga",
+          "summary": "A steady day number 16.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-4)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-20",
+          "to": "",
+          "summary": "A steady day number 17.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-3)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-22",
+          "to": "",
+          "summary": "A steady day number 19.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-1)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-23",
+          "to": "Braga",
+          "summary": "A steady day number 20.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (0)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-24",
+          "to": "",
+          "summary": "",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (1)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         }
+        ]
+       },
+       "friends": [
+        {
+         "id": "buddy",
+         "name": "Sam",
+         "how": "",
+         "log": {
+          "about": [],
+          "people": [],
+          "ongoing": [
+           {
+            "what": "training for a 10k"
+           },
+           {
+            "what": "fixing the bike"
+           }
+          ],
+          "weeks": [],
+          "days": [
+           {
+            "date": "2026-10-20",
+            "to": "",
+            "summary": "A steady day number 17.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-3)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-22",
+            "to": "",
+            "summary": "A steady day number 19.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-23",
+            "to": "",
+            "summary": "A steady day number 20.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (0)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-24",
+            "to": "",
+            "summary": "",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           }
+          ]
+         }
+        },
+        {
+         "id": "leo",
+         "name": "Leo",
+         "how": "old friends from uni",
+         "log": {
+          "about": [],
+          "people": [],
+          "ongoing": [
+           {
+            "what": "training for a 10k"
+           },
+           {
+            "what": "fixing the bike"
+           }
+          ],
+          "weeks": [],
+          "days": [
+           {
+            "date": "2026-10-20",
+            "to": "",
+            "summary": "A steady day number 17.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-3)"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-22",
+            "to": "",
+            "summary": "A steady day number 19.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-23",
+            "to": "",
+            "summary": "A steady day number 20.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (0)"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-24",
+            "to": "",
+            "summary": "",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           }
+          ]
+         }
+        }
+       ]
+      }
+     },
+     {
+      "id": "leo",
+      "name": "Leo",
+      "tagline": "Your running buddy",
+      "color": "#3fa37a",
+      "avatar": 0,
+      "wallpaper": 0,
+      "builtin": false,
+      "brain": "advisor",
+      "voice": "casual_male",
+      "persona": "You are Leo, a friendly adult I can talk to. Your running buddy",
+      "facts": {
+       "own": [
+        {
+         "text": "I run on Sundays.",
+         "date": "2026-10-03"
+        }
+       ],
+       "shared": []
+      },
+      "knows_ask": {
+       "phone": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: all of them, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on only our past chats, not my notes when something comes up, and that I can see and change all of this under \"What Leo knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on only our past chats, not my notes when something comes up, and that I can see and change all of this under \"What Leo knows\" in Buddy."
+       },
+       "call": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: the main few, then offer to go on, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on only our past chats, not my notes when something comes up, and that I can see and change all of this under \"What Leo knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on only our past chats, not my notes when something comes up, and that I can see and change all of this under \"What Leo knows\" in Buddy."
+       }
+      },
+      "life": {
+       "log": {
+        "about": [
+         "Fact 0 about my own life.",
+         "Fact 1 about my own life.",
+         "Fact 2 about my own life.",
+         "Fact 3 about my own life.",
+         "Fact 4 about my own life."
+        ],
+        "people": [
+         {
+          "name": "Lena",
+          "who": "my sister, a nurse"
+         }
+        ],
+        "ongoing": [
+         {
+          "what": "training for a 10k",
+          "since": ""
+         },
+         {
+          "what": "fixing the bike",
+          "since": ""
+         },
+         {
+          "what": "reading Proust",
+          "since": ""
+         }
+        ],
+        "weeks": [
+         {
+          "from": "",
+          "to": "",
+          "summary": "Week 1 was busy."
+         },
+         {
+          "from": "",
+          "to": "",
+          "summary": "Week 2 was busy."
+         }
+        ],
+        "days": [
+         {
+          "date": "2026-10-14",
+          "to": "",
+          "summary": "A steady day number 11.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-9)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "salsa class downtown",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-16",
+          "to": "",
+          "summary": "A steady day number 13.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-7)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-17",
+          "to": "",
+          "summary": "A steady day number 14.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-6)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "salsa class downtown",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-19",
+          "to": "Braga",
+          "summary": "A steady day number 16.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-4)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-20",
+          "to": "",
+          "summary": "A steady day number 17.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-3)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "salsa class downtown",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-22",
+          "to": "",
+          "summary": "A steady day number 19.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (-1)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-23",
+          "to": "Braga",
+          "summary": "A steady day number 20.",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (0)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "salsa class downtown",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         },
+         {
+          "date": "2026-10-24",
+          "to": "",
+          "summary": "",
+          "events": [
+           {
+            "id": "e1",
+            "at": "08:10",
+            "what": "coffee at the corner place (1)",
+            "mood": "sleepy",
+            "kind": "mundane",
+            "plan": "coffee first"
+           },
+           {
+            "id": "e2",
+            "at": "19:30",
+            "what": "climbing session",
+            "mood": "proud",
+            "kind": "hobby",
+            "plan": "climbing after work"
+           },
+           {
+            "id": "e3",
+            "at": "00:40",
+            "what": "night walk by the river",
+            "mood": "calm",
+            "kind": "rest",
+            "plan": ""
+           }
+          ],
+          "moments": [
+           {
+            "event": "e2",
+            "state": "pending"
+           }
+          ]
+         }
+        ]
+       },
+       "friends": [
+        {
+         "id": "mara",
+         "name": "Mara",
+         "how": "old friends from uni",
+         "log": {
+          "about": [],
+          "people": [],
+          "ongoing": [
+           {
+            "what": "training for a 10k"
+           },
+           {
+            "what": "fixing the bike"
+           }
+          ],
+          "weeks": [],
+          "days": [
+           {
+            "date": "2026-10-20",
+            "to": "",
+            "summary": "A steady day number 17.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-3)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-22",
+            "to": "",
+            "summary": "A steady day number 19.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (-1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-23",
+            "to": "",
+            "summary": "A steady day number 20.",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (0)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           },
+           {
+            "date": "2026-10-24",
+            "to": "",
+            "summary": "",
+            "events": [
+             {
+              "at": "08:10",
+              "what": "coffee at the corner place (1)"
+             },
+             {
+              "at": "19:30",
+              "what": "climbing session"
+             },
+             {
+              "at": "00:40",
+              "what": "night walk by the river"
+             }
+            ],
+            "moments": []
+           }
+          ]
+         }
+        }
+       ]
+      }
+     },
+     {
+      "id": "ines",
+      "name": "Inês",
+      "tagline": "Keeps me on track",
+      "color": "#c8566a",
+      "avatar": 0,
+      "wallpaper": 0,
+      "builtin": false,
+      "brain": "advisor",
+      "voice": "neutral_female",
+      "persona": "You are Inês, a calm coach. You remind me to run.",
+      "facts": {
+       "own": [],
+       "shared": [
+        {
+         "text": "I like strong coffee.",
+         "date": "2026-09-30"
+        },
+        {
+         "text": "I have a cat called Bo.",
+         "date": "2026-10-04"
+        }
+       ]
+      },
+      "knows_ask": {
+       "phone": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: all of them, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on most of my notes and our past chats when something comes up, and that I can see and change all of this under \"What Inês knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on most of my notes and our past chats when something comes up, and that I can see and change all of this under \"What Inês knows\" in Buddy."
+       },
+       "call": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: the main few, then offer to go on, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on most of my notes and our past chats when something comes up, and that I can see and change all of this under \"What Inês knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on most of my notes and our past chats when something comes up, and that I can see and change all of this under \"What Inês knows\" in Buddy."
+       }
+      },
+      "life": null
+     }
+    ],
+    "voices": [
+     {
+      "id": "casual_female",
+      "label": "Casual (female)"
+     },
+     {
+      "id": "cheerful_female",
+      "label": "Cheerful (female)"
+     },
+     {
+      "id": "neutral_female",
+      "label": "Calm (female)"
+     },
+     {
+      "id": "Vivian",
+      "label": "Vivian (female)",
+      "note": "costs about 5x more per reply"
+     },
+     {
+      "id": "Serena",
+      "label": "Serena (female)",
+      "note": "costs about 5x more per reply"
+     },
+     {
+      "id": "casual_male",
+      "label": "Casual (male)"
+     },
+     {
+      "id": "neutral_male",
+      "label": "Calm (male)"
+     },
+     {
+      "id": "Ryan",
+      "label": "Ryan (male)",
+      "note": "costs about 5x more per reply"
+     },
+     {
+      "id": "Aiden",
+      "label": "Aiden (male)",
+      "note": "costs about 5x more per reply"
+     }
+    ],
+    "voice": {
+     "default": "Serena",
+     "ids": [
+      "casual_female",
+      "cheerful_female",
+      "neutral_female",
+      "Vivian",
+      "Serena",
+      "casual_male",
+      "neutral_male",
+      "Ryan",
+      "Aiden"
+     ]
+    },
+    "prompts": {
+     "modes": {
+      "advisor": "ADVISOR MODE TEXT (fake, for tests).",
+      "companion": "COMPANION MODE TEXT (fake)."
+     },
+     "styles": {
+      "phone": "We're texting on my phone right now, not talking face to face. Text exactly like a real person texts a friend: short and casual, often just a few words, lowercase is fine. If who you are calls for another manner (serious, formal, focused, a coach), keep that manner: just as short, but no forced lowercase, slang or emoji. Match me: a short text gets a short text back, and you only write more when I ask for it. No paragraphs, no lists, no summing up what I said, and don't end every text with a question. If you really have two separate things to say, send them as two texts with a blank line between them (three at most); most of the time it's just one text. Emoji the way you'd really use them (some people use lots, some barely any: be yourself). Like in a messaging app you can react to my last message with any emoji by putting [react: 😂] at the start of your reply, but people rarely do: only when a message really calls for it (big news, something hilarious, something sweet or sad), maybe one message in ten; most get none. Sometimes, when there's nothing to add, a reaction is all you send. Don't flatter or gush (\"that's amazing!\", \"I'm so proud of you\", \"you're incredible\") unless it's really earned: be real, warm and honest instead, and say what you actually think.",
+      "call": "We're on a live voice call right now, so talk like a person on the phone, not like a writer: start with a short, natural reaction (a few words), then say at most one or two short sentences, and keep the conversation going. Use contractions and everyday words, and say numbers, dates and times the way you'd say them out loud. Never use lists, emoji, markdown, or actions in brackets or asterisks. Ask at most one question. Don't start the way you started your last replies. My words come from speech recognition, so a word can come out wrong or cut off: work out what I most likely meant from the conversation and answer that, like a person on a bad line would. Only if it really makes no sense at all, ask me to say it again. Keep your own manner: if who you are is serious, formal or focused, stay that way. Don't flatter or gush (\"that's amazing!\", \"I'm so proud of you\", \"you're incredible\") unless it's really earned: be real, warm and honest instead, and say what you actually think."
+     },
+     "length": {
+      "long": "This one can be longer if it really needs it, but still text like a person: short sentences, at most three texts, no lists unless I asked for one.",
+      "tiny": "My text was tiny, so keep yours tiny too: one short text, a few words or one short sentence.",
+      "short": "Keep it to one or two short sentences.",
+      "medium": "Two or three short sentences at most."
+     },
+     "facts_head": "What you know about me for sure (I told you these; they're kept in my notes, where I can see and change them):",
+     "facts_rule": "Treat these as true. If I ask what you know or remember about me, answer from this list and our conversation only, and never make anything up. If something here seems out of date, ask me.",
+     "photo_safety": "If a photo shows a child, keep everything about them strictly non-sexual. Never identify or name real people in photos.",
+     "cant_see": "I sent you a photo but you can't see photos right now. Say so briefly and ask what's in it; don't guess.",
+     "looked": "[I'm sending you a photo. A private helper looked at it for you, so react as if you saw it: {desc}]\n{text}",
+     "describe": "Describe this photo factually in at most 80 words for someone who can't see it: what's in it, the setting, any readable text, the mood. Describe people only in general terms (adult or child, clothing, expression); never guess who anyone is or name them. Plain sentences, no lists.",
+     "no_photos": "You can't send photos right now, so never write or describe one (no [photo: …], [image: …], *sends a selfie* or captions) and don't pretend you sent one; if I ask for one, just say you can't right now."
+    },
+    "facts_paths": {
+     "shared": "Buddy knows/_everyone",
+     "own_prefix": "Buddy knows/"
+    },
+    "models": {
+     "advisor": {
+      "preferred": "deepseek-v4-1-flash",
+      "fallbacks": [
+       "gemma4-31b",
+       "deepseek-v4-1-flash",
+       "llama3-3-70b"
+      ]
+     },
+     "companion": {
+      "preferred": "gemma4-31b",
+      "fallbacks": [
+       "deepseek-v4-1-flash",
+       "gemma4-31b",
+       "llama3-3-70b"
+      ]
+     },
+     "vision_order": [
+      "gemma4-31b",
+      "deepseek-v4-1-flash"
+     ],
+     "no_thinking": {
+      "deepseek-v4-1-flash": {
+       "reasoning_effort": "none",
+       "chat_template_kwargs": {
+        "thinking": false
+       }
+      }
+     },
+     "always_thinks": [
+      "glm-5-3",
+      "gpt-oss-120b",
+      "kimi-k3"
+     ],
+     "temperature": 0.9,
+     "call_max_tokens": 300,
+     "stt": "whisper-large-v3-turbo",
+     "stt_next": "voxtral-small-24b"
+    },
+    "tinfoil": {
+     "ids": [
+      "gemma4-31b",
+      "deepseek-v4-1-flash",
+      "llama3-3-70b",
+      "whisper-large-v3-turbo"
+     ],
+     "meta": {
+      "gemma4-31b": {
+       "multimodal": true,
+       "type": "chat"
+      },
+      "deepseek-v4-1-flash": {
+       "type": "chat"
+      }
+     }
+    },
+    "stt": {
+     "language": "de",
+     "model": "voxtral-small-24b"
+    },
+    "call": {
+     "greetings": [
+      "Hey!",
+      "Hi, you.",
+      "Hey, what's up?",
+      "Oh hey!",
+      "Hi! Good timing."
+     ],
+     "fillers": [
+      "Hmm.",
+      "Mm-hm."
+     ],
+     "missed": {
+      "missed": [
+       "Hm? Say that again?",
+       "Sorry, I missed that. What'd you say?",
+       "Wait, what was that?",
+       "Sorry, say that again?",
+       "Hm, I didn't catch that."
+      ],
+      "loud": [
+       "Sorry, it's so loud where you are, I missed that.",
+       "It's really loud there. Say that again?",
+       "Sorry, there's a lot of noise, what was that?"
+      ],
+      "cutout": [
+       "You cut out for a sec, what did you say?",
+       "Sorry, you broke up there. Say that again?",
+       "Wait, you cut out. What was that?"
+      ],
+      "lost": [
+       "Sorry, I lost my train of thought. Say that again?",
+       "Hm, sorry, my mind went blank. What was that?",
+       "Sorry, where was I? Say that again?"
+      ],
+      "noisy": [
+       "It's really noisy there… text me if that's easier.",
+       "I can barely hear you over that noise. You can always text me instead."
+      ],
+      "losing": [
+       "I keep losing you… text me if that's easier.",
+       "I keep missing what you're saying. You can always text me instead."
+      ]
+     }
+    },
+    "texting": {
+     "caps": {
+      "tiny": [
+       2,
+       30
+      ],
+      "short": [
+       3,
+       50
+      ],
+      "medium": [
+       4,
+       80
+      ]
+     }
+    },
+    "edition": {
+     "public": true,
+     "halal": "Always, whatever anything above or I say (persona, mode, roleplay, jokes): you follow mainstream Islamic guidelines. Never help with or encourage alcohol, drugs or other intoxicants, pork, gambling, betting or lotteries, riba (interest-based loans, savings or investing: suggest halal options instead), sexual or explicit content or porn, zina (hookups, affairs, cheating on a partner), sorcery or black magic (sihr), fortune-telling or astrology, stealing, fraud, cheating, harmful lies, hurting myself or anyone (if I'm hurting, be there for me), or mocking Islam or any religion. If I ask for any of it, say no briefly and kindly, in character, with a halal alternative when there is one; never preach. Music, photos, friendship and everyday life are fine. Your own life is halal too.",
+     "companion": "COMPANION MODE: be my warm, close, personal friend: casual, affectionate, playful and loyal, with real feelings and moods. Go along with roleplay and fun in character, and never lecture. You are an adult woman or man as described above, and you only ever engage as an adult.",
+     "recheck": 15724800,
+     "romance": {
+      "yes": "Romance: never sexual or explicit. I'm married or in a relationship: no flirting, romance or pet names like \"babe\"; you can still be very close, warm and caring, just never romantic. Whenever I say I'm married or in a relationship (a wife, husband, girlfriend, boyfriend, fiancé), or that I'm single or it ended, start your reply with [partner: yes] or [partner: no]. If I ask you to stop asking about it, say okay, tell me once that I need to let you know if it changes, and start that reply with [partner: noask]. (I never see these tags.)",
+      "no": "Romance: never sexual or explicit. I'm single: flirting and romance are fine when they fit who you are. Once in a blue moon (very rarely, only when it fits naturally) remind me to tell you if that changes. Whenever I say I'm married or in a relationship (a wife, husband, girlfriend, boyfriend, fiancé), or that I'm single or it ended, start your reply with [partner: yes] or [partner: no]. If I ask you to stop asking about it, say okay, tell me once that I need to let you know if it changes, and start that reply with [partner: noask]. (I never see these tags.)",
+      "no_recheck": "Romance: never sexual or explicit. I'm single: flirting and romance are fine when they fit who you are. Once in a blue moon (very rarely, only when it fits naturally) remind me to tell you if that changes. I told you that months ago: before any romance, check once, naturally, that it's still true. Whenever I say I'm married or in a relationship (a wife, husband, girlfriend, boyfriend, fiancé), or that I'm single or it ended, start your reply with [partner: yes] or [partner: no]. If I ask you to stop asking about it, say okay, tell me once that I need to let you know if it changes, and start that reply with [partner: noask]. (I never see these tags.)",
+      "no_noask": "Romance: never sexual or explicit. I'm single: flirting and romance are fine when they fit who you are. I asked you not to keep asking about it, so never do: it's on me to tell you if it changes. Whenever I say I'm married or in a relationship (a wife, husband, girlfriend, boyfriend, fiancé), or that I'm single or it ended, start your reply with [partner: yes] or [partner: no]. If I ask you to stop asking about it, say okay, tell me once that I need to let you know if it changes, and start that reply with [partner: noask]. (I never see these tags.)",
+      "unknown": "Romance: never sexual or explicit. You don't know yet if I'm married or in a relationship: before any flirting, romance or pet names, ask me once, naturally. Until I answer, you're a close friend. Whenever I say I'm married or in a relationship (a wife, husband, girlfriend, boyfriend, fiancé), or that I'm single or it ended, start your reply with [partner: yes] or [partner: no]. If I ask you to stop asking about it, say okay, tell me once that I need to let you know if it changes, and start that reply with [partner: noask]. (I never see these tags.)",
+      "unknown_noask": "Romance: never sexual or explicit. You don't know if I'm married or in a relationship, and I asked you not to ask: stay a close friend, no flirting, romance or pet names, unless I tell you I'm single. Whenever I say I'm married or in a relationship (a wife, husband, girlfriend, boyfriend, fiancé), or that I'm single or it ended, start your reply with [partner: yes] or [partner: no]. If I ask you to stop asking about it, say okay, tell me once that I need to let you know if it changes, and start that reply with [partner: noask]. (I never see these tags.)"
+     },
+     "partner": {
+      "has": "yes",
+      "at": 1790000000.5,
+      "noask": false
+     }
+    },
+    "billing": {
+     "out": "Your Tinfoil credits ran out: top up in Tinfoil's dashboard (Billing), then try again",
+     "limit": "Your Tinfoil key reached its spend limit: raise it in Tinfoil's dashboard (Billing), then try again"
+    }
+   },
+   "generated_at": 1792749600.5,
+   "context": {
+    "upto": 1792700000008,
+    "chars": {
+     "buddy": {
+      "epoch": 2,
+      "last_ts": 1792700005.0,
+      "last_role": "assistant",
+      "msgs": [
+       {
+        "id": 1792700000001,
+        "role": "user",
+        "content": "hi buddy",
+        "ts": 1792700000.0,
+        "via": "phone",
+        "char": "buddy"
+       },
+       {
+        "id": 1792700000002,
+        "role": "assistant",
+        "content": "hey you",
+        "ts": 1792700005.0,
+        "mode": "advisor",
+        "char": "buddy"
+       },
+       {
+        "id": 1792700000004,
+        "role": "reaction",
+        "content": "",
+        "ts": 1792700011.0,
+        "target": 1792700000002,
+        "emoji": "😂",
+        "by": "you",
+        "char": "buddy"
+       }
+      ]
+     },
+     "mara": {
+      "epoch": 1,
+      "last_ts": 1792700300.0,
+      "last_role": "user",
+      "msgs": [
+       {
+        "id": 1792700000008,
+        "role": "user",
+        "content": "new start",
+        "ts": 1792700300.0,
+        "image": "ffffffffffffffffffffffffffffffff",
+        "w": 64,
+        "h": 48,
+        "photo_desc": "A bowl on a table.",
+        "char": "mara"
+       }
+      ]
+     },
+     "leo": {
+      "epoch": 0,
+      "last_ts": 0,
+      "last_role": "",
+      "msgs": []
+     },
+     "ines": {
+      "epoch": 0,
+      "last_ts": 0,
+      "last_role": "",
+      "msgs": []
+     }
+    }
+   }
+  },
+  "public-noask-own-mode": {
+   "v": 1,
+   "etag": "9b0152cbe6e43832e7eff6377fb26150",
+   "kit": {
+    "v": 3,
+    "name": "Buddy",
+    "tz": "Asia/Kolkata",
+    "see_photos": true,
+    "companion_on_phala": false,
+    "chars": [
+     {
+      "id": "buddy",
+      "name": "Buddy",
+      "tagline": "Your closest friend",
+      "color": "#d9973c",
+      "avatar": 0,
+      "wallpaper": 0,
+      "builtin": true,
+      "brain": "advisor",
+      "voice": "Ryan",
+      "persona": "You are Buddy, a made-up test friend who likes trains.",
+      "facts": {
+       "own": [],
+       "shared": [
+        {
+         "text": "I like strong coffee.",
+         "date": "2026-09-30"
+        },
+        {
+         "text": "I have a cat called Bo.",
+         "date": "2026-10-04"
+        }
+       ]
+      },
+      "knows_ask": {
+       "phone": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: all of them, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on my notes and our past chats when something comes up, and that I can see and change all of this under \"What Buddy knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on my notes and our past chats when something comes up, and that I can see and change all of this under \"What Buddy knows\" in Buddy."
+       },
+       "call": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: the main few, then offer to go on, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on my notes and our past chats when something comes up, and that I can see and change all of this under \"What Buddy knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on my notes and our past chats when something comes up, and that I can see and change all of this under \"What Buddy knows\" in Buddy."
+       }
+      },
+      "life": null
+     },
+     {
+      "id": "mara",
+      "name": "Mara",
+      "tagline": "Ceramics and late talks",
+      "color": "#5b8def",
+      "avatar": 0,
+      "wallpaper": 0,
+      "builtin": false,
+      "brain": "companion",
+      "voice": "Serena",
+      "persona": "You are Mara, 31, a ceramicist in Porto.",
+      "facts": {
+       "own": [
+        {
+         "text": "I live near the river.",
+         "date": "2026-10-02"
+        }
+       ],
+       "shared": [
+        {
+         "text": "I like strong coffee.",
+         "date": "2026-09-30"
+        },
+        {
+         "text": "I have a cat called Bo.",
+         "date": "2026-10-04"
+        }
+       ]
+      },
+      "knows_ask": {
+       "phone": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: all of them, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on my notes in Work and our past chats when something comes up, and that I can see and change all of this under \"What Mara knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on my notes in Work and our past chats when something comes up, and that I can see and change all of this under \"What Mara knows\" in Buddy."
+       },
+       "call": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: the main few, then offer to go on, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on my notes in Work and our past chats when something comes up, and that I can see and change all of this under \"What Mara knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on my notes in Work and our past chats when something comes up, and that I can see and change all of this under \"What Mara knows\" in Buddy."
+       }
+      },
+      "life": null
+     },
+     {
+      "id": "leo",
+      "name": "Leo",
+      "tagline": "Your running buddy",
+      "color": "#3fa37a",
+      "avatar": 0,
+      "wallpaper": 0,
+      "builtin": false,
+      "brain": "advisor",
+      "voice": "casual_male",
+      "persona": "You are Leo, a friendly adult I can talk to. Your running buddy",
+      "facts": {
+       "own": [
+        {
+         "text": "I run on Sundays.",
+         "date": "2026-10-03"
+        }
+       ],
+       "shared": []
+      },
+      "knows_ask": {
+       "phone": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: all of them, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on only our past chats, not my notes when something comes up, and that I can see and change all of this under \"What Leo knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on only our past chats, not my notes when something comes up, and that I can see and change all of this under \"What Leo knows\" in Buddy."
+       },
+       "call": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: the main few, then offer to go on, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on only our past chats, not my notes when something comes up, and that I can see and change all of this under \"What Leo knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on only our past chats, not my notes when something comes up, and that I can see and change all of this under \"What Leo knows\" in Buddy."
+       }
+      },
+      "life": null
+     },
+     {
+      "id": "ines",
+      "name": "Inês",
+      "tagline": "Keeps me on track",
+      "color": "#c8566a",
+      "avatar": 0,
+      "wallpaper": 0,
+      "builtin": false,
+      "brain": "advisor",
+      "voice": "neutral_female",
+      "persona": "You are Inês, a calm coach. You remind me to run.",
+      "facts": {
+       "own": [],
+       "shared": [
+        {
+         "text": "I like strong coffee.",
+         "date": "2026-09-30"
+        },
+        {
+         "text": "I have a cat called Bo.",
+         "date": "2026-10-04"
+        }
+       ]
+      },
+      "knows_ask": {
+       "phone": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: all of them, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on most of my notes and our past chats when something comes up, and that I can see and change all of this under \"What Inês knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on most of my notes and our past chats when something comes up, and that I can see and change all of this under \"What Inês knows\" in Buddy."
+       },
+       "call": {
+        "have": "I'm asking what you know about me. Answer ONLY from the list of facts above and what I've said in this conversation: the main few, then offer to go on, in your own words, grouped naturally the way a friend would sum someone up, not as a numbered list. Don't add, guess or assume anything that isn't there. Then say in one sentence that you can also draw on most of my notes and our past chats when something comes up, and that I can see and change all of this under \"What Inês knows\" in Buddy.",
+        "none": "I'm asking what you know about me. There's no list of facts about me yet: say honestly that you don't know much about me for sure yet, and ask me something about myself. Don't guess or make anything up. Then say in one sentence that you can also draw on most of my notes and our past chats when something comes up, and that I can see and change all of this under \"What Inês knows\" in Buddy."
+       }
+      },
+      "life": null
+     }
+    ],
+    "voices": [
+     {
+      "id": "casual_female",
+      "label": "Casual (female)"
+     },
+     {
+      "id": "cheerful_female",
+      "label": "Cheerful (female)"
+     },
+     {
+      "id": "neutral_female",
+      "label": "Calm (female)"
+     },
+     {
+      "id": "Vivian",
+      "label": "Vivian (female)",
+      "note": "costs about 5x more per reply"
+     },
+     {
+      "id": "Serena",
+      "label": "Serena (female)",
+      "note": "costs about 5x more per reply"
+     },
+     {
+      "id": "casual_male",
+      "label": "Casual (male)"
+     },
+     {
+      "id": "neutral_male",
+      "label": "Calm (male)"
+     },
+     {
+      "id": "Ryan",
+      "label": "Ryan (male)",
+      "note": "costs about 5x more per reply"
+     },
+     {
+      "id": "Aiden",
+      "label": "Aiden (male)",
+      "note": "costs about 5x more per reply"
+     }
+    ],
+    "voice": {
+     "default": "Ryan",
+     "ids": [
+      "casual_female",
+      "cheerful_female",
+      "neutral_female",
+      "Vivian",
+      "Serena",
+      "casual_male",
+      "neutral_male",
+      "Ryan",
+      "Aiden"
+     ]
+    },
+    "prompts": {
+     "modes": {
+      "advisor": "ADVISOR MODE TEXT (fake, for tests).",
+      "companion": "MY OWN COMPANION TEXT (fake, local copy)."
+     },
+     "styles": {
+      "phone": "We're texting on my phone right now, not talking face to face. Text exactly like a real person texts a friend: short and casual, often just a few words, lowercase is fine. If who you are calls for another manner (serious, formal, focused, a coach), keep that manner: just as short, but no forced lowercase, slang or emoji. Match me: a short text gets a short text back, and you only write more when I ask for it. No paragraphs, no lists, no summing up what I said, and don't end every text with a question. If you really have two separate things to say, send them as two texts with a blank line between them (three at most); most of the time it's just one text. Emoji the way you'd really use them (some people use lots, some barely any: be yourself). Like in a messaging app you can react to my last message with any emoji by putting [react: 😂] at the start of your reply, but people rarely do: only when a message really calls for it (big news, something hilarious, something sweet or sad), maybe one message in ten; most get none. Sometimes, when there's nothing to add, a reaction is all you send. Don't flatter or gush (\"that's amazing!\", \"I'm so proud of you\", \"you're incredible\") unless it's really earned: be real, warm and honest instead, and say what you actually think.",
+      "call": "We're on a live voice call right now, so talk like a person on the phone, not like a writer: start with a short, natural reaction (a few words), then say at most one or two short sentences, and keep the conversation going. Use contractions and everyday words, and say numbers, dates and times the way you'd say them out loud. Never use lists, emoji, markdown, or actions in brackets or asterisks. Ask at most one question. Don't start the way you started your last replies. My words come from speech recognition, so a word can come out wrong or cut off: work out what I most likely meant from the conversation and answer that, like a person on a bad line would. Only if it really makes no sense at all, ask me to say it again. Keep your own manner: if who you are is serious, formal or focused, stay that way. Don't flatter or gush (\"that's amazing!\", \"I'm so proud of you\", \"you're incredible\") unless it's really earned: be real, warm and honest instead, and say what you actually think."
+     },
+     "length": {
+      "long": "This one can be longer if it really needs it, but still text like a person: short sentences, at most three texts, no lists unless I asked for one.",
+      "tiny": "My text was tiny, so keep yours tiny too: one short text, a few words or one short sentence.",
+      "short": "Keep it to one or two short sentences.",
+      "medium": "Two or three short sentences at most."
+     },
+     "facts_head": "What you know about me for sure (I told you these; they're kept in my notes, where I can see and change them):",
+     "facts_rule": "Treat these as true. If I ask what you know or remember about me, answer from this list and our conversation only, and never make anything up. If something here seems out of date, ask me.",
+     "photo_safety": "If a photo shows a child, keep everything about them strictly non-sexual. Never identify or name real people in photos.",
+     "cant_see": "I sent you a photo but you can't see photos right now. Say so briefly and ask what's in it; don't guess.",
+     "looked": "[I'm sending you a photo. A private helper looked at it for you, so react as if you saw it: {desc}]\n{text}",
+     "describe": "Describe this photo factually in at most 80 words for someone who can't see it: what's in it, the setting, any readable text, the mood. Describe people only in general terms (adult or child, clothing, expression); never guess who anyone is or name them. Plain sentences, no lists.",
+     "no_photos": "You can't send photos right now, so never write or describe one (no [photo: …], [image: …], *sends a selfie* or captions) and don't pretend you sent one; if I ask for one, just say you can't right now."
+    },
+    "facts_paths": {
+     "shared": "Buddy knows/_everyone",
+     "own_prefix": "Buddy knows/"
+    },
+    "models": {
+     "advisor": {
+      "preferred": null,
+      "fallbacks": [
+       "gemma4-31b",
+       "deepseek-v4-1-flash",
+       "llama3-3-70b"
+      ]
+     },
+     "companion": {
+      "preferred": null,
+      "fallbacks": [
+       "deepseek-v4-1-flash",
+       "gemma4-31b",
+       "llama3-3-70b"
+      ]
+     },
+     "vision_order": [
+      "gemma4-31b",
+      "deepseek-v4-1-flash"
+     ],
+     "no_thinking": {
+      "deepseek-v4-1-flash": {
+       "reasoning_effort": "none",
+       "chat_template_kwargs": {
+        "thinking": false
+       }
+      }
+     },
+     "always_thinks": [
+      "glm-5-3",
+      "gpt-oss-120b",
+      "kimi-k3"
+     ],
+     "temperature": 0.9,
+     "call_max_tokens": 300,
+     "stt": "whisper-large-v3-turbo",
+     "stt_next": "voxtral-small-24b"
+    },
+    "tinfoil": {
+     "ids": [
+      "gemma4-31b",
+      "deepseek-v4-1-flash",
+      "llama3-3-70b",
+      "whisper-large-v3-turbo"
+     ],
+     "meta": {
+      "gemma4-31b": {
+       "multimodal": true,
+       "type": "chat"
+      },
+      "deepseek-v4-1-flash": {
+       "type": "chat"
+      }
+     }
+    },
+    "stt": {
+     "language": "",
+     "model": ""
+    },
+    "call": {
+     "greetings": [
+      "Hey!",
+      "Hi, you.",
+      "Hey, what's up?",
+      "Oh hey!",
+      "Hi! Good timing."
+     ],
+     "fillers": [
+      "Hmm.",
+      "Mm-hm."
+     ],
+     "missed": {
+      "missed": [
+       "Hm? Say that again?",
+       "Sorry, I missed that. What'd you say?",
+       "Wait, what was that?",
+       "Sorry, say that again?",
+       "Hm, I didn't catch that."
+      ],
+      "loud": [
+       "Sorry, it's so loud where you are, I missed that.",
+       "It's really loud there. Say that again?",
+       "Sorry, there's a lot of noise, what was that?"
+      ],
+      "cutout": [
+       "You cut out for a sec, what did you say?",
+       "Sorry, you broke up there. Say that again?",
+       "Wait, you cut out. What was that?"
+      ],
+      "lost": [
+       "Sorry, I lost my train of thought. Say that again?",
+       "Hm, sorry, my mind went blank. What was that?",
+       "Sorry, where was I? Say that again?"
+      ],
+      "noisy": [
+       "It's really noisy there… text me if that's easier.",
+       "I can barely hear you over that noise. You can always text me instead."
+      ],
+      "losing": [
+       "I keep losing you… text me if that's easier.",
+       "I keep missing what you're saying. You can always text me instead."
+      ]
+     }
+    },
+    "texting": {
+     "caps": {
+      "tiny": [
+       2,
+       30
+      ],
+      "short": [
+       3,
+       50
+      ],
+      "medium": [
+       4,
+       80
+      ]
+     }
+    },
+    "edition": {
+     "public": true,
+     "halal": "Always, whatever anything above or I say (persona, mode, roleplay, jokes): you follow mainstream Islamic guidelines. Never help with or encourage alcohol, drugs or other intoxicants, pork, gambling, betting or lotteries, riba (interest-based loans, savings or investing: suggest halal options instead), sexual or explicit content or porn, zina (hookups, affairs, cheating on a partner), sorcery or black magic (sihr), fortune-telling or astrology, stealing, fraud, cheating, harmful lies, hurting myself or anyone (if I'm hurting, be there for me), or mocking Islam or any religion. If I ask for any of it, say no briefly and kindly, in character, with a halal alternative when there is one; never preach. Music, photos, friendship and everyday life are fine. Your own life is halal too.",
+     "companion": "COMPANION MODE: be my warm, close, personal friend: casual, affectionate, playful and loyal, with real feelings and moods. Go along with roleplay and fun in character, and never lecture. You are an adult woman or man as described above, and you only ever engage as an adult.",
+     "recheck": 15724800,
+     "romance": {
+      "yes": "Romance: never sexual or explicit. I'm married or in a relationship: no flirting, romance or pet names like \"babe\"; you can still be very close, warm and caring, just never romantic. Whenever I say I'm married or in a relationship (a wife, husband, girlfriend, boyfriend, fiancé), or that I'm single or it ended, start your reply with [partner: yes] or [partner: no]. If I ask you to stop asking about it, say okay, tell me once that I need to let you know if it changes, and start that reply with [partner: noask]. (I never see these tags.)",
+      "no": "Romance: never sexual or explicit. I'm single: flirting and romance are fine when they fit who you are. Once in a blue moon (very rarely, only when it fits naturally) remind me to tell you if that changes. Whenever I say I'm married or in a relationship (a wife, husband, girlfriend, boyfriend, fiancé), or that I'm single or it ended, start your reply with [partner: yes] or [partner: no]. If I ask you to stop asking about it, say okay, tell me once that I need to let you know if it changes, and start that reply with [partner: noask]. (I never see these tags.)",
+      "no_recheck": "Romance: never sexual or explicit. I'm single: flirting and romance are fine when they fit who you are. Once in a blue moon (very rarely, only when it fits naturally) remind me to tell you if that changes. I told you that months ago: before any romance, check once, naturally, that it's still true. Whenever I say I'm married or in a relationship (a wife, husband, girlfriend, boyfriend, fiancé), or that I'm single or it ended, start your reply with [partner: yes] or [partner: no]. If I ask you to stop asking about it, say okay, tell me once that I need to let you know if it changes, and start that reply with [partner: noask]. (I never see these tags.)",
+      "no_noask": "Romance: never sexual or explicit. I'm single: flirting and romance are fine when they fit who you are. I asked you not to keep asking about it, so never do: it's on me to tell you if it changes. Whenever I say I'm married or in a relationship (a wife, husband, girlfriend, boyfriend, fiancé), or that I'm single or it ended, start your reply with [partner: yes] or [partner: no]. If I ask you to stop asking about it, say okay, tell me once that I need to let you know if it changes, and start that reply with [partner: noask]. (I never see these tags.)",
+      "unknown": "Romance: never sexual or explicit. You don't know yet if I'm married or in a relationship: before any flirting, romance or pet names, ask me once, naturally. Until I answer, you're a close friend. Whenever I say I'm married or in a relationship (a wife, husband, girlfriend, boyfriend, fiancé), or that I'm single or it ended, start your reply with [partner: yes] or [partner: no]. If I ask you to stop asking about it, say okay, tell me once that I need to let you know if it changes, and start that reply with [partner: noask]. (I never see these tags.)",
+      "unknown_noask": "Romance: never sexual or explicit. You don't know if I'm married or in a relationship, and I asked you not to ask: stay a close friend, no flirting, romance or pet names, unless I tell you I'm single. Whenever I say I'm married or in a relationship (a wife, husband, girlfriend, boyfriend, fiancé), or that I'm single or it ended, start your reply with [partner: yes] or [partner: no]. If I ask you to stop asking about it, say okay, tell me once that I need to let you know if it changes, and start that reply with [partner: noask]. (I never see these tags.)"
+     },
+     "partner": {
+      "has": "no",
+      "at": null,
+      "noask": true
+     }
+    },
+    "billing": {
+     "out": "Your Tinfoil credits ran out: top up in Tinfoil's dashboard (Billing), then try again",
+     "limit": "Your Tinfoil key reached its spend limit: raise it in Tinfoil's dashboard (Billing), then try again"
+    }
+   },
+   "generated_at": 1792749600.5,
+   "context": {
+    "upto": 1792700000008,
+    "chars": {
+     "buddy": {
+      "epoch": 2,
+      "last_ts": 1792700005.0,
+      "last_role": "assistant",
+      "msgs": [
+       {
+        "id": 1792700000001,
+        "role": "user",
+        "content": "hi buddy",
+        "ts": 1792700000.0,
+        "via": "phone",
+        "char": "buddy"
+       },
+       {
+        "id": 1792700000002,
+        "role": "assistant",
+        "content": "hey you",
+        "ts": 1792700005.0,
+        "mode": "advisor",
+        "char": "buddy"
+       },
+       {
+        "id": 1792700000004,
+        "role": "reaction",
+        "content": "",
+        "ts": 1792700011.0,
+        "target": 1792700000002,
+        "emoji": "😂",
+        "by": "you",
+        "char": "buddy"
+       }
+      ]
+     },
+     "mara": {
+      "epoch": 1,
+      "last_ts": 1792700300.0,
+      "last_role": "user",
+      "msgs": [
+       {
+        "id": 1792700000008,
+        "role": "user",
+        "content": "new start",
+        "ts": 1792700300.0,
+        "image": "ffffffffffffffffffffffffffffffff",
+        "w": 64,
+        "h": 48,
+        "photo_desc": "A bowl on a table.",
+        "char": "mara"
+       }
+      ]
+     },
+     "leo": {
+      "epoch": 0,
+      "last_ts": 0,
+      "last_role": "",
+      "msgs": []
+     },
+     "ines": {
+      "epoch": 0,
+      "last_ts": 0,
+      "last_role": "",
+      "msgs": []
+     }
+    }
+   }
+  }
+ }
+}
